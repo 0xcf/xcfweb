@@ -1,0 +1,41 @@
+.jumbotron {
+    background-color: #0f0f0f;
+    color: #f7f7f7;
+}
+
+/*for scrolling*/
+body {
+    position: relative;
+}
+
+ul.snapshots {
+    list-style: none;
+    padding-left: 10px;
+}
+
+ul.snapshots li:before {
+    content: '❧ ';
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.affix {
+    top: 0px;
+}
+
+nav[data-toggle='toc'] .nav .nav {
+    display: block;
+}
+
+nav[data-toggle=toc] .nav>.active:focus>a,
+nav[data-toggle=toc] .nav>.active:hover>a,
+nav[data-toggle=toc] .nav>.active>a {
+    color: #0f0f0f;
+    border-left-color: #0f0f0f;
+}
+
+h1.date {
+    font-size: 18px;
+    text-align: right;
+    margin-top: 24px;
+}

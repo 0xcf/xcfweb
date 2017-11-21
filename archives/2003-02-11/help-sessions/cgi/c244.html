@@ -1,0 +1,204 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>Programming Paradigm</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="CGI Programming and You"
+HREF="book1.html"><LINK
+REL="PREVIOUS"
+TITLE="Security Concerns"
+HREF="x231.html"><LINK
+REL="NEXT"
+TITLE="Segmented User Interaction"
+HREF="x261.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>CGI Programming and You</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x231.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x261.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="SEC4"
+>Chapter 4. Programming Paradigm</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="c244.html#SEC4.1"
+>Non-Interactive Processing</A
+></DT
+><DT
+><A
+HREF="x261.html"
+>Segmented User Interaction</A
+></DT
+><DT
+><A
+HREF="x292.html"
+>Multiple Simultaneous Invocations</A
+></DT
+></DL
+></DIV
+><P
+>Using the CGI requires that a specific paradigm be used for
+programming. There are three basic issues which affect the design of
+programs which use the CGI:
+<P
+></P
+><OL
+TYPE="1"
+><LI
+><P
+>CGI programs are <A
+HREF="c244.html#SEC4.1"
+>non-interactive</A
+>.</P
+></LI
+><LI
+><P
+>Because of this, CGI programs require
+<A
+HREF="x261.html"
+>segmented user interaction</A
+>.</P
+></LI
+><LI
+><P
+><A
+HREF="x292.html"
+>Multiple CGI processes</A
+>
+may be running at the same time.</P
+></LI
+></OL
+></P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="SEC4.1"
+>Non-Interactive Processing</A
+></H1
+><P
+>The CGI Program doesn't continue to run while the user is
+interacting with the form data.  There is no way for the CGI program
+to respond to a user's form changes in real time.  Javascript can be
+used to handle some of this, but Javascript is not an elegant or ideal
+solution.</P
+><P
+>This, combined with the limitations of HTML forms, has created a
+rather standardized first step in almost every CGI program:
+error-checking of form fields.  If the data in the form fields is
+inconsistent with what is required or the data is not present, then
+the CGI program will not be able to execute properly, and the user
+must be made aware that the form was submitted improperly.  Therefore,
+a good first step for any CGI program is to perform error checking on
+all form fields received.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x231.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x261.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Security Concerns</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Segmented User Interaction</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,105 @@
+MIT X, OpenWindows, Motif, MacX
+THIS ARTICLE IS OF IMPORTANCE TO ALL X USERS.  PLEASE READ!
+
+One of the most powerful aspects of the X Window System is the ability
+to display X clients (eg. xterm) on remote displays.  For example, it
+is common to log in to a remote system from your local workstation, or
+Mac, run an X program on that remote system, and display it on your
+local workstation.  This is often achieved by using the command "xhost
++" on your local workstation to disable access control.
+
+Although the flexibility is useful, the possibility for abuse is
+considerable.  There has been one recent instance of a cracker grabbing
+passwords by connecting to unsecured X servers.
+
+It is therefore STRONGLY recommended that you DO NOT use the command
+"xhost +" to allow access to your display.  MacX users must have
+"Access Control" checked.
+
+Quick Fix
+- ---------
+
+For both MIT X (twm, mwm, etc.) and OpenWindows (olwm), use the
+command 'xhost +hostname' to enable access to your display from
+'hostname'.  Note that this is not very secure since any user on
+'hostname' can access your X server (and potentially do nasty things).
+For more secure methods, read the next section.
+
+MacX users must  enable "Access Control" under the Remote menu.  With
+access control checked, you will get an alert whenever someone tries to
+connect. You can then click OK to accept, or cancel to dismiss.
+Otherwise, anyone can establish a connection without notice. In
+particular, someone could then snarf whatever you were typing - e.g.
+into a xterm window, etc.  This is the only level of security for 
+MacX users, you should continue reading if you also use other X
+displays (Unix, X-Term, etc.).
+
+The Secure Way
+- --------------
+
+It is impossible to make X totally secure in our environment.  You can,
+however, make it extremely difficult for casual snooping.  Below are
+suggestions listed from most to least desirable for both MIT X and
+OpenWindows users.  
+
+1. If running OpenWindows and Secure RPC, use 'xhost +user@hostname'.
+   This currently doesn't work on most installations at LBL.
+
+2. *OpenWindows* is automatically started with support
+   for Xauthority, a user-based access control mechanism.  
+   (See the description of MIT-MAGIC-COOKIE-1 below.)
+
+   The *MIT X* server normally started with 'twm' or 'mwm' must be be
+   started differently to use the Xauthority mechanism.  Place the
+   following in your .xinitrc file:
+
+   	HOST=`hostname`
+   	randomkey=`perl -e 'srand; printf int(rand(1e16))'`
+	xauth add ${HOST}/unix:0 . $randomkey
+	xauth add ${HOST}:0 . $randomkey
+
+   and invoke X with the command: 'xinit -- -auth ~/.Xauthority'
+
+   In the case of both OpenWindows and MIT X, using Xauthority:
+
+   If your home directory is shared by remote machines,
+   then you can display on your local workstation as long
+   as the remote X client is running under the same user id.
+
+   If your home directory is not shared by the remote
+   machine, you can use the 'auth' command as follows:
+
+	xauth extract - $DISPLAY | rsh remhost xauth merge -
+
+   If you are using different user id's on each machine, you
+   must use the method number three, below.
+
+3. If you must, use 'xhost +hostname'.  This isn't secure
+   either because any user on 'hostname' can attach to the X server on
+   your workstation, but it is more secure than 'xhost +'.
+
+   You could use xhost to enable access from a specific host only
+   long enough to start up a client, and then disable access
+   immediately.  For example, a script might do something like:
+
+	xhost +remhost
+	rsh remhost xterm -display myhost:0
+	sleep 15 
+	xhost -remhost
+
+
+MIT-MAGIC-COOKIE-1
+- ------------------
+When you start your X server as in suggestion number two above, it
+stores a code (or cookie) in a file called ".Xauthority" in your home
+directory.  Once the cookie is stored, other clients must present the
+it to the X server before being allowed to display or connect to the
+server.  Since clients get the cookie by reading it from the file
+".Xauthority", access control is based on Unix file permissions.  The
+normal permissions for ".Xauthority" are "rw" for the owner of the
+file (yourself).  If you are running clients from a remote machine, the
+remote machine must be mounting the *same* home directory containing
+the ".Xauthority" file, or you will have to use the "xauth" command as
+in suggestion two.  To enable access for remote or local users, 
+other than yourself, use the "Quick Fix" method, or see the "xauth"
+man page for more secure ways using a cookie.

@@ -1,0 +1,160 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>Multiple Simultaneous Invocations</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="CGI Programming and You"
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="Programming Paradigm"
+HREF="c244.html"><LINK
+REL="PREVIOUS"
+TITLE="Segmented User Interaction"
+HREF="x261.html"><LINK
+REL="NEXT"
+TITLE="Conclusion"
+HREF="c297.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>CGI Programming and You</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x261.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 4. Programming Paradigm</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="c297.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="SEC4.3"
+>Multiple Simultaneous Invocations</A
+></H1
+><P
+>Most programs are written with the assumption that only one copy
+will be running at any given time.  Therefore, access to data files
+will only be made by one copy of the program.  However, that is not
+always true of CGI programs, for which any number of copies may be
+running at any one time [one for each user submitting a form].  For
+reading of data files, where no changes are being made, this isn't a
+problem.  But as soon as modification of the data files [through
+writing] is introduced, this becomes a major problem.</P
+><P
+>If one process is writing a file while the other is reading, the
+reading process may read only partially-written data, resulting in
+incomplete data.  If two processes are writing at the same time, their
+data may be interleaved and completely unusable.  This can result in
+corrupt and lost data.</P
+><P
+>The [somewhat] simple answer to this problem is file locking.
+Any process which is going to write to a data file must first obtain a
+lock on the file, before doing it's writing.  All others must wait for
+the first process to finish before continuing.  If the programming
+environment supports native file locking, use it.  If not, a lock file
+created by writing processes before touching the files and deleted
+when they are done can be used.  All other processes must check for
+the existence of this file before proceeding, and if the file exists
+must periodically check back to see if it's been deleted, and they can
+continue.  However, using a lock file is not an ideal solution because
+a race condition [where two processes run near-simultaneously and both
+think that they have the lock] may develop.  Native file locking is
+the best solution, since it usually is set up in such a way as to
+limit race conditions.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x261.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="c297.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Segmented User Interaction</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c244.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Conclusion</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

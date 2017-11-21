@@ -1,0 +1,184 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>Standard Input</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="CGI Programming and You"
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="Usage"
+HREF="c41.html"><LINK
+REL="PREVIOUS"
+TITLE="Invocation"
+HREF="x47.html"><LINK
+REL="NEXT"
+TITLE="Standard Output"
+HREF="x77.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>CGI Programming and You</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x47.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 2. Usage</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x77.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="SEC2.3"
+>Standard Input</A
+></H1
+><P
+>Standard input is used for getting the user's data when forms
+are submitted with the "<TT
+CLASS="LITERAL"
+>POST</TT
+>" method [
+<TT
+CLASS="LITERAL"
+>&lt;FORM METHOD=post ...&gt;</TT
+> ].  This means that
+the form data is in a specific format, being both URL-encoded and in
+an encoded representation [what I've called the Form-Data Format; see
+<A
+HREF="x188.html"
+>the section called <I
+>Form-Data Format</I
+></A
+>].  The data is waiting on standard
+input for the program to read and process.  This data is
+<I
+CLASS="EMPHASIS"
+>not</I
+> EOF-terminated, and the
+<TT
+CLASS="ENVAR"
+>CONTENT_LENGTH</TT
+> environment variable must be used to
+determine the end of input [see <A
+HREF="x110.html"
+>the section called <I
+>Environment Variables</I
+></A
+>].</P
+><P
+>The nature of URL-encoding removes all spaces, so the data
+waiting on standard input is a single string in the format specified
+below [see <A
+HREF="x188.html"
+>the section called <I
+>Form-Data Format</I
+></A
+>].  This data must be read,
+decoded and parsed by the CGI program, but it's usually easier to use
+a pre-written library to do these steps than to re-write this tedious
+[and error-prone] processing for each CGI program.  For perl, the
+<TT
+CLASS="LITERAL"
+>cgi-lib.pl</TT
+> library is very useful [see <A
+HREF="c313.html#SEC6.3"
+><I
+>cgi-lib.pl</I
+></A
+>].</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x47.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x77.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Invocation</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c41.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Standard Output</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

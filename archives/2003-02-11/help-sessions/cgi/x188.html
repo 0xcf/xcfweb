@@ -1,0 +1,234 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>Form-Data Format</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="CGI Programming and You"
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="Usage"
+HREF="c41.html"><LINK
+REL="PREVIOUS"
+TITLE="URL-Encoding"
+HREF="x159.html"><LINK
+REL="NEXT"
+TITLE="Programming Concerns"
+HREF="c211.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>CGI Programming and You</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x159.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 2. Usage</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="c211.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="SEC2.7"
+>Form-Data Format</A
+></H1
+><P
+>The format of the form data is a URL-encoded string
+containing a representation of the data contained in the HTML form,
+in the following format:
+<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>field<SUB
+>0</SUB
+>name=field<SUB
+>0</SUB
+>data&amp;field<SUB
+>1</SUB
+>name=field<SUB
+>1</SUB
+>data&amp;...&amp;field<SUB
+>n</SUB
+>name=field<SUB
+>n</SUB
+>data</PRE
+></TD
+></TR
+></TABLE
+>
+<TT
+CLASS="LITERAL"
+>field<SUB
+>i</SUB
+>name</TT
+> is the name given
+to the <TT
+CLASS="LITERAL"
+>i<SUP
+>th</SUP
+></TT
+> field of the
+form. <TT
+CLASS="LITERAL"
+>field<SUB
+>i</SUB
+>data</TT
+> is the data
+which the user selected [or the default value for that field if the
+user made no selection|modification] for the
+<TT
+CLASS="LITERAL"
+>i<SUP
+>th</SUP
+></TT
+> field of the
+form.</P
+><P
+>For instance, with a form like the following:
+<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>&lt;FORM METHOD=POST ACTION="foo.cgi"&gt;
+Foo: &lt;INPUT TYPE=text NAME="foo"&gt;&lt;BR&gt;
+Bar: &lt;INPUT TYPE=text NAME="bar"&gt;&lt;BR&gt;
+Select one: &lt;SELECT NAME="age"&gt;
+&lt;OPTION selected&gt;20
+&lt;OPTION&gt;21
+&lt;OPTION&gt;22
+&lt;OPTION&gt;23
+&lt;/SELECT&gt;&lt;BR&gt;
+&lt;INPUT TYPE=submit VALUE="Submit me!"&gt;
+&lt;/FORM&gt;</PRE
+></TD
+></TR
+></TABLE
+></P
+><P
+>If for the text input "foo" the user entered "2 + 2 = 4", for
+the text input "bar" the user entered "Hello" and for the "age"
+selection the user left the default value of 20, then the form data
+would be represented as the string:
+<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>foo=2+%2B+2+%3D+4&amp;baz=Hello&amp;age=20</PRE
+></TD
+></TR
+></TABLE
+></P
+><P
+>As with URL-Encoding, parsing this information is a relatively
+straightforward process, but it's usually more convenient to let a
+library do the decoding to a set of variables which the program can
+then easily use.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x159.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="c211.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>URL-Encoding</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c41.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Programming Concerns</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

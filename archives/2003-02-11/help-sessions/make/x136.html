@@ -1,0 +1,429 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>A useful example</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="make"
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="Writing makefiles"
+HREF="c31.html"><LINK
+REL="PREVIOUS"
+TITLE="Variables"
+HREF="x109.html"><LINK
+REL="NEXT"
+TITLE="Update method hints"
+HREF="x199.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>make</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x109.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 2. Writing makefiles</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x199.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN136"
+>A useful example</A
+></H1
+><P
+>The following is an example of a <TT
+CLASS="FILENAME"
+>Makefile</TT
+>
+which you might see in the small projects typical of undergraduate
+computer science courses.
+<DIV
+CLASS="EXAMPLE"
+><P
+><B
+><A
+NAME="USEFUL-EXAMPLE"
+>Example 2-1. A useful example</A
+></B
+></P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>LIBDIR = .
+LDFLAGS = -L$(LIBDIR) -lcommonlib
+CC = /usr/local/bin/gcc
+CFLAGS = -c -g -Wall
+
+project: module1 module2
+
+module1: server server_test
+
+server: server.o commonlib
+	$(CC) $@ $^ $(LDFLAGS)
+
+server_test: server_test.o server
+	$(CC) $@ $^ $(LDFLAGS)
+
+module2: client
+
+client: parser.o lexer.o interface.o commonlib
+	$(CC) $@ $(&lt;:commonlib=) $(LDFLAGS)
+
+commonlib: libcommonlib.a
+
+libcommonlib.a(textio.o): textio.h
+
+clean:
+	rm -f *.a *.o</PRE
+></TD
+></TR
+></TABLE
+></DIV
+></P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN143"
+>Rules worth mentioning in <A
+HREF="x136.html#USEFUL-EXAMPLE"
+>Example 2-1</A
+></A
+></H2
+><P
+>There are only a couple of rules worth talking about in <A
+HREF="x136.html#USEFUL-EXAMPLE"
+>Example 2-1</A
+>.</P
+><P
+>The first is the <TT
+CLASS="LITERAL"
+>client</TT
+> rule.  It builds a
+binary named <TT
+CLASS="LITERAL"
+>client</TT
+> out of three object files and a
+library dependency. The funny syntax,
+<TT
+CLASS="LITERAL"
+>$(&lt;:commonlib=)</TT
+> is a substitution. It takes care
+of some conflicting needs.</P
+><P
+>Normally, we would have used the <TT
+CLASS="LITERAL"
+>$^</TT
+> automatic
+variable to build a binary using its associated object file.
+Unfortunately that only works with absurdly small projects consisting
+of but one object file.  Here, we need to find some syntax which
+allows us to tell <B
+CLASS="COMMAND"
+>make</B
+> that
+<TT
+CLASS="LITERAL"
+>client</TT
+> depends not only on its object files but
+also on a library module, which we have represented as a
+(non-terminal) dependency.  So we do that on the first line.  Our
+dependencies are all set up.</P
+><P
+>Now comes the tricky part.  We need to somehow write an update
+method which will link <TT
+CLASS="LITERAL"
+>client</TT
+> with the first three
+listed dependencies, namely <TT
+CLASS="LITERAL"
+>client</TT
+>'s object files,
+but exclude the last dependency: the library.  (We want to exclude the
+library because presumably we have stuck the
+<TT
+CLASS="LITERAL"
+>-lcommmonlib</TT
+> in the <TT
+CLASS="ENVAR"
+>LDFLAGS</TT
+>
+variable.  This, among other reasons.)  So we'll use some
+<B
+CLASS="COMMAND"
+>make</B
+> syntax to get us out of the jam.</P
+><P
+>Let's pick apart <TT
+CLASS="LITERAL"
+>$(^:commonlib=)</TT
+>.  First,
+the <TT
+CLASS="LITERAL"
+>$()</TT
+> notation should be familiar.  We're
+referencing a variable.  Second, the <TT
+CLASS="LITERAL"
+>^</TT
+> is the
+variable we are referencing, namely the &quot;all dependencies&quot;
+variable.  Finally, we're left with <TT
+CLASS="LITERAL"
+>:commonlib=</TT
+>.
+That is a string substitution.  It means, &quot;While expanding this
+variable, replace all occurences of the sequence of characters
+<TT
+CLASS="LITERAL"
+>commonlib</TT
+> with the empty sequence of
+characters.&quot; So we've successfully done away with the library
+issue.</P
+><P
+>As usual, there were other ways to skin this cat.  We could have
+used a shell escape and filtered <TT
+CLASS="LITERAL"
+>commonlib</TT
+> away
+with <B
+CLASS="COMMAND"
+>sed</B
+>, <B
+CLASS="COMMAND"
+>awk</B
+>,
+<B
+CLASS="COMMAND"
+>perl</B
+>, or your favorite shell tool.  We could have
+used a <B
+CLASS="COMMAND"
+>make</B
+> subsequence operator... if our version
+of <B
+CLASS="COMMAND"
+>make</B
+> supports such things.  There are certainly
+other ways too.</P
+><P
+>The second rule I'd like to point out is the funny looking one:
+<TT
+CLASS="LITERAL"
+>libcommonlib.a(textio.o): textio.h</TT
+>.  This is
+<I
+CLASS="EMPHASIS"
+>THE MOST USEFUL THING YOU CAN LEARN AS A BUILD
+ENGINEER</I
+>.  I've seen it screwed up in many places, causing
+lots of frustration to the <TT
+CLASS="FILENAME"
+>Makefile</TT
+> users.</P
+><P
+>The parenthetical notation means that inside the archive
+<TT
+CLASS="LITERAL"
+>libcommonlib.a</TT
+> is a file
+<TT
+CLASS="LITERAL"
+>textio.o</TT
+>.  That archive member depends on
+<TT
+CLASS="LITERAL"
+>textio.h</TT
+>.  Therefore, when
+<TT
+CLASS="LITERAL"
+>textio.h</TT
+>, the archive member must be updated.</P
+><P
+>You might think this is pretty uncessary, because we could have
+done away with the whole problem using rules similar to the following:
+<DIV
+CLASS="FIGURE"
+><P
+><B
+><A
+NAME="LIBRARY-UPDATE"
+>Figure 2-5. Rules to update a library</A
+></B
+></P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>textio.o: textio.h
+	$(CC) -c $@ $^
+
+libcommonlib.a: textio.o</PRE
+></TD
+></TR
+></TABLE
+></DIV
+></P
+><P
+>Actually, that is probably correct.  Not quite as tidy as what
+we saw in <A
+HREF="x136.html#USEFUL-EXAMPLE"
+>Example 2-1</A
+>, but this is probably okay
+to do.  I don't know, I never do it that way.  Usually when I get
+lazy, I do it the wrong way, which we'll see in <A
+HREF="x136.html#WRONG-RULE"
+>Figure 2-6</A
+>.
+<DIV
+CLASS="FIGURE"
+><P
+><B
+><A
+NAME="WRONG-RULE"
+>Figure 2-6. The wrong rule to update a library.</A
+></B
+></P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>textio.o: textio.h
+	$(CC) -c $@ $^; \
+	$(AR) rcv libcommonlib.a $@</PRE
+></TD
+></TR
+></TABLE
+></DIV
+></P
+><P
+>This is wrong because the transaction of building the object
+file and updating its container library is not preserved.  If a user
+were to hit
+<B
+CLASS="KEYCAP"
+>control</B
+>-<B
+CLASS="KEYCAP"
+>C</B
+>
+between the compile and archive lines in the update method specified
+in <A
+HREF="x136.html#WRONG-RULE"
+>Figure 2-6</A
+>, then the object file would be up to
+date while the archive would be out of date.  The archive, however,
+would never be updated, because there is no rule which targets the
+library.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x109.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x199.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Variables</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c31.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Update method hints</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

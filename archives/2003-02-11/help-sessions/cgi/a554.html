@@ -1,0 +1,347 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>Invoking CGI Programs Without the Web Server</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="CGI Programming and You"
+HREF="book1.html"><LINK
+REL="PREVIOUS"
+TITLE="Miscellaneous"
+HREF="x518.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>CGI Programming and You</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x518.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+>&nbsp;</TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="APPENDIX"
+><H1
+><A
+NAME="APNDX1"
+>Appendix B. Invoking CGI Programs Without the Web Server</A
+></H1
+><P
+>It is often useful to be able to start CGI programs without
+having to go through the trouble of using the web-based interface.
+For instance, perl programs which do not work correctly will simply
+generate an error when started through the web server, and will not
+generate any output.  The programmer may want to run a debugger on the
+CGI program, which is impossible when the CGI program is run through
+the web server.</P
+><P
+>However, since the form output from the web server to the CGI
+program is in a well defined format, we can generate any given form
+data for which we would like to examine the effect on the program [for
+debugging purposes].  Alternatively, a simple sample script can be
+used to capture the form data, already converted into the correct
+format by the web server, to a file to later be piped into our program
+to be debugged.  This script is available below, and is also available
+as <A
+HREF="../cgi-exs/formDataSave_cgi.txt"
+TARGET="_top"
+>formDataSave_cgi.txt</A
+>.
+<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="PROGRAMLISTING"
+>#!/usr/bin/perl
+
+print "Content-Type: text/html\n\n";
+
+# Print HTML header
+print &lt;&lt;EOHH;
+&lt;HTML&#62;
+&lt;HEAD&#62;
+&lt;TITLE&#62;formDataSave.cgi&lt;/TITLE&#62;
+&lt;/HEAD&#62;
+&lt;BODY BGCOLOR="#ffffff"&#62;
+EOHH
+
+# Get the request method
+$reqMeth = $ENV{"REQUEST_METHOD"};
+
+# Open the file to which to save the form data
+open(FD, "&#62;form.data") || print "&lt;H1&#62;Error opening \"form.data\"&lt;/H1&#62;\n";
+
+print "Form Data: ";
+
+if ($reqMeth eq "GET") {
+    # If the method is "GET", the data is in the REQUEST_METHOD
+    # environment variable
+    print $ENV{"QUERY_STRING"};
+    print FD $ENV{"QUERY_STRING"};
+} elsif ($reqMeth eq "POST") {
+    # If the method is "POST", the data is one line on standard input
+    $line = &lt;STDIN&#62;;
+    print $line;
+    print FD $line;
+} else {
+    # Otherwise, we don't know.
+    print "&lt;H1&#62;Cannot determine form data method&lt;/H1&#62;\n";
+} # end if-elsif-else
+
+# Close the file
+close FD;
+
+# Print the HTML footer
+print &lt;&lt;EOHF;
+&lt;/BODY&#62;
+&lt;/HTML&#62;
+EOHF</PRE
+></TD
+></TR
+></TABLE
+></P
+><P
+>An important point to remember is to set the CGI environment
+variables correctly, as would be setup by the web server.  In effect,
+you must create a similar environment to that which the web server
+would create for execution of the CGI program.  The important
+environment variables to set are the <TT
+CLASS="ENVAR"
+>REQUEST_METHOD</TT
+> and
+the <TT
+CLASS="ENVAR"
+>CONTENT_LENGTH</TT
+> variables.  In addition, any other
+environment variables which the program uses
+[<TT
+CLASS="ENVAR"
+>HTTP_USER_AGENT</TT
+>, <TT
+CLASS="ENVAR"
+>REMOTE_ADDR</TT
+>, etc.]
+should be set to appropriate values.</P
+><P
+>The <TT
+CLASS="ENVAR"
+>REQUEST_METHOD</TT
+> variable should be set to the
+appropriate method by which the form data would be received by the CGI
+program.  In addition, the form data should be placed in the
+appropriate place.  If the form is <TT
+CLASS="LITERAL"
+>POST</TT
+>ed,
+<TT
+CLASS="ENVAR"
+>REQUEST_METHOD</TT
+> should be set to
+"<TT
+CLASS="LITERAL"
+>POST</TT
+>", and the form data should be piped in on
+standard input.  If the form data is <TT
+CLASS="LITERAL"
+>GET</TT
+>ed,
+<TT
+CLASS="ENVAR"
+>REQUEST_METHOD</TT
+> should be set to
+"<TT
+CLASS="LITERAL"
+>GET</TT
+>" and the form data should be placed in the
+<TT
+CLASS="ENVAR"
+>QUERY_STRING</TT
+> environment variable.</P
+><P
+>If the data is <TT
+CLASS="LITERAL"
+>POST</TT
+>ed, then the
+<TT
+CLASS="ENVAR"
+>CONTENT_LENGTH</TT
+> environment variable should be set to
+the length of the file which will be piped into the program's standard
+input.  This will allow the CGI program to read the correct amount of
+data.</P
+><P
+>When using a command-line environment and the
+"<TT
+CLASS="LITERAL"
+>POST</TT
+>" method, the faux-web-server form data should
+be piped directly into the program.
+<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>[~/public_html] %</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>cat form.data | program_name.cgi</B
+></TT
+>
+&lt;&lt; CGI output for that form data follows &gt;&gt;</PRE
+></TD
+></TR
+></TABLE
+></P
+><P
+>When using a command-line environment and the
+"<TT
+CLASS="LITERAL"
+>GET</TT
+>" method, the faux-web-server form data should
+be put in the <TT
+CLASS="ENVAR"
+>QUERY_STRING</TT
+> environment variable.
+<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>(with <B
+CLASS="COMMAND"
+>sh</B
+> or <B
+CLASS="COMMAND"
+>bash</B
+>)
+<TT
+CLASS="PROMPT"
+>[~/public_html] %</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>export QUERY_STRING=`cat form.data`</B
+></TT
+>
+(with <B
+CLASS="COMMAND"
+>csh</B
+> or <B
+CLASS="COMMAND"
+>tcsh</B
+>)
+<TT
+CLASS="PROMPT"
+>[~/public_html] %</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>setenv QUERY_STRING `cat form.data`</B
+></TT
+></PRE
+></TD
+></TR
+></TABLE
+></P
+><P
+>After the form data is in the correct location, the program can
+be run and the output will come as the web server would receive
+it.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x518.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Miscellaneous</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>&nbsp;</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

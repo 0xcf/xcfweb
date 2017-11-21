@@ -1,0 +1,195 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>Programming Concerns</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="CGI Programming and You"
+HREF="book1.html"><LINK
+REL="PREVIOUS"
+TITLE="Form-Data Format"
+HREF="x188.html"><LINK
+REL="NEXT"
+TITLE="File Access and Permissions"
+HREF="x220.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>CGI Programming and You</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x188.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x220.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="SEC3"
+>Chapter 3. Programming Concerns</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="c211.html#SEC3.1"
+>Server-Side File Access</A
+></DT
+><DT
+><A
+HREF="x220.html"
+>File Access and Permissions</A
+></DT
+><DT
+><A
+HREF="x231.html"
+>Security Concerns</A
+></DT
+></DL
+></DIV
+><P
+>There are many concerns to be had regarding CGI programming,
+including many involving security.  Many of these issues, as well, are
+platform-specific.  If in doubt, consult your own knowledge base or
+your local CGI expert.</P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="SEC3.1"
+>Server-Side File Access</A
+></H1
+><P
+>Since CGI programs are run on the web server, they have the full
+privledges of any program which can be run on the web server.  CGI
+programs have access to any and all files and devices which any other
+program would have.  This is a double-edged sword, however, because
+though this means that CGI programs can draw upon any resources
+available on the server machine [databases, log files, attached
+hardware, etc], they also can corrupt and/or disrupt these same
+resources if used incorrectly.</P
+><P
+>If running in a single-user environment [Windows95, WindowsNT,
+MacOS, etc], this can be especially dangerous because the single user
+[and any user programs] have full access to the machine, with
+relatively few safeguards in place.</P
+><P
+>If running, however, on a multi-user machine [Unix], there may
+be appropriate mechanisms in place to help limit the amount of
+[potential] damage which a rogue CGI script can do.  It can also limit
+the data which the CGI would have access to, but careful planning can
+avoid this problem.</P
+><P
+>Allowing the CGI program to have access to files on the server
+has many advantages.  First, it gives the CGI program the ability to
+refer to files with more information.  For instance, a CGI program may
+be able to connect to a product-information database and return
+product information to the user, without requiring all the data to be
+formatted into HTML pages ahead of time.  Secondly, it gives the CGI
+program the much more important ability to write and store information
+on the web server.  This allows the CGI program to have persistence of
+data.  The user may fill out a form, the content of which the CGI
+program saves and associated with a userid which is given to the user.
+The next time the user uses the CGI program, they can give their
+userid, and the information given beforehand can be recalled without
+the user re-entering it to whatever end is deemed necessary.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x188.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x220.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Form-Data Format</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>File Access and Permissions</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

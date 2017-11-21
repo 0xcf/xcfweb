@@ -1,0 +1,315 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>Regular use of SSH (ssh)</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="Using SSH for Secure Interactive Communications"
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="Basic Use of SSH"
+HREF="c99.html"><LINK
+REL="PREVIOUS"
+TITLE="Basic Use of SSH"
+HREF="c99.html"><LINK
+REL="NEXT"
+TITLE="Easier use of SSH (ssh-agent and
+ssh-add)"
+HREF="x179.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>Using SSH for Secure Interactive Communications</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="c99.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 2. Basic Use of SSH</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x179.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="SEC1.2"
+>Regular use of SSH (<B
+CLASS="COMMAND"
+>ssh</B
+>)</A
+></H1
+><P
+>Once the user's identity (in <TT
+CLASS="FILENAME"
+>identity.pub</TT
+>)
+has been copied to all systems which the user would like to access with
+that identity, the user can then use <B
+CLASS="COMMAND"
+>ssh</B
+> to connect
+to these machines.  The user will be required to submit the passphrase
+which they provided for their private key on the local machine.  SSH
+goes through a process of attempting to authenticate the user, which
+is detailed in the man page for <B
+CLASS="COMMAND"
+>ssh(1)</B
+>.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Notice that I've only described, above, the setup
+for one of the authentication methods.  That's because it's the only
+one that really should be used.  Forget about using
+<TT
+CLASS="FILENAME"
+>.rhosts</TT
+>, <TT
+CLASS="FILENAME"
+>.shosts</TT
+> and any of
+the <TT
+CLASS="FILENAME"
+>hosts.equiv</TT
+> stuff... it's just too insecure,
+and it's what SSH was created to replace.</P
+></TD
+></TR
+></TABLE
+></DIV
+><P
+>The most relevant command form for use of <B
+CLASS="COMMAND"
+>ssh</B
+>
+is:
+<P
+><B
+CLASS="COMMAND"
+>ssh</B
+>  [-l <TT
+CLASS="REPLACEABLE"
+><I
+>login_name</I
+></TT
+>] {<TT
+CLASS="REPLACEABLE"
+><I
+>hostname</I
+></TT
+>} [<TT
+CLASS="REPLACEABLE"
+><I
+>command</I
+></TT
+>]</P
+>
+The <TT
+CLASS="LITERAL"
+>hostname</TT
+> is the name of the remote machine you
+are attempting to connect to.</P
+><P
+>If the <SPAN
+CLASS="OPTION"
+>-l login_name</SPAN
+> option is not specified,
+the current local user's login name will be used.  For instance, if
+I'm using the account jsled@xcf.berkeley.edu and I'm attempting to
+connect to joshua@cafe.berkeley.edu, and I use the command:
+<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>jsled@scam.xcf [~]</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>ssh cafe.berkeley.edu</B
+></TT
+></PRE
+></TD
+></TR
+></TABLE
+>
+I will not be able to connect, because <B
+CLASS="COMMAND"
+>ssh</B
+> is trying to
+login as jsled@cafe.berkeley.edu.  I would need to use the command:
+<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>jsled@scam.xcf [~]</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>ssh -l joshua cafe.berkeley.edu</B
+></TT
+></PRE
+></TD
+></TR
+></TABLE
+>
+which will connect to the appropriate account.</P
+><P
+>The optional <SPAN
+CLASS="OPTION"
+>command</SPAN
+> argument is a command
+to be executed on the remote machine.  The output of this single
+command will be returned, and <B
+CLASS="COMMAND"
+>ssh</B
+> will exit with
+the same status as the command on the remote machine.  This is similar
+to use of <B
+CLASS="COMMAND"
+>rsh</B
+>, but offers the benefits of
+<B
+CLASS="COMMAND"
+>ssh</B
+>.</P
+><P
+>At this point, a connection will be established between the two
+machines.  SSH will set up X11 forwarding from the remote machine to
+the local machine; any X11 programs started on the remote machine will
+automagically used this encrypted channel to transmit X11 data.  It
+will appear as a normal, <B
+CLASS="COMMAND"
+>telnet</B
+>- or
+<B
+CLASS="COMMAND"
+>rlogin</B
+>-created connection.  Enjoy.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="c99.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x179.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Basic Use of SSH</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c99.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Easier use of SSH (<B
+CLASS="COMMAND"
+>ssh-agent</B
+> and
+<B
+CLASS="COMMAND"
+>ssh-add</B
+>)</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

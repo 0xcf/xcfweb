@@ -1,0 +1,1577 @@
+%!PS-Adobe-3.0
+%%BoundingBox: 0 0 612 792
+%%CreationDate: Sat Oct 15 15:51:12 1994
+%%Title: NEW2.ppres
+%%For: blojo (Jon Blow)
+%%DocumentNeededResources: font Courier-BoldOblique Courier Times-Bold 
+%%+ font Courier-Bold Times-Roman Symbol Times-Italic Times-BoldItalic 
+%%Creator: Perspecta Presents
+%%Pages: (atend)
+%%PageOrder: Ascend
+%%EndComments
+%%BeginProlog
+% Start of header.ps -- prolog for postscript output
+% Copyright (c) 1992, Perspecta Software, Inc.
+% All rights reserved.
+% $Header: /home/spam/users/cstevens/spotlight/patch/RCS/header.ps,v 1.35 1993/01/25 22:16:53 cstevens Exp $
+save /SpotJob exch def
+60 dict begin		% 44 entries plus space for encoding vectors.
+
+% Be a good EPS file and declare all the variables that will be used.
+
+/Matrix matrix def	% Utility matrix
+/CL 0 def		% Color level (0 = BW, 1 = Grey, 2 = Color)
+/FStep .5 def		% Feathering step.
+/SY 0 def		% Saved Y pos for showing text.
+
+/t true def		% used when filling with stippling pattern.
+/f false def
+
+/x 0 def		% The variable x is used as a utility variable to hold
+			% temporary data in procedures.
+/w 0 def		% The width & height of stippled region.
+/h 0 def
+/byteWidth 0 def	% How wide image is in bytes.
+/rowsLeft 0 def		% How many rows left to display in stipple.
+/str 0 def		% A temporary string used when filling stipple.
+/stringLimit 65535 def	% Size of largest string to allocate when stippling.
+
+/dict_countppres 0 def	% Used when including EPS files.
+/op_countppres 0 def
+
+
+% Set the drawing color depending on the color level.
+% If the rgb color is actually a shade of gray, use "setgray"
+% instead of "setrgbcolor" because it gives better output on
+% some color printers.
+
+/Color {		% r g b --
+  setrgbcolor
+  CL 2 lt {
+    currentgray
+    CL 0 eq {
+      .5 lt {0} {1} ifelse
+    } if
+    setgray
+  } {
+    currentrgbcolor 2 index eq 3 1 roll eq and {
+      currentgray setgray
+    } if
+  } ifelse
+} bind def
+
+/arct where {pop} {/arct {arcto pop pop pop pop} bind def} ifelse
+
+% Make a rectangular path.
+
+/Rect {			% width height x y --
+  moveto 1 index 0 rlineto 0 exch rlineto neg 0 rlineto closepath
+} bind def
+
+/RRect {		% x1 y1 x2 y2 r --
+  0 begin
+  /r exch def /y2 exch def /x2 exch def /y1 exch def /x1 exch def
+  x1 r add y1 moveto
+  x2 y1 x2 y2 r arct
+  x2 y2 x1 y2 r arct
+  x1 y2 x1 y1 r arct
+  x1 y1 x2 y1 r arct
+  closepath
+  end
+} dup 0 6 dict put def
+
+% Make a path consisting of an arc segment.
+
+/Arc {			% startangle endangle rx ry cx cy --
+  Matrix currentmatrix pop
+  translate
+  scale
+  0 0 1 5 3 roll arcn
+  Matrix setmatrix
+} bind def
+
+
+% Make a path consisting of a pie slice.
+
+/Pie {			% startangle endangle rx ry cx cy --
+  Matrix currentmatrix pop
+  translate
+  scale
+  0 0 moveto 0 0 1 5 3 roll arcn closepath
+  Matrix setmatrix
+} bind def
+
+
+% Make a path consisting of a sequence of line segments.
+
+% Continue a line.
+/LineRest {		% mark x1 y1 [x2 y2 ...] --
+  counttomark -2 2 {2 roll} for
+  counttomark 2 div cvi {lineto} repeat
+  pop
+} bind def
+
+% Begin a line.
+/Line {			% mark x0 y0 x1 y1 [x2 y2 ...] --
+  counttomark dup 2 sub roll moveto
+  LineRest
+} bind def
+
+
+% Make a path consisting of a spline curve.
+
+% Continue a spline curve.
+/SplineRest {  	% mark x1 y1 x2 y2 x3 y3 [x4 y4 x5 y5 x6 y6 ...] --
+  counttomark -6 6 {6 roll} for
+  counttomark 6 div cvi {curveto} repeat
+  pop
+} bind def
+
+% Begin a spline curve.
+/Spline {	% mark x0 y0 x1 y1 x2 y2 x3 y3 [x4 y4 x5 y5 x6 y6 ...] --
+  counttomark dup 2 sub roll moveto
+  SplineRest
+} bind def
+
+
+% Fill an existing rectangular path with a blended fill.
+
+/Feather {		% r1 g1 b1 r2 g2 b2 angle x y --
+  gsave
+    clip
+    translate
+    rotate
+    3 2 roll 5 index sub
+    3 2 roll 4 index sub
+    3 2 roll 3 index sub
+    /x CL def
+    CL 0 eq {/CL 1 def} if
+
+    pathbbox 4 2 roll pop pop
+
+    exch FStep div floor FStep mul dup 1 le {pop 1} if exch
+
+    newpath
+
+    0 FStep 3 index {
+      FStep 2 mul 2 index 0 0 Rect
+      2 index div
+      dup 6 index mul 9 index add exch
+      dup 6 index mul 9 index add exch
+      5 index mul 8 index add Color fill
+      FStep 0 translate
+    } for
+    
+    8 {pop} repeat
+    /CL x def
+  grestore
+  newpath
+} bind def
+
+/min {2 copy gt {exch} if pop} def
+/max {2 copy lt {exch} if pop} def
+
+
+% Helper function for Pattern
+
+/patternproc {		% pattern -- pattern string
+  byteWidth rowsLeft mul stringLimit 1 sub min
+  byteWidth idiv 8 idiv 8 mul 8 max
+
+  /rowsLeft rowsLeft 2 index sub def
+  /str byteWidth 2 index mul 1 add string def
+  0 1 3 2 roll 1 sub {
+    dup 8 mod 2 index exch get exch
+    byteWidth mul 1 1 index byteWidth add 1 sub {
+      str exch 2 index put
+    } for
+    pop
+  } for
+  pop
+  str
+} bind def
+
+% Return the size in points to use for one side of a square bitmap used in
+% tiling the plane.  The desired effect is that each "bitmap pixel", when
+% printed, occupies an integer number of "printer pixels", so that Moire
+% and other interference patterns are avoided.
+
+/PatternSide {		% -- side
+  72 0 Matrix currentmatrix dtransform
+  dup mul exch dup mul add sqrt 72 div dup round dup 0 eq {pop 1} if
+  exch div 
+} bind def
+
+
+% Either fill the interior or stroke the border of a the current path with
+% a colored pattern.  The path and color are already established by the
+% caller
+
+/Pattern {		% string filled? --
+  % When stroking a stippled dashed line, it may die, so in that
+  % case stroke the line stippled without the dashes.
+
+  {
+    save eoclip
+  } {
+    {save strokepath} stopped {restore save [] 0 setdash strokepath} if
+    clip
+  } ifelse
+
+  PatternSide dup scale
+  pathbbox
+  newpath
+
+  8 div dup 0 gt {ceiling} if cvi 8 mul 4 1 roll
+  8 div dup 0 gt {ceiling} if cvi 8 mul 4 1 roll
+  8 div cvi 8 mul dup 0 lt {8 sub} if 4 1 roll
+  8 div cvi 8 mul dup 0 lt {8 sub} if 4 1 roll
+
+  2 index sub ceiling cvi /h exch def
+  2 index sub ceiling cvi /w exch def
+
+  /byteWidth w 8 div ceiling cvi def
+  /rowsLeft h def
+
+  w 0 gt h 0 gt and {
+    translate w h neg scale
+    w h true [w 0 0 h 0 h] {1 index patternproc} imagemask
+  } {
+    pop pop
+  } ifelse
+
+  restore
+  pop
+
+  newpath
+} bind def
+
+% Ensure that a bbox specifying the slide's area will fit inside the
+% printable region of the printer.
+
+/Fits {		% x1 y1 x2 y2 --
+  0 begin
+  /y2 exch def
+  /x2 exch def
+  /y1 exch def
+  /x1 exch def
+  clippath pathbbox newpath
+  x1 4 index lt x2 3 index gt or {
+    3 index 0 translate
+    true
+  } {false} ifelse
+  y1 4 index lt y2 3 index gt or {
+    0 4 index translate
+    true
+  } {false} ifelse
+  /dx x2 x1 sub def  
+  /dy y2 y1 sub def  
+  3 index 6 index sub /dpx exch def 
+  2 index 5 index sub /dpy exch def 
+  dx dpx gt dy dpy gt or {
+    dx dpx sub dy dpy sub gt {dpx dx div} {dpy dy div} ifelse dup scale
+  } if
+  {0 y1 neg translate} if
+  {x1 neg 0 translate} if
+  4 {pop} repeat
+  end
+} dup 0 9 dict put def 
+
+
+% The following routines are used to print text items
+
+% Find font.
+
+/F {		% pointsize fontname
+  findfont exch scalefont setfont
+} bind def  
+
+
+% Show a string in the current font at the specified coordinates.
+
+/S {		% string x y
+  neg dup /SY exch def moveto show
+} bind def
+
+
+% Show a string in the current font at the specified x location, and at
+% the same y location as the most recently displayed string.
+
+/R {		% string x
+  SY moveto show
+} bind def
+
+/Notice {
+  0 setgray 10 /Helvetica F
+  translate 1 -1 scale
+  (Call Perspecta Software at 510-649-4900 to get licenses.) 0 0 S
+} bind def
+    
+/ReencodeFont {	% new-name vector source-name --
+  findfont
+  dup length dict begin
+    {1 index /FID ne {def} {pop pop} ifelse} forall
+    /Encoding exch def
+    currentdict
+  end
+  definefont pop
+} bind def
+
+/CopyFont {	% new-name source-name --
+  findfont
+  dup length dict begin
+    {1 index /FID ne {def} {pop pop} ifelse} forall
+    currentdict
+  end
+  definefont pop
+} bind def
+
+% The following routines are used to include ecapsulated postscript files.
+
+% Save state before inserting an encapsulated postscript file.
+
+/BeginEPSFppres {		% -- save
+  save
+  /dict_countppres countdictstack def
+  /op_countppres count 1 sub def
+  userdict begin
+  /showpage {} def
+  0 setgray 0 setlinecap 1 setlinewidth 0 setlinejoin
+  10 setmiterlimit [] 0 setdash newpath
+  /languagelevel where {
+    pop languagelevel 1 ne {
+      false setstrokeadjust false setoverprint
+    } if
+  } if
+} bind def
+
+
+% Restore state after inserting an encapsulated postscript file.
+
+/EndEPSFppres {		% save --
+  count op_countppres sub {pop} repeat
+  countdictstack dict_countppres sub {end} repeat
+  restore
+} bind def
+
+
+% The following routines are convenience routines for drawing items.
+
+/W /setlinewidth load def
+/D {0 setdash} bind def
+/K /stroke load def
+/L /eofill load def
+/C /closepath load def
+/CL 0 def
+%%EndProlog
+%%BeginSetup
+%%IncludeResource: font Courier-BoldOblique Courier Times-Bold Courier-Bold 
+%%+ font Times-Roman Symbol Times-Italic Times-BoldItalic 
+/Enc-iso8859 [ /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+     /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+     /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+     /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+     /.notdef /space /exclam /quotedbl /numbersign /dollar /percent /ampersand
+     /quoteright /parenleft /parenright /asterisk /plus /comma /hyphen /period
+     /slash /zero /one /two /three /four /five /six /seven /eight /nine /colon
+     /semicolon /less /equal /greater /question /at /A /B /C /D /E /F /G /H /I
+     /J /K /L /M /N /O /P /Q /R /S /T /U /V /W /X /Y /Z /bracketleft /backslash
+     /bracketright /asciicircum /underscore /quoteleft /a /b /c /d /e /f /g /h
+     /i /j /k /l /m /n /o /p /q /r /s /t /u /v /w /x /y /z /braceleft /bar
+     /braceright /asciitilde /.notdef /.notdef /.notdef /.notdef /.notdef
+     /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+     /.notdef /.notdef /.notdef /.notdef /dotlessi /grave /acute /circumflex
+     /tilde /macron /breve /dotaccent /dieresis /.notdef /ring /cedilla
+     /.notdef /hungarumlaut /ogonek /caron /space /exclamdown /cent /sterling
+     /currency /yen /brokenbar /section /dieresis /copyright /ordfeminine
+     /guillemotleft /logicalnot /hyphen /registered /macron /degree /plusminus
+     /twosuperior /threesuperior /acute /mu /paragraph /periodcentered /cedilla
+     /onesuperior /ordmasculine /guillemotright /onequarter /onehalf
+     /threequarters /questiondown /Agrave /Aacute /Acircumflex /Atilde
+     /Adieresis /Aring /AE /Ccedilla /Egrave /Eacute /Ecircumflex /Edieresis
+     /Igrave /Iacute /Icircumflex /Idieresis /Eth /Ntilde /Ograve /Oacute
+     /Ocircumflex /Otilde /Odieresis /multiply /Oslash /Ugrave /Uacute
+     /Ucircumflex /Udieresis /Yacute /Thorn /germandbls /agrave /aacute
+     /acircumflex /atilde /adieresis /aring /ae /ccedilla /egrave /eacute
+     /ecircumflex /edieresis /igrave /iacute /icircumflex /idieresis /eth
+     /ntilde /ograve /oacute /ocircumflex /otilde /odieresis /divide /oslash
+     /ugrave /uacute /ucircumflex /udieresis /yacute /thorn /ydieresis] def
+/pCourier-BoldOblique Enc-iso8859 /Courier-BoldOblique ReencodeFont
+/pCourier Enc-iso8859 /Courier ReencodeFont
+/pTimes-Bold Enc-iso8859 /Times-Bold ReencodeFont
+/pCourier-Bold Enc-iso8859 /Courier-Bold ReencodeFont
+/pTimes-Roman Enc-iso8859 /Times-Roman ReencodeFont
+/Enc-adobe [ /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+     /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+     /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+     /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+     /.notdef /space /exclam /universal /numbersign /existential /percent
+     /ampersand /suchthat /parenleft /parenright /asteriskmath /plus /comma
+     /minus /period /slash /zero /one /two /three /four /five /six /seven
+     /eight /nine /colon /semicolon /less /equal /greater /question /congruent
+     /Alpha /Beta /Chi /Delta /Epsilon /Phi /Gamma /Eta /Iota /theta1 /Kappa
+     /Lambda /Mu /Nu /Omicron /Pi /Theta /Rho /Sigma /Tau /Upsilon /sigma1
+     /Omega /Xi /Psi /Zeta /bracketleft /therefore /bracketright /perpendicular
+     /underscore /radicalex /alpha /beta /chi /delta /epsilon /phi /gamma /eta
+     /iota /phi1 /kappa /lambda /mu /nu /omicron /pi /theta /rho /sigma /tau
+     /upsilon /omega1 /omega /xi /psi /zeta /braceleft /bar /braceright
+     /similar /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+     /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+     /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+     /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef /.notdef
+     /.notdef /.notdef /space /Upsilon1 /minute /lessequal /fraction /infinity
+     /florin /club /diamond /heart /spade /arrowboth /arrowleft /arrowup
+     /arrowright /arrowdown /degree /plusminus /second /greaterequal /multiply
+     /proportional /partialdiff /bullet /divide /notequal /equivalence
+     /approxequal /ellipsis /arrowvertex /arrowhorizex /carriagereturn /aleph
+     /Ifraktur /Rfraktur /weierstrass /circlemultiply /circleplus /emptyset
+     /intersection /union /propersuperset /reflexsuperset /notsubset
+     /propersubset /reflexsubset /element /notelement /angle /gradient
+     /registerserif /copyrightserif /trademarkserif /product /radical /dotmath
+     /logicalnot /logicaland /logicalor /arrowdblboth /arrowdblleft /arrowdblup
+     /arrowdblright /arrowdbldown /lozenge /angleleft /registersans
+     /copyrightsans /trademarksans /summation /parenlefttp /parenleftex
+     /parenleftbt /bracketlefttp /bracketleftex /bracketleftbt /bracelefttp
+     /braceleftmid /braceleftbt /braceex /.notdef /angleright /integral
+     /integraltp /integralex /integralbt /parenrighttp /parenrightex
+     /parenrightbt /bracketrighttp /bracketrightex /bracketrightbt
+     /bracerighttp /bracerightmid /bracerightbt /.notdef] def
+/pSymbol Enc-adobe /Symbol ReencodeFont
+/pTimes-Italic Enc-iso8859 /Times-Italic ReencodeFont
+/pTimes-BoldItalic Enc-iso8859 /Times-BoldItalic ReencodeFont
+%%EndSetup
+%%Page: slide_1 1
+save 90 rotate 1 -1 scale
+ 34 27 756 584 Fits
+ save 34 27 translate 0.43300654 dup scale
+  792 612 0 0 Rect clip 1 setgray fill
+  124 59 translate 1 -1 scale
+   0 0 0 Color 64 /pTimes-Bold F
+   (Stupid) 59.904 62.76 S
+   (C) 257.344 R
+   (Tricks) 319.552 R
+  1 -1 scale -124 -59 translate newpath
+  234 171 translate 1 -1 scale
+   0 0 0 Color 24 /pTimes-BoldItalic F
+   (Optimization) 0.352 22.456 S
+   (for) 134.392 R
+   (Fun) 169.72 R
+   (and) 218.416 R
+   (Profit) 261.76 R
+  1 -1 scale -234 -171 translate newpath
+  126 441 translate 1 -1 scale
+   0 0 0 Color 24 /pTimes-Bold F
+   () 1 24.16 S
+  1 -1 scale -126 -441 translate newpath
+  117 342 translate 1 -1 scale
+   0 0 0 Color 24 /pTimes-Bold F
+   (Jon) 0.784 24.16 S
+   (Blow) 44.128 R
+  1 -1 scale -117 -342 translate newpath
+  117 378 translate 1 -1 scale
+   0 0 0 Color 24 /pTimes-Bold F
+   (XCF) 0.448 24.16 S
+   (\(117) 55.768 R
+   (Cory) 105.76 R
+   (Hall\)) 163.744 R
+  1 -1 scale -117 -378 translate newpath
+  117 414 translate 1 -1 scale
+   0 0 0 Color 24 /pTimes-Bold F
+   (October) -0.032 24.16 S
+   (11,) 89.944 R
+   (1994) 125.944 R
+  1 -1 scale -117 -414 translate newpath
+  791.8 611.8 .2 .2 Rect 0 setgray .4 setlinewidth stroke
+ restore
+ save 412 27 translate 0.43300654 dup scale
+  792 612 0 0 Rect clip 1 setgray fill
+  187 59 translate 1 -1 scale
+   0 0 0 Color 36 /pTimes-Bold F
+   (Why) 72.65 35.74 S
+   (Be) 155.666 R
+   (Tricky?) 204.662 R
+  1 -1 scale -187 -59 translate newpath
+  72 306 translate 1 -1 scale
+   0 0 0 Color 24 /pTimes-Bold F
+   (Indirect) 0.592 24.16 S
+   (speed) 89.248 R
+   (improvement:) 152.584 R
+  1 -1 scale -72 -306 translate newpath
+  99 342 translate 1 -1 scale
+   0 0 0 Color 24 /pTimes-Roman F
+   (If) 0.568 22.504 S
+   (you) 22.552 R
+   (reduce) 64.552 R
+   (a) 134.512 R
+   (program's) 151.168 R
+   (memory) 255.808 R
+   (usage,) 341.8 R
+   (it) 408.448 R
+   (runs) 427.792 R
+   (faster) 475.12 R
+   (because) 534.424 R
+   (there) 0.688 47.98 S
+   (is) 54.664 R
+   (less) 76.672 R
+   0 0 0 Color 24 /pTimes-Italic F
+   (VM) 118.672 R
+   (activity) 159.328 R
+   0 0 0 Color 24 /pTimes-Roman F
+   (\(swapping) 235.984 R
+   (to/from) 341.968 R
+   (disk\).) 419.968 R
+   0 0 0 Color 24 /pTimes-Roman F
+   (If) 0.568 92.338 S
+   (you) 22.552 R
+   (increase) 64.552 R
+   (the) 149.176 R
+   (locality) 184.504 R
+   (of) 262.504 R
+   (data) 288.496 R
+   (references,) 334.48 R
+   (you) 445.072 R
+   (reduce) 487.072 R
+   (the) 557.032 R
+   (number) 0.784 117.814 S
+   (of) 80.104 R
+   0 0 0 Color 24 /pTimes-Italic F
+   (cache) 106.096 R
+   (misses) 168.064 R
+   0 0 0 Color 24 /pTimes-Roman F
+   (and) 236.728 R
+   0 0 0 Color 24 /pTimes-Italic F
+   (TLB) 277.384 R
+   (misses) 324.736 R
+   0 0 0 Color 24 /pTimes-Roman F
+   (.) 387.4 R
+  1 -1 scale -99 -342 translate newpath
+  72 162 translate 1 -1 scale
+   0 0 0 Color 24 /pTimes-Bold F
+   (Direct) 0.472 24.16 S
+   (speed) 70.432 R
+   (improvement:) 133.768 R
+  1 -1 scale -72 -162 translate newpath
+  99 198 translate 1 -1 scale
+   0 0 0 Color 24 /pTimes-Roman F
+   (By) 0.52 22.504 S
+   (eliminating) 34.528 R
+   (unnecessary) 149.872 R
+   (operations,) 273.16 R
+   (we) 385.144 R
+   (can) 419.128 R
+   (make) 458.44 R
+   (programs) 516.424 R
+   (go) 0.352 47.98 S
+   (a) 30.352 R
+   (little) 47.008 R
+   (faster) 97.024 R
+   (because) 156.328 R
+   (they're) 238.288 R
+   (doing) 312.256 R
+   (less.) 372.928 R
+  1 -1 scale -99 -198 translate newpath
+  791.8 611.8 .2 .2 Rect 0 setgray .4 setlinewidth stroke
+ restore
+ save 34 319 translate 0.43300654 dup scale
+  792 612 0 0 Rect clip 1 setgray fill
+  196 50 translate 1 -1 scale
+   0 0 0 Color 36 /pTimes-Bold F
+   (But:) 165.566 35.74 S
+  1 -1 scale -196 -50 translate newpath
+  36 171 translate 1 -1 scale
+   0 0 0 Color 24 /pTimes-Bold F
+   (``Optimization'') -0.728 24.16 S
+   (is) 173.248 R
+   (a) 195.256 R
+   (poor) 213.256 R
+   (substitue) 267.256 R
+   (for) 365.272 R
+   (wise) 401.92 R
+   (algorithm) 451.912 R
+   (choice.) 559.24 R
+  1 -1 scale -36 -171 translate newpath
+  45 297 translate 1 -1 scale
+   0 0 0 Color 24 /pTimes-Bold F
+   (Optimization) -0.032 24.16 S
+   (can) 141.976 R
+   (hinder) 183.976 R
+   (program) 257.992 R
+   (development.) 354.64 R
+  1 -1 scale -45 -297 translate newpath
+  81 333 translate 1 -1 scale
+   0 0 0 Color 24 /pTimes-Bold F
+   (Keep) 0.304 24.16 S
+   (optimization) 59.632 R
+   (in) 194.968 R
+   (mind) 220.984 R
+   (while) 280.336 R
+   (designing...) 341.008 R
+   (but) 462.376 R
+   (don't) 503.056 R
+   (do) 563.728 R
+   (it) 0.352 49.636 S
+   ('til) 21.016 R
+   (the) 56.344 R
+   (end!) 94.336 R
+  1 -1 scale -81 -333 translate newpath
+  791.8 611.8 .2 .2 Rect 0 setgray .4 setlinewidth stroke
+ restore
+ save 412 319 translate 0.43300654 dup scale
+  792 612 0 0 Rect clip 1 setgray fill
+  196 50 translate 1 -1 scale
+   0 0 0 Color 36 /pTimes-Bold F
+   (C) 10.784 35.74 S
+   (Structures) 45.776 R
+   (in) 216.74 R
+   (Memory) 255.764 R
+  1 -1 scale -196 -50 translate newpath
+  63 135 translate 1 -1 scale
+   0 0 0 Color 24 /pTimes-Bold F
+   (Remember:) 0.376 24.16 S
+   (a) 127.648 R
+   (structure) 145.648 R
+   (is) 246.28 R
+   (basically) 268.288 R
+   (an) 363.64 R
+   (array) 394.984 R
+   (of) 458.296 R
+   (words.) 484.288 R
+  1 -1 scale -63 -135 translate newpath
+  63 288 translate 1 -1 scale
+   0 0 0 Color 18 /pCourier F
+   (struct) -0.494 15.31 S
+   (person) 75.106 R
+   ({) 150.706 R
+   0 0 0 Color 18 /pCourier F
+   (char) 34.12 34.84 S
+   (*name;) 88.12 R
+   0 0 0 Color 18 /pCourier F
+   (int) 34.12 54.37 S
+   (sex;) 77.32 R
+   0 0 0 Color 18 /pCourier F
+   (double) 34.12 73.9 S
+   (vital_statistic;) 109.72 R
+   0 0 0 Color 18 /pCourier F
+   (};) -2.186 93.43 S
+  1 -1 scale -63 -288 translate newpath
+  54 54 315 216 Rect 0 0 0 Color 1 W K
+  108 54 423 216 Rect 0 0 0 Color 1 W K
+  54 54 369 216 Rect 0 0 0 Color 1 W K
+  [ 396 252 391 262 401 262 Line C 0 0 0 Color L
+  [ 189 333 285 333 342 331.5 360 328.5 378 325.5 388.5 319.5 391.5 310.5
+     394.5 301.5 396 283.667 396 257 Spline 0 0 0 Color 1 W K
+  [ 450 252 445 262 455 262 Line C 0 0 0 Color L
+  [ 351 360 375 360 393 355.5 405 346.5 417 337.5 427.5 328.5 436.5 319.5
+     445.5 310.5 450 289.667 450 257 Spline 0 0 0 Color 1 W K
+  [ 342 252 337 262 347 262 Line C 0 0 0 Color L
+  [ 225 315 261 315 288 313.5 306 310.5 324 307.5 334.5 303 337.5 297 340.5 291
+     342 277.667 342 257 Spline 0 0 0 Color 1 W K
+  791.8 611.8 .2 .2 Rect 0 setgray .4 setlinewidth stroke
+ restore
+restore showpage
+%%Page: slide_5 2
+save 90 rotate 1 -1 scale
+ 34 27 756 584 Fits
+ save 34 27 translate 0.43300654 dup scale
+  792 612 0 0 Rect clip 1 setgray fill
+  160 50 translate 1 -1 scale
+   0 0 0 Color 36 /pTimes-Bold F
+   (The) 15.994 35.74 S
+   (First) 85.006 R
+   (Structure) 167.986 R
+   (Element) 324.946 R
+   (is) 115.534 73.954 S
+   (Often) 148.546 R
+   (Fastest) 245.53 R
+  1 -1 scale -160 -50 translate newpath
+  81 171 translate 1 -1 scale
+   0 0 0 Color 24 /pTimes-Bold F
+   (...) -0.032 24.16 S
+   (because) 23.968 R
+   (you) 109.96 R
+   (don't) 153.304 R
+   (need) 213.976 R
+   (to) 267.976 R
+   (add) 293.968 R
+   (an) 338.656 R
+   (offset) 370 R
+   (to) 431.968 R
+   (get) 457.96 R
+   (to) 494.608 R
+   (it.) 520.6 R
+  1 -1 scale -81 -171 translate newpath
+  72 252 translate 1 -1 scale
+   0 0 0 Color 24 /pTimes-Bold F
+   (Pseudo-machine) 0.424 24.16 S
+   (code) 174.424 R
+   (for) 227.08 R
+   (a) 263.728 R
+   (structure) 281.728 R
+   (access:) 382.36 R
+  1 -1 scale -72 -252 translate newpath
+  99 315 translate 1 -1 scale
+   0 0 0 Color 24 /pCourier F
+   (load) -0.728 22.504 S
+   (mem_100) 100.072 R
+   (->) 344.872 R
+   (reg_1) 388.072 R
+   0 0 0 Color 24 /pCourier F
+   (add) -0.248 50.968 S
+   (reg_1) 100.552 R
+   (+) 186.952 R
+   (offset) 215.752 R
+   (->) 345.352 R
+   (reg_2) 388.552 R
+   0 0 0 Color 24 /pCourier F
+   (loadi) -0.728 77.008 S
+   (reg_2) 100.072 R
+   (->) 344.872 R
+   (reg_3) 388.072 R
+  1 -1 scale -99 -315 translate newpath
+  72 423 translate 1 -1 scale
+   0 0 0 Color 24 /pTimes-Bold F
+   (If) 0.592 24.16 S
+   0 0 0 Color 24 /pCourier-BoldOblique F
+   (offset) 23.92 R
+   0 0 0 Color 24 /pTimes-Bold F
+   (is) 116.32 R
+   (0,) 138.328 R
+   (we) 162.328 R
+   (can) 196.312 R
+   (eliminate) 238.312 R
+   (the) 338.968 R
+   (second) 376.96 R
+   (instruction.) 452.296 R
+  1 -1 scale -72 -423 translate newpath
+  791.8 611.8 .2 .2 Rect 0 setgray .4 setlinewidth stroke
+ restore
+ save 412 27 translate 0.43300654 dup scale
+  792 612 0 0 Rect clip 1 setgray fill
+  196 50 translate 1 -1 scale
+   0 0 0 Color 36 /pTimes-BoldItalic F
+   (malloc\(\)) 84.71 35.74 S
+   0 0 0 Color 36 /pTimes-Bold F
+   (is) 217.694 R
+   (icky) 250.706 R
+  1 -1 scale -196 -50 translate newpath
+  81 189 translate 1 -1 scale
+   0 0 0 Color 24 /pTimes-Bold F
+   (malloc:) 0.328 24.16 S
+  1 -1 scale -81 -189 translate newpath
+  108 234 translate 1 -1 scale
+   0 0 0 Color 24 /pSymbol F
+   (\267) 1 25.24 S
+   0 0 0 Color 24 /pTimes-Bold F
+   (is) 18.04 R
+   (slow) 40.048 R
+   0 0 0 Color 24 /pSymbol F
+   (\267) 1 70.486 S
+   0 0 0 Color 24 /pTimes-Bold F
+   (incurs) 18.04 R
+   (memory) 88.048 R
+   (overhead) 179.344 R
+   0 0 0 Color 24 /pSymbol F
+   (\267) 1 115.732 S
+   0 0 0 Color 24 /pTimes-Bold F
+   (causes) 18.04 R
+   (memory) 89.368 R
+   (fragmentation) 180.664 R
+  1 -1 scale -108 -234 translate newpath
+  791.8 611.8 .2 .2 Rect 0 setgray .4 setlinewidth stroke
+ restore
+ save 34 319 translate 0.43300654 dup scale
+  792 612 0 0 Rect clip 1 setgray fill
+  196 50 translate 1 -1 scale
+   0 0 0 Color 36 /pTimes-BoldItalic F
+   (malloc\(\)) 84.71 35.74 S
+   0 0 0 Color 36 /pTimes-Bold F
+   (is) 217.694 R
+   (icky) 250.706 R
+  1 -1 scale -196 -50 translate newpath
+  36 108 translate 1 -1 scale
+   0 0 0 Color 24 /pTimes-Bold F
+   (A) 0.472 24.16 S
+   (typical) 23.8 R
+   (linked) 99.136 R
+   (list:) 169.168 R
+  1 -1 scale -36 -108 translate newpath
+  72 153 translate 1 -1 scale
+   0 0 0 Color 24 /pCourier F
+   (typedef) 36.448 20.08 S
+   (struct) 151.648 R
+   (listnode) 252.448 R
+   ({) 382.048 R
+   0 0 0 Color 24 /pCourier F
+   (struct) 81.16 52.2256 S
+   (listnode) 181.96 R
+   (*next;) 311.56 R
+   0 0 0 Color 24 /pCourier F
+   (void) 81.16 84.3712 S
+   (*data;) 153.16 R
+   0 0 0 Color 24 /pCourier F
+   (}) 32.752 116.5168 S
+   (*listnode;) 61.552 R
+  1 -1 scale -72 -153 translate newpath
+  54 54 162 333 Rect 1 0 0 Color 
+  <1144114411441144> t Pattern
+  54 54 162 333 Rect 0 0 0 Color 1 W K
+  54 54 324 333 Rect 1 1 1 Color L
+  54 54 324 333 Rect 0 0 0 Color 1 W K
+  54 54 270 333 Rect 1 1 1 Color L
+  54 54 270 333 Rect 0 0 0 Color 1 W K
+  54 54 216 333 Rect 1 0 0 Color 
+  <1144114411441144> t Pattern
+  54 54 216 333 Rect 0 0 0 Color 1 W K
+  [ 162 387 162 393 169.5 397.5 184.5 400.5 199.5 403.5 208.5 406.5 211.5 409.5
+     214.5 412.5 217.5 412.5 220.5 409.5 223.5 406.5 231 403.5 243 400.5
+     255 397.5 262.5 394.5 265.5 391.5 268.5 388.5 270 387 270 387 Spline 0 0 0 Color 1 W K
+  [ 297 477 302 467 292 467 Line C 0 0 0 Color L
+  [ 297 360 297 472 Line 0 0 0 Color 1 W K
+  [ 351 441 356 431 346 431 Line C 0 0 0 Color L
+  [ 351 360 351 436 Line 0 0 0 Color 1 W K
+  54 54 378 333 Rect 1 0 0 Color 
+  <1122448811224488> t Pattern
+  54 54 378 333 Rect 0 0 0 Color 1 W K
+  162 54 0 333 Rect 1 0 0 Color 
+  <8004400801200210> t Pattern
+  162 54 0 333 Rect 0 0 0 Color 1 W K
+  351 54 432 333 Rect 1 0 0 Color 
+  <8004400801200210> t Pattern
+  351 54 432 333 Rect 0 0 0 Color 1 W K
+  333 450 translate 1 -1 scale
+   0 0 0 Color 18 /pCourier-Bold F
+   (listnode.data) 0.784 16.39 S
+  1 -1 scale -333 -450 translate newpath
+  234 477 translate 1 -1 scale
+   0 0 0 Color 18 /pCourier-Bold F
+   (listnode.next) 0.784 16.39 S
+  1 -1 scale -234 -477 translate newpath
+  144 414 translate 1 -1 scale
+   0 0 0 Color 18 /pCourier-Bold F
+   (malloc) 2.242 16.39 S
+   (header) 77.842 R
+  1 -1 scale -144 -414 translate newpath
+  [ 405 405 410 395 400 395 Line C 0 0 0 Color L
+  [ 405 360 405 400 Line 0 0 0 Color 1 W K
+  387 414 translate 1 -1 scale
+   0 0 0 Color 18 /pCourier-Bold F
+   (fragment) 0.55 16.39 S
+  1 -1 scale -387 -414 translate newpath
+  791.8 611.8 .2 .2 Rect 0 setgray .4 setlinewidth stroke
+ restore
+ save 412 319 translate 0.43300654 dup scale
+  792 612 0 0 Rect clip 1 setgray fill
+  196 50 translate 1 -1 scale
+   0 0 0 Color 36 /pTimes-Bold F
+   (The) 62.012 35.74 S
+   (Refrigerator:) 131.024 R
+   (Getting) 10.262 73.954 S
+   (Around) 135.254 R
+   0 0 0 Color 36 /pTimes-BoldItalic F
+   (malloc\(\)) 264.278 R
+  1 -1 scale -196 -50 translate newpath
+  108 198 translate 1 -1 scale
+   0 0 0 Color 24 /pSymbol F
+   (\267) 1 25.24 S
+   0 0 0 Color 24 /pTimes-Bold F
+   (Allocate) 18.04 R
+   (hundreds) 108.016 R
+   (\(?\)) 211.384 R
+   (of) 245.368 R
+   (a) 271.36 R
+   (structure) 289.36 R
+   (type) 389.992 R
+   (all) 439.984 R
+   (at) 471.328 R
+   (once.) 497.32 R
+   0 0 0 Color 24 /pSymbol F
+   (\267) 1 70.486 S
+   0 0 0 Color 24 /pTimes-Bold F
+   (Use) 18.04 R
+   (those) 61.36 R
+   (structures') 120.688 R
+   0 0 0 Color 24 /pTimes-BoldItalic F
+   (own) 238.648 R
+   (memory) 286 R
+   0 0 0 Color 24 /pTimes-Bold F
+   (to) 371.992 R
+   (build) 397.984 R
+   (a) 457.36 R
+   (free) 475.36 R
+   (list.) 521.32 R
+  1 -1 scale -108 -198 translate newpath
+  162 360 translate 1 -1 scale
+   0 0 0 Color 24 /pTimes-Bold F
+   (Improved) 0.592 24.16 S
+   (locality.) 107.92 R
+   0 0 0 Color 24 /pTimes-Bold F
+   (Low) 0.496 68.518 S
+   (memory) 51.832 R
+   (overhead.) 143.128 R
+  1 -1 scale -162 -360 translate newpath
+  791.8 611.8 .2 .2 Rect 0 setgray .4 setlinewidth stroke
+ restore
+restore showpage
+%%Page: slide_9 3
+save 90 rotate 1 -1 scale
+ 34 27 756 584 Fits
+ save 34 27 translate 0.43300654 dup scale
+  792 612 0 0 Rect clip 1 setgray fill
+  196 50 translate 1 -1 scale
+   0 0 0 Color 36 /pTimes-Bold F
+   (The) 68.006 35.74 S
+   (Refrigerator) 137.018 R
+  1 -1 scale -196 -50 translate newpath
+  36 144 translate 1 -1 scale
+   0 0 0 Color 18 /pCourier F
+   (typedef) 36.586 15.31 S
+   (struct) 122.986 R
+   (bullet) 198.586 R
+   ({) 274.186 R
+   0 0 0 Color 18 /pCourier F
+   (float) 80.92 34.84 S
+   (x;) 145.72 R
+   0 0 0 Color 18 /pCourier F
+   (float) 80.92 54.37 S
+   (y;) 145.72 R
+   0 0 0 Color 18 /pCourier F
+   (int) 80.92 73.9 S
+   (who_fired_this;) 124.12 R
+   0 0 0 Color 18 /pCourier F
+   (}) 33.814 93.43 S
+   (*bullet;) 55.414 R
+  1 -1 scale -36 -144 translate newpath
+  405 144 translate 1 -1 scale
+   0 0 0 Color 18 /pCourier F
+   (typedef) 36.586 15.31 S
+   (struct) 122.986 R
+   (fridge) 198.586 R
+   ({) 274.186 R
+   0 0 0 Color 18 /pCourier F
+   (void) 80.92 34.84 S
+   (*next;) 134.92 R
+   0 0 0 Color 18 /pCourier F
+   (void) 80.92 54.37 S
+   (*whatever;) 134.92 R
+   0 0 0 Color 18 /pCourier F
+   (}) 33.814 73.9 S
+   (*fridge;) 55.414 R
+  1 -1 scale -405 -144 translate newpath
+  72 72 234 396 Rect 0 0 0 Color 1 W K
+  72 72 378 396 Rect 0 0 0 Color 1 W K
+  72 72 306 396 Rect 0 0 0 Color 1 W K
+  [ 270 450 265 460 275 460 Line C 0 0 0 Color L
+  [ 270 504 270 455 Line 0 0 0 Color [3 3] D 1 W K [] D
+  216 513 translate 1 -1 scale
+   0 0 0 Color 18 /pCourier-Bold F
+   (fridge.next) 0.55 16.39 S
+  1 -1 scale -216 -513 translate newpath
+  [ 270 423 275 413 265 413 Line C 0 0 0 Color L
+  [ 270 333 270 418 Line 0 0 0 Color 1 W K
+  225 306 translate 1 -1 scale
+   0 0 0 Color 18 /pCourier-Bold F
+   (bullet.x) 2.044 16.39 S
+  1 -1 scale -225 -306 translate newpath
+  297 333 translate 1 -1 scale
+   0 0 0 Color 18 /pCourier-Bold F
+   (bullet.y) 2.044 16.39 S
+  1 -1 scale -297 -333 translate newpath
+  378 360 translate 1 -1 scale
+   0 0 0 Color 18 /pCourier-Bold F
+   (bullet.who_fired_this) 2.044 16.39 S
+  1 -1 scale -378 -360 translate newpath
+  [ 342 423 347 413 337 413 Line C 0 0 0 Color L
+  [ 342 360 342 418 Line 0 0 0 Color 1 W K
+  [ 414 423 419 413 409 413 Line C 0 0 0 Color L
+  [ 414 387 414 418 Line 0 0 0 Color 1 W K
+  791.8 611.8 .2 .2 Rect 0 setgray .4 setlinewidth stroke
+ restore
+ save 412 27 translate 0.43300654 dup scale
+  792 612 0 0 Rect clip 1 setgray fill
+  196 32 translate 1 -1 scale
+   0 0 0 Color 36 /pTimes-Bold F
+   (The) 68.006 35.74 S
+   (Refrigerator) 137.018 R
+  1 -1 scale -196 -32 translate newpath
+  45 117 translate 1 -1 scale
+   0 0 0 Color 18 /pCourier F
+   (fridge) 35.47 15.31 S
+   (bullet_fridge) 111.07 R
+   (=) 262.27 R
+   (NULL;) 283.87 R
+   0 0 0 Color 18 /pCourier F
+   (void) 36.82 54.37 S
+   (make_bullets\(int) 90.82 R
+   (n\)) 274.42 R
+   ({) 306.82 R
+   0 0 0 Color 18 /pCourier F
+   (char) 80.92 73.9 S
+   (*memory;) 134.92 R
+   0 0 0 Color 18 /pCourier F
+   (fridge) 80.92 93.43 S
+   (f;) 156.52 R
+   0 0 0 Color 18 /pCourier F
+   (memory) 80.92 132.49 S
+   (=) 156.52 R
+   (\(char) 178.12 R
+   (*\)malloc\(n) 242.92 R
+   (*) 361.72 R
+   (sizeof\(struct) 383.32 R
+   (bullet\)\);) 534.52 R
+   0 0 0 Color 18 /pCourier F
+   (for) 80.92 152.02 S
+   (\(i) 124.12 R
+   (=) 156.52 R
+   (0;) 178.12 R
+   (i) 210.52 R
+   (<) 232.12 R
+   (n;) 253.72 R
+   (i++\)) 286.12 R
+   ({) 340.12 R
+   0 0 0 Color 18 /pCourier F
+   (f) 124.12 171.55 S
+   (=) 145.72 R
+   (\(fridge\)memory) 167.32 R
+   (+) 329.32 R
+   (i) 350.92 R
+   (*) 372.52 R
+   (sizeof\(struct) 394.12 R
+   (bullet\);) 545.32 R
+   0 0 0 Color 18 /pCourier F
+   (f->next) 124.12 191.08 S
+   (=) 210.52 R
+   (bullet_fridge;) 232.12 R
+   0 0 0 Color 18 /pCourier F
+   (bullet_fridge) 124.12 210.61 S
+   (=) 275.32 R
+   (f;) 296.92 R
+   0 0 0 Color 18 /pCourier F
+   (}) 80.92 230.14 S
+   0 0 0 Color 18 /pCourier F
+   (}) 33.814 249.67 S
+  1 -1 scale -45 -117 translate newpath
+  54 54 144 486 Rect 0 0 0 Color 1 W K
+  54 54 252 486 Rect 0 0 0 Color 1 W K
+  54 54 198 486 Rect 0 0 0 Color 1 W K
+  54 54 576 486 Rect 0 0 0 Color 1 W K
+  54 54 306 486 Rect 0 0 0 Color 1 W K
+  54 54 522 486 Rect 0 0 0 Color 1 W K
+  54 54 468 486 Rect 0 0 0 Color 1 W K
+  54 54 414 486 Rect 0 0 0 Color 1 W K
+  54 54 360 486 Rect 0 0 0 Color 1 W K
+  [ 171 513 171 524.18 179.944 519.708 Line C 0 0 0 Color L
+  [ 173.236 517.472 189.745 550.491 216 567 252 567 288 567 315 549 333 513
+     Spline 0 0 0 Color 1 W K
+  [ 333 513 333 524.18 341.944 519.708 Line C 0 0 0 Color L
+  [ 335.236 517.472 351.745 550.491 378 567 414 567 450 567 477 549 495 513
+     Spline 0 0 0 Color 1 W K
+  9 495 translate 1 -1 scale
+   0 0 0 Color 24 /pCourier-Bold F
+   (NULL) 38.392 21.52 S
+  1 -1 scale -9 -495 translate newpath
+  [ 495 504 500 494 490 494 Line C 0 0 0 Color L
+  [ 495 441 495 499 Line 0 0 0 Color 1 W K
+  441 414 translate 1 -1 scale
+   0 0 0 Color 18 /pCourier-Bold F
+   (bullet_fridge) 2.044 16.39 S
+  1 -1 scale -441 -414 translate newpath
+  [ 117 513 127 518 127 508 Line C 0 0 0 Color L
+  [ 171 513 122 513 Line 0 0 0 Color 1 W K
+  162 54 144 486 Rect 0 0 0 Color 3 W K
+  162 54 306 486 Rect 0 0 0 Color 3 W K
+  162 54 468 486 Rect 0 0 0 Color 3 W K
+  791.8 611.8 .2 .2 Rect 0 setgray .4 setlinewidth stroke
+ restore
+ save 34 319 translate 0.43300654 dup scale
+  792 612 0 0 Rect clip 1 setgray fill
+  196 50 translate 1 -1 scale
+   0 0 0 Color 36 /pTimes-Bold F
+   (The) 68.006 35.74 S
+   (Refrigerator) 137.018 R
+  1 -1 scale -196 -50 translate newpath
+  36 117 translate 1 -1 scale
+   0 0 0 Color 18 /pCourier F
+   (bullet) 36.964 15.31 S
+   (get_bullet\(\)) 112.564 R
+   ({) 252.964 R
+   0 0 0 Color 18 /pCourier F
+   (bullet) 80.92 34.84 S
+   (b;) 156.52 R
+   0 0 0 Color 18 /pCourier F
+   (if) 80.92 54.37 S
+   (\(bullet_fridge) 113.32 R
+   (==) 275.32 R
+   (NULL\)) 307.72 R
+   (make_bullets\(100\);) 372.52 R
+   0 0 0 Color 18 /pCourier F
+   (b) 80.92 93.43 S
+   (=) 102.52 R
+   (\(bullet\)bullet_fridge;) 124.12 R
+   0 0 0 Color 18 /pCourier F
+   (bullet_fridge) 80.92 112.96 S
+   (=) 232.12 R
+   (bullet_fridge->next;) 253.72 R
+   0 0 0 Color 18 /pCourier F
+   (return) 80.92 132.49 S
+   (b;) 156.52 R
+   0 0 0 Color 18 /pCourier F
+   (}) 33.814 152.02 S
+   0 0 0 Color 18 /pCourier F
+   (void) 36.82 191.08 S
+   (free_bullet\(bullet) 90.82 R
+   (b\)) 296.02 R
+   ({) 328.42 R
+   0 0 0 Color 18 /pCourier F
+   (fridge) 80.92 210.61 S
+   (f) 156.52 R
+   (=) 178.12 R
+   (\(fridge\)b;) 199.72 R
+   0 0 0 Color 18 /pCourier F
+   (f->next) 80.92 230.14 S
+   (=) 167.32 R
+   (bullet_fridge;) 188.92 R
+   0 0 0 Color 18 /pCourier F
+   (bullet_fridge) 80.92 249.67 S
+   (=) 232.12 R
+   (f;) 253.72 R
+   0 0 0 Color 18 /pCourier F
+   (}) 33.814 269.2 S
+  1 -1 scale -36 -117 translate newpath
+  54 54 198 495 Rect 0 0 0 Color 1 W K
+  54 54 252 495 Rect 0 0 0 Color 1 W K
+  54 54 468 495 Rect 0 0 0 Color 1 W K
+  54 54 414 495 Rect 0 0 0 Color 1 W K
+  54 54 360 495 Rect 0 0 0 Color 1 W K
+  54 54 306 495 Rect 0 0 0 Color 1 W K
+  [ 387 522 378.056 528.708 387 533.18 Line C 0 0 0 Color L
+  [ 225 522 243 558 270 576 306 576 342 576 368.255 559.491 384.764 526.472
+     Spline 0 0 0 Color [3 3] D 1 W K [] D
+  [ 387 513 387 501.82 378.056 506.292 Line C 0 0 0 Color L
+  [ 225 450 255 468 286.5 477 319.5 477 352.5 477 374.255 487.509
+     384.764 508.528 Spline 0 0 0 Color 1 W K
+  [ 567 522 557 517 557 527 Line C 0 0 0 Color L
+  [ 495 522 562 522 Line 0 0 0 Color 1 W K
+  540 513 translate 1 -1 scale
+   0 0 0 Color 18 /pCourier-Bold F
+   (NULL) 38.044 16.39 S
+  1 -1 scale -540 -513 translate newpath
+  144 423 translate 1 -1 scale
+   0 0 0 Color 18 /pCourier-Bold F
+   (bullet_fridge) 38.044 16.39 S
+  1 -1 scale -144 -423 translate newpath
+  791.8 611.8 .2 .2 Rect 0 setgray .4 setlinewidth stroke
+ restore
+ save 412 319 translate 0.43300654 dup scale
+  792 612 0 0 Rect clip 1 setgray fill
+  196 50 translate 1 -1 scale
+   0 0 0 Color 36 /pTimes-Bold F
+   (Allocating) 58.088 35.74 S
+   (Beyond) 225.092 R
+   (End-of-Structure) 66.638 73.954 S
+  1 -1 scale -196 -50 translate newpath
+  63 162 translate 1 -1 scale
+   0 0 0 Color 24 /pTimes-Bold F
+   (If) 0.592 24.16 S
+   (we) 23.92 R
+   (want) 57.904 R
+   (a) 114.568 R
+   (dynamically) 132.568 R
+   (allocated) 263.92 R
+   (array) 361.912 R
+   (to) 425.224 R
+   (be) 451.216 R
+   (a) 481.216 R
+   (member) 499.216 R
+   (of) 590.512 R
+   (a) 616.504 R
+   (structure,) 0.304 49.636 S
+   (we) 106.936 R
+   (can) 140.92 R
+   (speed) 182.92 R
+   (access) 246.256 R
+   (by) 314.896 R
+   (removing) 346.24 R
+   (a) 449.56 R
+   (level) 467.56 R
+   (of) 520.216 R
+   (indirection.) 546.208 R
+  1 -1 scale -63 -162 translate newpath
+  63 252 translate 1 -1 scale
+   0 0 0 Color 24 /pTimes-Roman F
+   (The) 0.568 24.16 S
+   (usual) 43.888 R
+   (approach:) 100.552 R
+  1 -1 scale -63 -252 translate newpath
+  72 306 translate 1 -1 scale
+   0 0 0 Color 18 /pCourier F
+   (typedef) 36.586 15.31 S
+   (struct) 122.986 R
+   (skipnode) 198.586 R
+   ({) 295.786 R
+   0 0 0 Color 18 /pCourier F
+   (int) 70.12 34.84 S
+   (height;) 113.32 R
+   0 0 0 Color 18 /pCourier F
+   (void) 70.12 54.37 S
+   (*data;) 124.12 R
+   0 0 0 Color 18 /pCourier F
+   (struct) 70.12 73.9 S
+   (skipnode) 145.72 R
+   (**next;) 242.92 R
+   0 0 0 Color 18 /pCourier F
+   (}) 33.814 93.43 S
+   (*skipnode;) 55.414 R
+   0 0 0 Color 18 /pCourier F
+   (skipnode) 35.506 132.49 S
+   (make_skipnode\(int) 132.706 R
+   (height\)) 327.106 R
+   ({) 413.506 R
+   0 0 0 Color 18 /pCourier F
+   (skipnode) 70.12 152.02 S
+   (s) 167.32 R
+   (=) 188.92 R
+   (NEW\(skipnode\);) 210.52 R
+   0 0 0 Color 18 /pCourier F
+   (s->height) 70.12 171.55 S
+   (=) 178.12 R
+   (height;) 199.72 R
+   0 0 0 Color 18 /pCourier F
+   (s->next) 70.12 191.08 S
+   (=) 156.52 R
+   (\(struct) 178.12 R
+   (skipnode) 264.52 R
+   (**\)malloc\() 361.72 R
+   0 0 0 Color 18 /pCourier F
+   (height) 188.92 210.61 S
+   (*) 264.52 R
+   (sizeof\(struct) 286.12 R
+   (skipnode) 437.32 R
+   (*\)\);) 534.52 R
+   0 0 0 Color 18 /pCourier F
+   (return) 70.12 230.14 S
+   (s;) 145.72 R
+   0 0 0 Color 18 /pCourier F
+   (}) 33.814 249.67 S
+  1 -1 scale -72 -306 translate newpath
+  791.8 611.8 .2 .2 Rect 0 setgray .4 setlinewidth stroke
+ restore
+restore showpage
+%%Page: slide_13 4
+save 90 rotate 1 -1 scale
+ 34 27 756 584 Fits
+ save 34 27 translate 0.43300654 dup scale
+  792 612 0 0 Rect clip 1 setgray fill
+  144 32 translate 1 -1 scale
+   0 0 0 Color 36 /pTimes-Bold F
+   (Allocating) 93.088 35.74 S
+   (Beyond) 260.092 R
+   (End-of-Structure) 101.638 73.954 S
+  1 -1 scale -144 -32 translate newpath
+  63 126 translate 1 -1 scale
+   0 0 0 Color 24 /pTimes-Bold F
+   (Tricky) 0.28 24.16 S
+   (Approach:) 75.616 R
+  1 -1 scale -63 -126 translate newpath
+  72 189 translate 1 -1 scale
+   0 0 0 Color 18 /pCourier F
+   (typedef) 36.586 15.31 S
+   (struct) 122.986 R
+   (skipnode) 198.586 R
+   ({) 295.786 R
+   0 0 0 Color 18 /pCourier F
+   (int) 80.92 34.84 S
+   (height;) 124.12 R
+   0 0 0 Color 18 /pCourier F
+   (void) 80.92 54.37 S
+   (*data;) 134.92 R
+   0 0 0 Color 18 /pCourier F
+   (struct) 80.92 73.9 S
+   (skipnode) 156.52 R
+   (*next[1];) 253.72 R
+   0 0 0 Color 18 /pCourier F
+   (}) 33.814 98.2 S
+   (*skipnode;) 55.414 R
+  1 -1 scale -72 -189 translate newpath
+  72 387 translate 1 -1 scale
+   0 0 0 Color 18 /pCourier F
+   (skipnode) 35.506 15.31 S
+   (make_skipnode\(int) 132.706 R
+   (height\)) 327.106 R
+   ({) 413.506 R
+   0 0 0 Color 18 /pCourier F
+   (skipnode) 80.92 34.84 S
+   (s;) 178.12 R
+   0 0 0 Color 18 /pCourier F
+   (s) 80.92 73.9 S
+   (=) 102.52 R
+   (\(skipnode\)malloc\(SKIPSIZ) 124.12 R
+   (+) 394.12 R
+   (height) 415.72 R
+   (*) 491.32 R
+   (sizeof\(struct) 307.72 94.888 S
+   (skipnode) 458.92 R
+   (*\)\);) 556.12 R
+   0 0 0 Color 18 /pCourier F
+   (s->height) 80.92 114.418 S
+   (=) 188.92 R
+   (height;) 210.52 R
+   0 0 0 Color 18 /pCourier F
+   (return) 80.92 133.948 S
+   (s;) 156.52 R
+   0 0 0 Color 18 /pCourier F
+   (}) 33.814 158.248 S
+  1 -1 scale -72 -387 translate newpath
+  99 333 translate 1 -1 scale
+  1 -1 scale -99 -333 translate newpath
+  72 324 translate 1 -1 scale
+   0 0 0 Color 18 /pCourier F
+   (#define) 35.704 15.31 S
+   (SKIPSIZ) 122.104 R
+   (\(sizeof\(struct) 208.504 R
+   (skipnode\)) 370.504 R
+   (-) 478.504 R
+   (\\) 597.304 R
+   0 0 0 Color 18 /pCourier F
+   (sizeof\(struct) 221.32 34.84 S
+   (skipnode) 372.52 R
+   (*\)\)) 469.72 R
+  1 -1 scale -72 -324 translate newpath
+  791.8 611.8 .2 .2 Rect 0 setgray .4 setlinewidth stroke
+ restore
+ save 412 27 translate 0.43300654 dup scale
+  792 612 0 0 Rect clip 1 setgray fill
+  196 50 translate 1 -1 scale
+   0 0 0 Color 36 /pTimes-Bold F
+   (Allocating) 58.088 35.74 S
+   (Beyond) 225.092 R
+   (End-of-Structure) 66.638 73.954 S
+  1 -1 scale -196 -50 translate newpath
+  135 162 translate 1 -1 scale
+   0 0 0 Color 24 /pTimes-Bold F
+   (Untricky:) 0.52 24.16 S
+  1 -1 scale -135 -162 translate newpath
+  126 378 translate 1 -1 scale
+   0 0 0 Color 24 /pTimes-Bold F
+   (Tricky:) 0.28 24.16 S
+  1 -1 scale -126 -378 translate newpath
+  54 54 576 234 Rect 0 0 0 Color 
+  <1028448201824428> t Pattern
+  54 54 576 234 Rect 0 0 0 Color 1 W K
+  54 54 522 234 Rect 0 0 0 Color 
+  <1028448201824428> t Pattern
+  54 54 522 234 Rect 0 0 0 Color 1 W K
+  54 54 468 234 Rect 0 0 0 Color 
+  <1028448201824428> t Pattern
+  54 54 468 234 Rect 0 0 0 Color 1 W K
+  54 54 414 234 Rect 0 0 0 Color 
+  <1028448201824428> t Pattern
+  54 54 414 234 Rect 0 0 0 Color 1 W K
+  54 54 180 234 Rect 0 0 0 Color 1 W K
+  54 54 234 234 Rect 0 0 0 Color 1 W K
+  54 54 288 234 Rect 0 0 0 Color 1 W K
+  54 54 450 432 Rect 0 0 0 Color 
+  <1028448201824428> t Pattern
+  54 54 450 432 Rect 0 0 0 Color 1 W K
+  54 54 396 432 Rect 0 0 0 Color 
+  <1028448201824428> t Pattern
+  54 54 396 432 Rect 0 0 0 Color 1 W K
+  54 54 342 432 Rect 0 0 0 Color 
+  <1028448201824428> t Pattern
+  54 54 342 432 Rect 0 0 0 Color 1 W K
+  54 54 288 432 Rect 0 0 0 Color 
+  <1028448201824428> t Pattern
+  54 54 288 432 Rect 0 0 0 Color 1 W K
+  54 54 180 432 Rect 0 0 0 Color 1 W K
+  54 54 234 432 Rect 0 0 0 Color 1 W K
+  54 54 288 432 Rect 0 0 0 Color 1 W K
+  [ 414 261 404 256 404 266 Line C 0 0 0 Color L
+  [ 315 261 409 261 Line 0 0 0 Color 1 W K
+  [ 261 306 266 296 256 296 Line C 0 0 0 Color L
+  [ 261 261 261 301 Line 0 0 0 Color 1 W K
+  [ 207 324 212 314 202 314 Line C 0 0 0 Color L
+  [ 207 261 207 319 Line 0 0 0 Color 1 W K
+  189 324 translate 1 -1 scale
+   0 0 0 Color 18 /pTimes-Bold F
+   (height) 0.478 18.37 S
+  1 -1 scale -189 -324 translate newpath
+  252 306 translate 1 -1 scale
+   0 0 0 Color 18 /pTimes-Bold F
+   (data) 0.442 18.37 S
+  1 -1 scale -252 -306 translate newpath
+  180 531 translate 1 -1 scale
+   0 0 0 Color 18 /pTimes-Bold F
+   (height) 0.478 18.37 S
+  1 -1 scale -180 -531 translate newpath
+  243 504 translate 1 -1 scale
+   0 0 0 Color 18 /pTimes-Bold F
+   (data) 0.442 18.37 S
+  1 -1 scale -243 -504 translate newpath
+  [ 207 531 212 521 202 521 Line C 0 0 0 Color L
+  [ 207 459 207 526 Line 0 0 0 Color 1 W K
+  [ 261 504 266 494 256 494 Line C 0 0 0 Color L
+  [ 261 459 261 499 Line 0 0 0 Color 1 W K
+  791.8 611.8 .2 .2 Rect 0 setgray .4 setlinewidth stroke
+ restore
+ save 34 319 translate 0.43300654 dup scale
+  792 612 0 0 Rect clip 1 setgray fill
+  171 41 translate 1 -1 scale
+   0 0 0 Color 36 /pTimes-Bold F
+   (Exploiting) 15.094 35.74 S
+   (Word) 184.15 R
+   (Alignment) 283.15 R
+  1 -1 scale -171 -41 translate newpath
+  63 225 translate 1 -1 scale
+   0 0 0 Color 24 /pTimes-Bold F
+   (malloc) 0.328 24.16 S
+   (\(and) 74.32 R
+   (other) 127 R
+   (allocators\)) 187.648 R
+   (return) 301.624 R
+   (conservatively-aligned) 374.272 R
+   (addresses.) 37 49.636 S
+   (So...) 153.664 R
+  1 -1 scale -63 -225 translate newpath
+  45 126 translate 1 -1 scale
+   0 0 0 Color 18 /pCourier F
+   (struct) 35.506 15.31 S
+   (data) 111.106 R
+   ({) 165.106 R
+   0 0 0 Color 18 /pCourier F
+   (char) 80.92 34.84 S
+   (type_flags;) 134.92 R
+   0 0 0 Color 18 /pCourier F
+   (void) 80.92 54.37 S
+   (*body;) 134.92 R
+   0 0 0 Color 18 /pCourier F
+   (};) 33.814 73.9 S
+  1 -1 scale -45 -126 translate newpath
+  117 306 translate 1 -1 scale
+   0 0 0 Color 24 /pSymbol F
+   (\267) 1 25.24 S
+   0 0 0 Color 24 /pTimes-Roman F
+   (The) 30.04 R
+   (structure) 73.36 R
+   (above) 163.336 R
+   (uses) 226.648 R
+   (up) 273.976 R
+   (two) 303.976 R
+   (full) 345.976 R
+   (words.) 385.312 R
+   0 0 0 Color 24 /pSymbol F
+   (\267) 1 70.486 S
+   0 0 0 Color 24 /pTimes-Roman F
+   (Pointers) 30.04 R
+   (are) 114.712 R
+   (generally) 150.016 R
+   (multiples) 245.32 R
+   (of) 340.672 R
+   (\(4) 366.664 R
+   (or) 392.656 R
+   (8) 418.648 R
+   (or) 436.648 R
+   (2\)...) 462.64 R
+  1 -1 scale -117 -306 translate newpath
+  162 405 translate 1 -1 scale
+   0 0 0 Color 24 /pSymbol F
+   (\267) 1 25.24 S
+   0 0 0 Color 24 /pTimes-Roman F
+   (We) 18.04 R
+   (can) 57.352 R
+   (fit) 96.664 R
+   (flags) 124 R
+   (in) 176.656 R
+   (the) 201.328 R
+   (unused) 236.656 R
+   (region) 310.648 R
+   (of) 377.968 R
+   (a) 403.96 R
+   (pointer!) 420.616 R
+  1 -1 scale -162 -405 translate newpath
+  791.8 611.8 .2 .2 Rect 0 setgray .4 setlinewidth stroke
+ restore
+ save 412 319 translate 0.43300654 dup scale
+  792 612 0 0 Rect clip 1 setgray fill
+  90 41 translate 1 -1 scale
+   0 0 0 Color 36 /pTimes-Bold F
+   (***) 13.95 35.74 S
+   (NONPORTABILITY) 76.95 R
+   (ALERT***) 417.978 R
+  1 -1 scale -90 -41 translate newpath
+  54 108 translate 1 -1 scale
+   0 0 0 Color 24 /pTimes-Bold F
+   (...but) -0.032 24.16 S
+   (it's) 58.648 R
+   (fun) 96.64 R
+   (anyway,) 137.32 R
+   (and) 227.992 R
+   (sometimes) 272.68 R
+   (you) 385.312 R
+   (just) 428.656 R
+   (don't) 473.32 R
+   (care.) 533.992 R
+  1 -1 scale -54 -108 translate newpath
+  18 171 translate 1 -1 scale
+   0 0 0 Color 18 /pCourier F
+   (struct) 35.506 15.31 S
+   (data) 111.106 R
+   ({) 165.106 R
+   0 0 0 Color 18 /pCourier F
+   (void) 70.12 34.84 S
+   (*body;) 124.12 R
+   0 0 0 Color 18 /pCourier F
+   (};) 33.814 54.37 S
+   0 0 0 Color 18 /pCourier F
+   (struct) 35.506 112.96 S
+   (data) 111.106 R
+   (*x;) 165.106 R
+   0 0 0 Color 18 /pCourier F
+   (...) 32.5 132.49 S
+   0 0 0 Color 18 /pCourier F
+   (addr) 36.064 152.02 S
+   (=) 90.064 R
+   (\(x->body\)) 111.664 R
+   (&) 219.664 R
+   (POINTERMASK;) 241.264 R
+   0 0 0 Color 18 /pCourier F
+   (flags) 35.47 171.55 S
+   (=) 100.27 R
+   (\(x->body\)) 121.87 R
+   (&) 229.87 R
+   (FLAGMASK;) 251.47 R
+   0 0 0 Color 18 /pCourier F
+   (switch) 35.506 210.61 S
+   (\(flags\)) 111.106 R
+   ({) 197.506 R
+   0 0 0 Color 18 /pCourier F
+   (...) 80.92 230.14 S
+   0 0 0 Color 18 /pCourier F
+   (}) 33.814 249.67 S
+  1 -1 scale -18 -171 translate newpath
+  567 54 99 450 Rect 0 0 0 Color 1 W K
+  [ 612 450 612 504 Line 0 0 0 Color [3 3] D 1 W K [] D
+  [ 171 477 160.393 480.536 167.464 487.607 Line C 0 0 0 Color L
+  [ 135 549 123 537 120 528 126 522 132 516 145.821 502.179 167.464 480.536
+     Spline 0 0 0 Color [3 3] D 1 W K [] D
+  144 540 translate 1 -1 scale
+   0 0 0 Color 24 /pTimes-Bold F
+   (30) 0.592 24.16 S
+   (bits) 30.592 R
+   (\(pointer\)) 73.936 R
+  1 -1 scale -144 -540 translate newpath
+  513 540 translate 1 -1 scale
+   0 0 0 Color 24 /pTimes-Bold F
+   (2) 0.568 24.16 S
+   (bits) 18.568 R
+   (\(flags\)) 61.912 R
+  1 -1 scale -513 -540 translate newpath
+  [ 639 477 647.825 483.864 649.786 474.058 Line C 0 0 0 Color L
+  [ 657 558 675 552 687 543 693 531 699 519 699 508.5 693 499.5 687 490.5
+     670.634 483.327 643.903 477.981 Spline 0 0 0 Color [3 3] D 1 W K [] D
+  791.8 611.8 .2 .2 Rect 0 setgray .4 setlinewidth stroke
+ restore
+restore showpage
+%%Trailer
+%%Pages: 4
+end SpotJob restore
+%%EOF
+

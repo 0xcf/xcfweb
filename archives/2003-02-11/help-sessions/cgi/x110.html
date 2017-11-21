@@ -1,0 +1,255 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>Environment Variables</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="CGI Programming and You"
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="Usage"
+HREF="c41.html"><LINK
+REL="PREVIOUS"
+TITLE="Standard Output"
+HREF="x77.html"><LINK
+REL="NEXT"
+TITLE="URL-Encoding"
+HREF="x159.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>CGI Programming and You</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x77.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 2. Usage</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x159.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="SEC2.5"
+>Environment Variables</A
+></H1
+><P
+>The environment variables contain useful information &mdash;
+some regarding the web browser and machine of the client accessing the
+CGI script &mdash; which the program can access.  There are a few very
+important environment variables, and many that exist but are rarely
+used [because they are rarely useful].</P
+><P
+>Accessing environment variables is a very system- and
+language-specific matter, and it is the programmer's responsibility to
+do this correctly.  However, the names and content of the environment
+variables are standard.</P
+><P
+></P
+><DL
+><DT
+><TT
+CLASS="ENVAR"
+>QUERY_STRING</TT
+></DT
+><DD
+><P
+>The data following the '?' in a form submitted with
+the "<TT
+CLASS="LITERAL"
+>METHOD=get</TT
+>" attribute.</P
+></DD
+><DT
+><TT
+CLASS="ENVAR"
+>CONTENT_LENGTH</TT
+></DT
+><DD
+><P
+>The length of the data waiting on standard input for
+<TT
+CLASS="LITERAL"
+>POST</TT
+>ed forms.</P
+></DD
+><DT
+><TT
+CLASS="ENVAR"
+>REQUEST_METHOD</TT
+></DT
+><DD
+><P
+>The method by which the CGI data was submitted [ie:
+"<TT
+CLASS="LITERAL"
+>GET</TT
+>" or "<TT
+CLASS="LITERAL"
+>POST</TT
+>"].  There are
+other request methods, but <TT
+CLASS="LITERAL"
+>GET</TT
+> and <TT
+CLASS="LITERAL"
+>POST</TT
+>
+are the two most common.</P
+></DD
+><DT
+><TT
+CLASS="ENVAR"
+>REMOTE_HOST</TT
+></DT
+><DD
+><P
+>The name of the machine from which the client is
+accessing the form.  If the client machine is using a proxy to
+access the web, then this will be the name of the proxy host.  If
+there does not exist a hostname for the client's machine, this will
+be unset. </P
+></DD
+><DT
+><TT
+CLASS="ENVAR"
+>REMOTE_ADDR</TT
+></DT
+><DD
+><P
+>The IP address of the client machine.  This should
+be the IP address which the hostname given in <TT
+CLASS="ENVAR"
+>REMOTE_HOST</TT
+>
+will decode to [ie: they should be the same machine].  If the client
+machine is using a proxy to access the web, this will be the IP address
+of the proxy machine.</P
+></DD
+><DT
+><TT
+CLASS="ENVAR"
+>REMOTE_USER</TT
+></DT
+><DD
+><P
+>If the user had to go through authentication to get
+to the script, then this will be the login with which they
+authenticated.</P
+></DD
+><DT
+><TT
+CLASS="ENVAR"
+>HTTP_USER_AGENT</TT
+></DT
+><DD
+><P
+>A string describing the web browser which the client
+is using.  This string will generally follow the format
+"<TT
+CLASS="LITERAL"
+>browser/version extra_info</TT
+>".  For instance:
+"<TT
+CLASS="LITERAL"
+>Mozilla/4.5 [en] (X11; I; Linux 2.0.32 i586)</TT
+>"
+[Mozilla means Netscape &mdash; Remember: it's spelled
+N-E-T-S-C-A-P-E, but it's pronounced "mozilla"].</P
+></DD
+></DL
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x77.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x159.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Standard Output</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c41.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>URL-Encoding</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

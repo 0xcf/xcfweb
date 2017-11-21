@@ -1,0 +1,185 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>Security Concerns</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="CGI Programming and You"
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="Programming Concerns"
+HREF="c211.html"><LINK
+REL="PREVIOUS"
+TITLE="File Access and Permissions"
+HREF="x220.html"><LINK
+REL="NEXT"
+TITLE="Programming Paradigm"
+HREF="c244.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>CGI Programming and You</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x220.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 3. Programming Concerns</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="c244.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="SEC3.3"
+>Security Concerns</A
+></H1
+><P
+>There are a couple of specific security issues to be concerned
+with while writing CGI programs.  Both or neither may apply to any
+given CGI program, but both must be considered when writing a CGI
+program.</P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="SEC3.3.1"
+>Watch what is done with form data.</A
+></H2
+><P
+>If form data is requested from the user, chances are that it
+will be processed and used by the program for internal purposes.  The
+important thing to look for is that user-supplied data is not passed
+verbatim to any sort of execution call.</P
+><P
+>An execution call is something that will perform an effect on
+the system, such as starting a program [eg:
+'<TT
+CLASS="LITERAL"
+>exec(...)</TT
+>' in C/C++] or interpreting a statement
+in the programming language being used [eg: '<TT
+CLASS="LITERAL"
+>eval</TT
+>'
+in perl].  A malicious user may figure out what is going on, and a
+well-crafted string delivered through the HTML form may be
+inadvertently passed on to the execution call, which may then remove
+files from the system, give the malicious user access to the system,
+or any other number of nasty things.</P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="SEC.3.3.2"
+>Don't allow access to binaries.</A
+></H2
+><P
+>This is especially an issue with perl.  If the perl executable
+is available in the [oft-used] <TT
+CLASS="FILENAME"
+>cgi-bin/</TT
+>
+directory, then a user can get at the executable directly.  Since perl
+has a command-line option to execute arbritary perl commands, this
+would allow a malicious user to execute any perl command, giving them
+a perfect opportunity to stage a [probably successful] attack on the
+machine in question.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x220.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="c244.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>File Access and Permissions</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c211.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Programming Paradigm</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

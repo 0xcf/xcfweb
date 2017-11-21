@@ -1,0 +1,418 @@
+Introduction to the Internet, Berkeley Computing Resources, and UNIX
+-----------------------------------------------------------------------------
+Computer Science Undergraduate Assoc. (CSUA)   staff@csua     343 Soda
+Open Computing Facility (OCF)                  staff@ocf      WEB, Evans Hall
+Experimental Computing Facility (XCF)          staff@xcf      117 Cory
+
+Handout written 1994 by Andrew Swan (aswan@cs.berkeley.edu)
+
+For questions about the OCF/CSUA/XCF Help Sessions, mail helper@csua.
+
+For general Unix questions, mail either staff@ocf, help@csua, or help@xcf.
+
+
+What can you do on the Internet?
+   o E-mail
+   o Usenet
+   o Information Retrieval (ftp, gopher, www)
+   o Lots of other resources (mailing lists, games, etc...)
+
+How do you get on the Internet at Berkeley?
+   o Open Computing Facility (OCF), located in the WEB
+     Access to just about anything you can find on
+     the Internet, open to anybody affiliated with
+     the University -- students, staff, faculty.
+
+   o UcLink, 241 Evans
+     Limited to e-mail, ftp, and gopher.  Also open
+     to UCB students, staff, and faculty.
+
+   o Computer Science Undergraduate Association (CSUA) 343 Soda Hall
+     Similar access as the OCF, but intended for
+     students with an interest in Computer Science.
+
+   o Various departments and classes provide Internet
+     access for course work or research projects.
+
+Logging in
+   o Telnet and rlogin
+     A program that lets you connect from one machine to
+     another.  For example, once you have reached a prompt
+     from which the telnet or rlogin command is available,
+     you can use the command "telnet uclink" or
+     "rlogin monsoon" to connect to another machine.
+     You can also use telnet and rlogin to connect from one
+     account to another.
+
+   o Logging in from the Microcomputer Facilities, Residence
+     Hall Academic Centers, or any personal computer with a
+     direct network connection
+
+     Most machines with network connections on campus have
+     telnet software installed.  Consult a staff member or
+     attendant if you have questions about how to use it.
+
+   o Logging in from home
+     The following telephone numbers are available for
+     dialing in with a modem:
+
+	643-9600	9600/14.4K baud Port Selector
+	642-6092	2400 baud Port Selector
+	642-5131	9600/14.4K baud Annex for EECS machines
+	642-6679	2400 baud Annex
+
+     If you call a number that attaches to a "Port Selector"
+     then you will get a prompt that looks like "Request: ",
+     at which point, you should type "annex", press return,
+     and then press return again when you get a message that
+     says "Connecting"
+
+     Once you have connected to the annex (either by dialing
+     directly in to the annex or by requesting it from the
+     port selector), the telnet and rlogin commands are available.
+
+   o Logging in from a terminal
+     There are several places on campus where dumb terminals
+     are available, including the WEB (Workstations in Evans
+     Basement) and various libraries.  These give you access
+     to the port selector described above in the "Logging in
+     from home" section.
+
+Once you've connected
+   o Logging in
+     You will be prompted for your account name and your
+     password.  Once you type them in, you will be logged
+     in.
+
+   o Setting your terminal type
+     Since you can log in to most Unix systems from many
+     different types of terminals, the computer you are logging
+     in to needs to know what sort of terminal you are on so
+     it knows how to talk to it.
+
+     Before you can tell the computer you are logging in to
+     (the remote computer) what terminal type you are using,
+     you need to know what it is.  Most terminal software
+     (such as the telnet programs on Macs and PCs) emulate a
+     terminal called a "vt100".  Vt100 is a very common
+     terminal type, so it is a good guess if you're not sure
+     what your terminal type is.
+
+     Once you have figured out what your terminal type is,
+     some computers are configured to ask you when you log in
+     what terminal type you are using.  If the computer you
+     are using is configured this way, you should be able to
+     simply type it in and not worry about it.
+
+     On computers that are not configure this way, if you have
+     problems you need to issue the following sequence of
+     commands:
+
+	unsetenv TERMCAP
+	setenv TERM vt100		(For example)
+	eval `tset -s`
+
+     You will find computers to be quite unforgiving if you
+     make typos, so it is important that you type these commands
+     exactly as they appear above.
+
+   o Once you are logged in
+     After you finish with the above steps, you will be logged
+     in to the remote computer.  A series of messages are often
+     printed, known as the messaged of the day (motd for short).
+     These messages are put their by system administrators to
+     make important announcements.
+
+     Eventually, you should get a prompt from which you can issue
+     commands.  A common prompt is simply a percent sign (%).
+     Fancier prompts may include the name of the computer you are
+     logged in to or the number of commands you have executed.
+     This prompt is called the "shell prompt" and you should
+     remember what it looks like -- it is the only prompt from
+     which you can issue most commands.
+
+Now what?
+   o Your password
+     Your password protects your account from unauthorized use
+     from anybody besides you.  You should not let anybody else
+     know what your password is.  Not even system administrators
+     need to know your password.
+
+     Passwords are stored in a secure form so that they cannot
+     be decoded, but they can be systematically guessed.  An
+     intruder with a powerful computer available could easily
+     take a whole dictionary and see if any of the words in the
+     dictionary match your password.
+     Use the following guidlines in choosing a password:
+		Do not use a name, or word in any language.
+		Do not use something commonly knowledgeable about you.
+		Use multiple words, punctuation, numbers, symbols, etc.
+		Remember, UNIX is case-sensitive: MyPass is very different
+			from mYpA$s
+		Try to make up something that you can remember, or at least
+			figure out again.
+
+     You should also change your password on a regular basis.
+     The command to change your password is "passwd".  It
+     should ask for your old password as confirmation, and
+     then have you type your new password.
+
+   o Getting Help
+     Unix and the Internet are very broad topics and we don't
+     have enough time to tell you about all but a small
+     fraction of what's available.  Fortunately, many resources
+     are available to help you learn about Unix and the 'net.
+
+     The "man" command allows you to read the manual pages
+     for Unix commands.  The syntax is "man <command>".  For
+     example, to find out about the passwd command, you
+     would do "man passwd".
+
+     The man command also allows you to look up keywords and
+     find commands available that match your keyword.  For
+     example, to find out about all the commands that relate
+     to passwords, issue the command "man -k password"
+
+     The -k in the above example is what is known as a
+     command line switch.  Many Unix commands can be modified
+     by one or more of these switches, which nearly always
+     have the form of a dash followed by a letter.
+
+     If you still need more help, consult the staff that runs
+     the computer you are using.  You may have heard that you
+     should send mail to root to get questions answered.
+     However, many systems have special mail addresses set up
+     for consulting.  A few of them are:
+
+	staff@ocf	For general UNIX questions
+	help@csua	For general UNIX questions
+	help@xcf	For general UNIX questions
+	consult@uclink	For questions about Uclink
+
+
+A few basic Unix commands
+   o Listing files
+     When you log in, you will be placed in your "home directory".
+     This is just like a directory on a DOS machine or like a
+     folder on a Macintosh.  You can store personal files in
+     your home directory, but probably have a quota on how much
+     space you can use.
+
+     An aside on directories: a disk can be thought of as a file
+     drawer; to keep things seperate you have things in different
+     folders, called "directories".  Directories can themselves
+     contain directories, as well as normal files.  Each user on a
+     system has a "home directory", which is a directory owned by you
+     where you store your files.
+
+     There are two special directory names: "." refers to the current
+     directory, and ".." to the one above.
+
+     You can use "mkdir" and "rmdir" to create and remove directories.
+
+     To see the files in the current directory (which is your
+     home directory when you first log in), use the command "ls".
+     The ls command also supports several command line options.
+
+	ls -a will list all the file in the current directory
+              including "dot files".
+	ls -l will show a full line with extra information
+              about all files.
+	ls -F will show file types by appending a / to
+              directories, and a * to executables.
+
+   o Viewing the contents of a file
+     The simplest command to display the contents of a file
+     is "cat".  It will simply take the contents of the file
+     you name and print it all out.
+
+     The commands "more" and "less" are a little more friendly;
+     they will print the given file a page at a time, pausing
+     at the end of every page and wait for you to press the
+     space bar to go on.
+
+     The "head" and "tail" commands allow you to look at just
+     the beginning or just the end of a file.  By default,
+     they display 10 lines, although you can give it a different
+     number of lines prepended with a dash.  For example,
+     "head -25 foo" would print the first 25 lines of the file
+     named foo.
+
+     Beware however, some files cannot be displayed with these
+     commands.  Some programs store data in formats that do not
+     look like regular text, and you will not be able to make
+     sense out of the file.  If you have a file that doesn't
+     make sense, you may be able to get some information with
+     the "file" command.  For example, "file foo" will tell
+     you what sort of file foo is, if it can be determined.
+
+   o Deleting files
+     If you have files around that you don't need any more,
+     you should delete them to conserve disk space and remain
+     under your quota.  The command "rm" allows you to delete
+     a file.  For example, "rm foo" removes the file named foo.
+     The rm command is often set up to confirm that you want
+     to delete files before they are actually deleted.
+
+   o Renaming and copying files
+     The command to rename a file is "mv".  For example, the
+     command "mv foo bar" renames the file foo to bar.  Files
+     can also be copied with the "cp" command.
+
+   o Privacy
+     The command "mesg" lets you control whether or not people
+     can talk to you and send you messages while you are logged
+     on.  "mesg y" allows messages, "mesg n" denies messages,
+     and "mesg" by itself tells you the current setting.
+
+     You can send messages to other users logged in to the same
+     computer that you are using (if they are allowing messages)
+     with the command "write user".  For instance, if you were
+     logged in to the same computer as shyguy, the command
+     "write shyguy" would send him a message.  Everything you
+     type would appear on his screen until you type control-D.
+
+     The "talk" program is similar, but much more powerful.  In
+     order to talk to another user, you need to know their login
+     name and the computer they are logged in to.  This may look
+     similar to their e-mail address, and we'll talk more about
+     it shortly.
+
+     To use the talk program, the comand is simply
+     "talk user@machine".  For example, "talk shyguy@uclink".
+     The talk program will bring up a window in which you can
+     see what you are typing and what the person you are talking
+     to is typing.  One caveat:  the talk program is not very
+     standardized, so many different computers run incompatible
+     versions of the talk software.  The easiest way to remedy
+     this is to use the "ytalk" program if it is available.
+
+How to refer to other users on the Internet
+   o Computer Names
+     With thousands if not millions of computers connected to the
+     Internet, a simple scheme is needed to uniquely identify
+     individual machines on the net.  The scheme that is used is
+     known as the Domain Naming System.
+
+     Computer names are organized in a hierarchical fashion,
+     according to where the computer is connected to the Internet.
+     These names consists of a series of words separated by periods.
+     As you read a name from right to left, it becomes more and more
+     specific.
+
+     For example, Uclink's name on the Internet is uclink.berkeley.edu.
+     The rightmosts part of the address is edu.  This means that
+     uclink is somehow part of the EDUcational domain.  All machines
+     ending with .edu belong to colleges, universities, and other
+     educational institutions in the United States.
+
+     The next component of the name is berkeley.  This means that
+     with in the educational domain, this computer is located at
+     the University of California at Berkeley.  The names of all
+     computers around the campus will end in .berkeley.edu.  Finally,
+     the name of the computer is uclink.
+
+     There can be an arbitrary number of pieces of the name
+     separated by period, although most names don't have more than 4.
+
+   o Top Level Domains
+     The rightmost part of a computer name is called the top level
+     domain.  We have already seen the .edu domain, and there are
+     several other common ones:
+
+	.com	- COMmercial sites
+	.mil	- MILitary sites
+	.gov	- GOVernment sites
+	.org	- ORGanizations
+	.net	- NETwork administration sites
+
+     In addition, sites outside the United States have a code for
+     the country in which they are located as the top level domain:
+
+	.jp	- JaPan
+	.uk	- United Kingdom
+	.au	- AUstralia
+
+   o E-mail addresses
+     An e-mail address has the form "user@machine.domain".  The
+     easiest way to find out what somebody's e-mail address is
+     is to get it directly for them.  If you need help locating
+     somebody, look at the help documentation on the OCF gopher
+     server or mail staff@ocf.
+
+   o Simplifying e-mail addresses
+     You can also leave off parts of e-mail addresses, in which
+     case they are implicity the same as the computer you are
+     using.  For example, if you are logged in to uclink, the
+     name "minmai" refers implicitly to "minmai@uclink.berkeley.edu"
+     If you were using the OCF, the e-mail address "aswan@cs"
+     would implicity refer to "aswan@cs.berkeley.edu".
+
+   o Locating people
+     Many programs (such as talk, finger, etc...) require you to
+     specify another person on the Internet.  For these programs,
+     you use something that looks very much like an e-mail address
+     but is slightly differnet.
+
+     The reason for this is that many names on the Internet are
+     set up to receive e-mail but the name of the computer in an
+     e-mail address does not necessarily correspond to the computer
+     that its users log in to.
+
+     For example, users of the OCF have e-mail addresses of the
+     form "user@ocf.berkeley.edu", although users of the OCF log
+     in to different machines (bigbang, monsoon, etc...)
+
+     For programs like "talk", it is important that you specify
+     the name of the computer the person you are trying to contact
+     is actually using, and not the name in their e-mail address.
+
+   o Finding out about other people on the Internet
+     The command "finger" gives you information about another user
+     on the Internet.  For example "finger shyguy@ocf" will tell
+     you a bunch of information about that account.
+
+E-mail
+   o Reading mail
+     If you have e-mail waiting, simply type "mail" to read it.
+     You will get a list of your waiting messages.  You can type
+     simply the message number to read a message, and then type
+     "d" after reading it to delete it.
+
+     You can quit the mail program with either "q" or "x".  If
+     you use "q", all the changes you made will be saved.  That
+     is, messages that you deleted will be gone.  On the other
+     hand, if you use "x", then no changes will be made and
+     your mail will be in the exact same state it was in when
+     you started the mail program.
+
+   o Sending mail
+     To send e-mail to somebody else, the command is "mail address".
+     For example, "mail aswan@cs.berkeley.edu".  You will be
+     prompted for a Subject and can then begin typing the message.
+     To finish the message, type a period on a line by itself.
+
+   o More advanced mail features
+     Doing anything more complicated with the mail program is
+     very difficult.  A better choice is to use a mail program
+     such as "elm" or "pine".  Both programs are designed to be
+     more powerful and yet much easier to use.
+
+Other cool things
+   o There are many more things that you can do with access to
+     the Internet, but we don't have time to cover them all
+     here.  Future help sessions will cover these topics. Here
+     are a few things to try if you can't wait:
+
+   o trn
+     Reading Usenet news
+
+   o gopher
+     Getting information about all sorts of things...
+
+   o lynx or Mosaic (Mosaic only works on graphical terminals
+     running X-Windows)
+
+     A more advanced form of information retrieval.
+
+

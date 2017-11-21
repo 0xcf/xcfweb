@@ -1,0 +1,72 @@
+/* 
+ * Level 1 CSS for http://www.xcf.berkeley.edu/
+ * 
+ * Authored by jsled, 11/13/98
+ *
+ */
+
+BODY
+{ background-color: black;
+  color: white;
+  font-family: Arial, Helvetica, sans-serif; }
+
+A:link { color: turquoise; }
+A:visited { color: red; }
+
+/* None of this next rule should be necessary, because BODY's
+attributes should cascade to all these elements... unfortunately,
+Netscape is broken... */
+P, TABLE, TD, TH, H1, H2, H3, UL, DL
+{ font-family: Arial, Helvetica, sans-serif;
+  color: white; }
+
+TD.textRule
+{ background-color: #0066CC;
+  color: black;
+  text-align: right; }
+
+TD.textRule H1
+{ font-variant: small-caps;
+  font-size: larger; }
+
+TD.textRule H3
+{ font-variant: small-caps;
+  font-size: smaller; }
+
+SPAN.keyw, DIV.keyw
+{ text-align: right; 
+  color: white;
+  font-family: "Monotype.com", monospaced;
+  font-size: smaller; }
+
+P.text
+{ text-margin: .5em 1.5em 0em;
+  color: white;
+  text-indent: 1em; }
+
+DL P.text
+{ text-indent: 1em; }
+
+TT
+{ font-family: "Monotype.com", monospaced; }
+
+PRE
+{ font-family: "Monotype.com", monospaced;
+  white-space: pre; }
+
+/* Used in members.html for presentation of member information. */
+
+.name
+{ padding-top: 2em;
+  font-weight: bold; }
+
+.email
+{ font-family: "Monotype.com", monospaced;
+  font-size: smaller; }
+
+DL.projects DD DL DT, .projName
+{ font-variant: small-caps;
+  text-decoration: underline; }
+
+DL.projects DD DL DD, .projDesc
+{ font-size: smaller; }

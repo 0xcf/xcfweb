@@ -1,0 +1,378 @@
+Information Retrieval
+---------------------
+Computer Science Undergraduate Assoc.	staff@csua	343 Soda
+Open Computing Facility			staff@ocf	WEB
+Experimental Computing Facility (XCF)	staff@xcf	117 Cory
+mail helper@csua, helper@ocf, or helper@xcf if you have any questions.
+Handout written by Michael Scheel 3/1/94
+----
+
+-Overview-
+	One of the key ideas to a network is the sharing of information.
+There are many different ways to distribute and receive all of this 
+information on the Internet.  A few "standards" have been established.
+One of them is the direct transfer of files from one Internet site to
+another: File Transfer Protocol (FTP).  Another consists of a means of 
+navigating various menus until the desired information is found: gopher.
+More recently, there is a system of documents connected to other documents
+via "hyperlinks": World Wide Web (or just the web).  These three protocols
+are some of the more popular ways to get information.  There are countless 
+others: USENET and WAIS, for starters.  Each of them has two main parts -
+someone distributing information and someone getting it.  The distribution
+is usually done with a "server" and the getting is done with a "client".
+Since we want to talk about Information Retrieval, we'll be explaining how
+to use the various "client" programs available.
+
+-- Note:
+	In this help sheet, if the instructions say to type "gopher" or
+	some other command, you omit the quotes.
+
+-- Note on terminology:
+	A server is a source or repository for services or resources of any
+	kind.  A client is a program that access a server and provides the
+	resources or services to the user.
+
+o FTP
+	File Transfer Protocol (ftp) is a way of directly transfering
+files from one computer to another.  It can be used to transfer your
+homework from your cs61a account to your OCF account, for instance.  You
+simply log on to your OCF account, ftp to your cs61a account, and get the
+files you want.  (Simply?  Well, more on that later...)  However, you need
+to know both passwords, so your CS Partner couldn't get the part of the 
+project you were supposed to do using ftp.  As a matter of fact, no one
+but you can get it.  But let's say you have something you want _anyone_
+to be able to get.  This is where "anonymous ftp" originated from.  Instead
+of logging onto a specific account, you ftp as "anonymous".  People put
+things on their Internet computer in a public directory, and anyone who
+can ftp to that computer can get their information.
+
+o Gopher
+	Gopher is a more visible example of the server-client relationship.
+Your gopher client connects to a gopher server.  From there, you connect 
+(by selecting items on menus) to various gopher servers, until you find what
+you are looking for.  Gopher is different from ftp: you can get files, but
+they are usually displayed on your screen (you can save them to your 
+account, though).  In addition to that, it can connect you to other sites
+with telnet, or ask you a question and search through a database, as well
+as several other things.
+
+o World Wide Web (WWW or W3)
+	The World Wide Web is the universe of network-accessible
+information, an embodiment of human knowledge. It's organization is an
+initiative started at the European Laboratory for Particle Physics located
+in Geneva, Switzerland (CERN), and now involves participants. 
+
+W3 uses hypertext and multimedia techniques to make the web easy for anyone
+to roam, browse, and contribute to. Two common programs that are available
+for inspecting W3 are Mosaic which is available for the Macintosh, PC
+compatible and UNIX environments, and lynx, a text-only client for the UNIX
+environment only. Lynx is available on the OCF, instructional machines, and
+on the CSUA machines.
+
+Hypertext is the term for a document that has the capacity for including
+elements that make it more than simply text, such as formatting
+instructions, images, sounds, movie clips, fields for inputting data, and
+most importantly, connections to other documents. This connections, called
+links, are what ties the World Wide Web together. These links can connect to
+other hypertext documents or other types of documents.
+
+How does this all work?
+
+The search and retrieval of information on the WWW is handled by the
+HyperText Transfer Protocol (HTTP), a system of conventions for the request
+and delivery of documents. HTTP is WWW's own protocol, a fast and efficient
+protocol needed for quick jumps from one document to another.
+
+There is also a method called the Common Gateway Interface for connecting
+other databases and programs to the WWW, allowing for access to a wider
+variety of information from many sources.
+
+o Internet Computer vs. Your Home Computer
+	Chances are, your computer at home isn't directly on the Internet.
+If you dial-up with a modem, and aren't using SLIP or PPP, you aren't.
+If you have a mainframe in your house with a direct Ethernet connection, then
+you can use FTP, gopher, and www directly.  If you need to log in to a
+computer, like the OCF or uclink, you can't ftp files (like games or
+pictures, like GIF's and JPEG's) to your Mac, PC, or whatever you have.
+You need to "download" them.  This is just a way of transferring information
+through your modem onto your disk.  If you don't have a fast modem, but you
+have access to a Mac or PC directly connected (like at the Microcomputer
+Facilities or at the dorms), you can use those machines to make transfers.
+
+
+News
+
+The "Network News Transfer Protocol" (NNTP) allows for the exchange over the
+internet of transient news information in the form of articles submitted by
+the public (the USENET news format). There are a large variety of subjects
+available ranging from recreational to informational. There will be a
+separate help session on the USENET and news readers. In general, it is
+difficult to obtain in depth expert information on USENET, but it is
+possible to engage in conversations with or obtain source references from
+other individuals.
+
+-FTP-
+Starting ftp
+	To start ftp (and do anything useful) you need to know where you're
+going to ftp to, like the machine your class account is on, or some public
+anonymous ftp server (like rtfm.mit.edu).  The machine you are typing the ftp
+command on is called the "local" machine, and the other machine (in this case
+danube) is the "remote" machine.  You can then type:
+	ftp danube.eecs.berkeley.edu	(or whatever machine you want)
+	And it will start your ftp session.  Alternatively, you can just
+type "ftp" at the prompt.  It will bring up a "ftp>" prompt, and from there
+you can type "open <machine>", where <machine> is the name of the computer.
+After a brief message (like a name and time), it will ask for a login.
+The default is the login on the local machine.  If you are transferring
+files between your own accounts, type the login you use on the remote
+machine.  For anonymous ftp, type "anonymous".  If you don't like typing
+anonymous (or you keep typing it wrong, like me :) you can sometimes give "ftp"
+as your login.  Then it will ask for your password.  If this is your own
+account, you need to type the correct password (so that not everyone can
+access your files).  For anonymous ftp, you type your login at the local
+machine, followed immediately by an at sign (@).  Example:
+(things I typed are in {})
+
+uclink% {ftp ftp.csua.berkeley.edu}
+Connected to ftp.csua.berkeley.edu.
+220 soda FTP server (Version wu-2.1c(17) Wed Sep 22 18:58:23 PDT 1993) ready.
+Name (soda:ekim): {anonymous}
+331 Guest login ok, send your complete e-mail address as password.
+Password: {ekim@}
+230-Welcome to soda.berkeley.edu.  Don't be a hoser.
+230-
+230-
+230-
+230-Please read the file README
+230-  it was last modified on Mon Feb 28 20:52:02 1994 - 1 day ago
+230 Guest login ok, access restrictions apply.
+ftp>
+
+Getting Help
+	You can read the man page on ftp: "man ftp" for more information.
+You can also type "help" at any ftp> prompt.
+
+Directories
+	Stuff in ftp is organized into directories, just like UNIX. (Most
+FTP sites are running UNIX, hence, the directory structure)   You start off
+in your home directory.  If you are using anonymous ftp, you usually start
+off in a directory like /pub (where the public things are kept).  Then, the
+normal directory commands work, except that instead of happening on the
+local machine, they happen on the remote machine:
+	pwd		print the working (current) remote directory
+	cd <dir>	move into the directory named <dir>
+	cd ..		move into the directory before this one
+	ls <file>	list the files on the remote machine
+	dir <file>	give long listing
+
+	The ls and dir commands accept wildcards: "?" matches one character,
+and "*" matches any number of characters.
+	Also, you can move around on the local machine.  (We recommend that
+you change into the directory you want to put the ftp stuff into before you
+start ftp'ing, but if you didn't... )
+	lcd <dir>	change local directory (.. to move up)
+	!pwd		print current local directory
+	!ls <file>	list the files on the local machine
+
+Getting files
+	Once you've gotten to the directory you want to be in, you can
+use "get" to bring them to the local machine:
+	get <remote-file> <local-file>
+	If you don't specify the local-file, it assumes you want the new
+file to be the same.  BE CAREFUL!  If you get a file that you have on both
+accounts, you will overwrite the old local version.
+	NOTE: If you are downloading games, pictures, or some types of 
+compressed files, you need to download them in "binary" mode.  Type 
+"bin" to get it.  See the Misc. Neat Stuff section.
+	There are also some other things you can do:
+	mget <file1> <file2> <file3> ...
+		Gets multiple files.  You can't rename them like with
+		get, so be careful here, too.
+	get <remote-file> |more
+	get <remote-file> |zcat
+		If the remote file is a text file, you can display it instead
+		of transferring it.  If it is a compressed text file (if
+		the name ends with .Z and you're reasonably sure it's text)
+		you can uncompress it and view it with zcat.
+
+Putting files
+	You can put files from the local machine onto the remote machine
+as well.  Use "put" and "mput" instead of "get" and "mget".  This usually
+doesn't work with anonymous ftp sites.
+
+Quiting
+	Type quit to quit ftp.  If you want, you can type "close" and
+then use "open" to open a different machine.
+
+Miscellaneous Neat Stuff
+	prompt		normally, ftp will ask you about each file when
+			you use mget or mput.  "prompt" toggles this
+	hash		will show hash marks (#) as it progresses
+	binary		set transfer mode to binary
+	ascii		set transfer mode to ascii (text)
+	status		show the status of your ftp session
+
+	Transfer mode - If you are ftp'ing binaries (like games, pictures,
+	some compressed files) you need to set it to binary mode so that
+	it doesn't mess up the transfer.  You can use binary mode for
+	text transfers, so when in doubt, use binary.  (ascii mode is
+	faster for text - it has something to do with the transfer method)
+
+-Gopher-
+Starting Gopher
+	Gopher is really easy to use (kind of like a Macintosh): everything
+is menu-driven.  You start on a main menu (the "root" gopher server) and
+branch out from there.  Type "gopher" to start your gopher client.  If you
+don't want to use the default gopher server, you can specify the one you want
+here.  For instance, if I were on UCLink, and I wanted to go right to the
+OCF's gopher, I could type "gopher ocf" from my UCLink prompt.
+
+Using Gopher
+	You begin gopher on a menu.  The current item is marked by "-->".
+You can move it with the up and down arrows, and press the right arrow or
+<return> key to select it.  If it is a menu, it will display it and wait for
+you to choose another item.  If it is a text file, gopher will get it and
+show it to you one page at a time.  You can also type an item's number to
+select it.  You can always type "?" to get help.
+	If the menu is bigger than gopher can display on your screen, it
+will say what screen you are on in the lower right corner.  Press space to
+move forward a screen or b to move back.  If it's really big (or you don't
+want to use arrow keys at all) you can search for items with "/".  Typing 
+n will repeat the last search.
+	You can use the left arrow or u to move back menus, or m to go back
+to the main menu.
+
+Text Files
+	There are a couple things you can do with the files gopher gets
+for you.  First, you can just look at them, and then hit <return> to go back
+to the previous menu.  You can also save it as a file in your account with 
+"s".  It will ask for a file name.  If you want, you can tell it to download
+it to your home computer (if that's where you are logged in from) with "D".
+You can also use "p" to print it, but this usually doesn't print where you
+want it to: it only prints to printers attached to your Internet site (like
+the ocf's printers).  You can even mail it to yourself (or someone else) with
+"m".
+
+Bookmarks
+	Gopherspace (as we refer to all the things gopher can access) is
+huge.  Chances are, you'll be running around, picking menus with wild abandon
+and you will find something you want to be able to get back to.  You're sure
+there's an easier way to get here than the complicated route you just took
+(or maybe there isn't), so you use a bookmark.  A bookmark is a way of
+leaving a little mark someplace so you can get there easily later.  On a
+specific item, you type "a" to add it to your bookmark list.  Then, later 
+on, you can type "v" to view your bookmarks, and select from your favorite
+places in gopherspace.  If you get sick of one, you can type "d" to delete
+it from your bookmark list.  Bookmarks are one of the key things to using
+gopher effectively: you build your own personal menu.
+
+Besides Text
+	There are many things gopher can offer you.  Items marked with "/"
+are directories, and items that seem normal are probably text files.  There
+are other things out there: <TEL> marks a telnet session.  Gopher will
+connect you via telnet to some site.  <CSO> marks a name server that will
+lookup people for you (like a phonebook).  <?> is a general symbol meaning
+that gopher will ask you a question, like what keywords to search for, and
+then go do it.  Two more are <Picture> and <), meaning a graphic and sound
+respectively.  Most computers where you are using gopher can't access these
+directly, although you can download them.
+
+Quiting Gopher
+	Type "q" to quit from any point within gopher.
+
+-The Web-
+	The World Wide Web consists of documents linked together with 
+"hyperlinks".  You start on your "home page" and work your way out from
+there.  Unlike gopher, there is no specific client.  Any "browser" that
+understands the links can use the web.  Which one you use depends a lot
+on what kind of hook-up you have.  If you are on a terminal (either in
+a terminal room like 199 Cory or at home using a modem and communications
+program) you are limited to text (no graphics) and can use "www" or "lynx"
+This is fine, but to really get the most out of the web, you need some
+sort of graphics terminal (i.e. xterm or PC/Mac on the Internet)  Then
+you can use Mosaic: a graphical web browser.  For X, it's called xmosaic,
+the PC's and Mac's just call it Mosaic or NSCA Mosaic.  There are other
+programs as well, such as chimera.  We'll be concentrating on one of the
+text browsers, lynx.  If you can use lynx, using Mosaic is easy to figure
+out.  If you're computer doesn't have lynx, you can try "www".  Many of the
+commands are the same.
+
+About the format of the Web
+	The Web uses an address form called a URL: Uniform Resource Locator.
+The first part shows what type of resource it is, and last part is its
+address on the internet.   Some resource examples are "http" for another
+web server document and "file" for a simple text document.  The address 
+consists of a machine name, and then the location of a file on that machine.
+An example URL would be:
+http://www.cis.ohio-state.edu/hypertext/faq/usenet/top.html
+	This is a web document.  It is written in HyperText Markup Language
+(html).  This means it probably contains other hyperlinks, a well as
+special formating information.
+
+Lynx basics
+	To start lynx, type "lynx".  It will load your default homepage.  If
+you don't like that one, and you have another one, you can specify your
+homepage: "lynx <homepage.html>" or whatever your homepage is called.  From
+this home page, you can use the up and down arrows to move up and down
+between highlighted words.  Each of those words is called an "anchor" - it 
+is a link to another document.  You can press return or right arrow to get
+next document, or left to go to the one before this one, and <space> to get
+the next page.
+	You can type h or help to get help, and q to quit.  If you aren't 
+using lynx, and there a numbers in brackets after certain items instead
+of highlights, you can press a number to follow a link.  You can type delete
+to get a history list.  Type "o" to get options, and "m" to back to your
+homepage.  You can also use the search command to search for keywords
+in the current document.
+	If you know a specific URL, you can use "g" to go to it directly.
+You need to type the whole URL:
+URL to open: http://www.cis.ohio-state.edu/hypertext/faq/usenet/top.html
+
+Bookmarks
+	Bookmarks on the web are similar to those in gopher.  When reading a
+document, press "a" to add it to your bookmark list, and type "v" to access
+your bookmarks.  You must specific your bookmark file within the options.
+(Press "o" to get them)  Your bookmark page is just link another html file.
+
+Options
+	One of the most important options is the bookmark file.  You can
+call it whatever you want, I recommend bookmarks.html or something similar.
+It will store this information and all your other options in a file
+called .lynxrc.  You can play with the other options.  For instance,
+if you don't like arrow keys, you can specify that you want the vi or
+emacs keys to work instead.  After making changes, type ">" to save them
+and "r" to return to lynx.
+
+-Downloading/Uploading-
+	Many people want to know how to get files from their Internet 
+account to their home computer.  There are many reasons why you might
+want to do this: you found a game or useful program on some ftp site, you
+found an archive of GIF's (computer pictures) that you want to see on your
+computer, or maybe you're running our of room on your account and you can
+store some of that information on your hard drive.  Whatever the reason,
+you need to establish a transfer of files between your PC or Mac and your
+Internet computer.
+	Luckily, most (if not all) communications software comes with this
+ability.  If you've used your comm. program at all, you noticed something
+"SEND" and "RECEIVE" options, or "Z-modem" or "Kermit".  These are all 
+transfer protocols (like ftp is a transfer protocol for UNIX machines) 
+between modems.  The most common one is Zmodem.  To use it from UNIX,
+you type "sz <filename>".  If it is a binary (which it probably is)
+you should use "sz -b <filename>", although most sz's automagically do this.
+Then, one of two things happen: either your modem program picks up and says
+"Aha!  I'm getting Zmodem" and it will begin its side of the transfer
+automatically, or (especially with older programs) you need to tell your
+program to "Receive Zmodem".  This will usually work.  If it doesn't, you
+might see what options are available on your communications program.
+	There are other protocols available if Zmodem does not function
+(or your program doesn't support it).  There's also Ymodem and Xmodem.  Read
+the man page on sz (or sx/sy) for more info.  Also, there's kermit.
+	Kermit is slower than Zmodem.  Type "kermit -help" to get a little
+information.  Basically, you type "kermit -s <files>" to send and 
+"kermit -r" to receive.
+	Sending files from your home computer to UNIX is just the opposite.
+You type "rz" or "rz -b" and the computer responds with "ready... type
+sz file to your modem program" and then you select "Send Zmodem" with your
+modem program.  Again, if this doesn't work, try a different protocol.
+
+

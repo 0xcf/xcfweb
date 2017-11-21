@@ -1,0 +1,240 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>Variables</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="make"
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="Writing makefiles"
+HREF="c31.html"><LINK
+REL="PREVIOUS"
+TITLE="Basic rule construction"
+HREF="x49.html"><LINK
+REL="NEXT"
+TITLE="A useful example"
+HREF="x136.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>make</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x49.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 2. Writing makefiles</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x136.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN109"
+>Variables</A
+></H1
+><P
+><B
+CLASS="COMMAND"
+>make</B
+> variables are often a sore point, but
+they need not be.  True, their syntax is abhorrent and it is
+impossible to remember what the single-character variables mean, but
+they really are pretty useful. </P
+><P
+>There are a couple of things to keep in mind.  First, all
+exported shell environment variables are accessible in
+<B
+CLASS="COMMAND"
+>make</B
+>.  Second, most <B
+CLASS="COMMAND"
+>make</B
+>
+variables must be referenced using <TT
+CLASS="LITERAL"
+>$(variable)</TT
+>
+instead of the typical <TT
+CLASS="LITERAL"
+>$variable</TT
+> which we use in
+shell.  Sometimes you will see <TT
+CLASS="LITERAL"
+>${variable}</TT
+> used,
+but I think it's sort of ugly.</P
+><P
+>Single-character variables are special.  In <A
+HREF="x49.html#SIMPLE-MAKEFILE"
+>Figure 2-3</A
+>, we saw <TT
+CLASS="LITERAL"
+>$@</TT
+> and
+<TT
+CLASS="LITERAL"
+>$^</TT
+>.  <TT
+CLASS="LITERAL"
+>$@</TT
+> refers to the rule
+target and <TT
+CLASS="LITERAL"
+>$&lt;</TT
+> refers to the rule's first
+dependency.  <TT
+CLASS="LITERAL"
+>$^</TT
+> which we will talk about later,
+refers to all depedencies. There are others, of course, but we won't
+talk about them here.</P
+><P
+>If an update method needs to refer to a shell variable, such as
+in the following contrived example (<A
+HREF="x109.html#CONTRIVED"
+>Figure 2-4</A
+>), then
+the <TT
+CLASS="LITERAL"
+>$</TT
+> must be escaped with a <TT
+CLASS="LITERAL"
+>$</TT
+>,
+making the variable reference look like this:
+<TT
+CLASS="LITERAL"
+>$$variable</TT
+>.
+<DIV
+CLASS="FIGURE"
+><P
+><B
+><A
+NAME="CONTRIVED"
+>Figure 2-4. Using shell variables in update methods.  Note the use of
+<TT
+CLASS="LITERAL"
+>$$</TT
+> to refer to the shell variable
+<TT
+CLASS="LITERAL"
+>i</TT
+>.</A
+></B
+></P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>target: dependency
+	# When we update this target we need to mail a bunch of people
+	# about it.
+	for i in jim chuck joe; do \
+	   echo "$@ updated" | mail $$i -s "$@ updated"; \
+	done</PRE
+></TD
+></TR
+></TABLE
+></DIV
+></P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x49.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x136.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Basic rule construction</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c31.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>A useful example</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

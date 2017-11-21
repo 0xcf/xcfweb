@@ -1,2 +1,3 @@
 # xcfweb
-The website of the XCF, currently at ocf.io/xcf.
+
+A mirror of the website currently located at xcf.berkeley.edu

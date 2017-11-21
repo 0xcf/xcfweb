@@ -1,0 +1,359 @@
+<HTML>
+
+<HEAD>
+<TITLE>
+XCF Virtual Help Session | C Tricks
+</TITLE>
+
+<META NAME="Revision"
+      CONTENT="$Id: c-tricks.html 1.4 Tue, 23 Sep 1997 22:22:31 -0800 misha $
+               $ProjectHeader: helpPages 0.13 Fri, 20 Mar 1998 21:52:06 -0800 jsled $">
+
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" BACKGROUND="vhsbg.gif">
+
+<H1 ALIGN=center>C Tricks</H1>
+<H3 ALIGN=center>XCF Virtual Help Session</H3>
+
+<HR WIDTH=50%>
+
+This page describes some non-trivial usage of the C programming langauge.
+Covered topics include: standard idioms, preprocessor macros, unexpected
+syntax constructs.  While not all the code presented can be considered 
+an example of a good
+software engineering practice, stretching the boundaries of C
+will lead to better understanding of the language.  Other benefit of
+learning these tricks include potential to make a better impression
+on a prospective employer (some of the problems reviewed were known to
+be a basis for a question at technical interview).
+<p>
+Prerequisites: basic knowledge of C; access to a
+<a href="c-tricks.html#books">good C book</a>.
+<hr>
+<h3>
+Table of contents
+</h3>
+<ul>
+<li><a href="c-tricks.html#numelm">Calculating length of an array</a>
+<li><a href="c-tricks.html#define">More on preprocessor macros</a>
+<li><a href="c-tricks.html#sub">Why some people love C, and others hate it</a>
+		(subscript operator)
+<li><a href="c-tricks.html#notnot">2 B || ! 2 B</a> (!!x expression) 
+<li><a href="c-tricks.html#ptr2fn">Pointers to functions</a>
+<li><a href="c-tricks.html#qsort">Sorting strings with qsort()</a>
+<li><a href="c-tricks.html#global">Avoiding duplicate declarations</a> (GLOBAL macro)
+<li><a href="c-tricks.html#books">Books</a>
+<li><a href="c-tricks.html#href">Links</a>
+<li><a href="c-tricks.html#todo">Planned additions</a>
+</ul>
+<a name="numelm"><hr></a>
+<h3>
+Calculating length of an array
+</h3>
+Ever wondered why C does not have a built-in operator to get the number
+of elements
+in an array?  That's because such functionality can be easily implemented by
+a programmer in a one-line macro:
+<pre>
+/* Returns the number of elements in the array */
+#define NumElm(array) (sizeof (array) / sizeof ((array)[0]))
+</pre>
+This macro computes the number of elements in an array by dividing the total
+size of an array by the size of a single element.  The most important point
+to note is that this calculation is done at <b>compile time</b>; this
+not only makes the use of this macro as efficient at run-time as replacing
+the macro call with a constant, but also allows the use of the macro call
+in a context where constant expressions are required, so you can write something
+like this:
+<pre>
+int a[10];
+int b[NumElm(a)];	/* equivalent to <i>int b[10];</i> */
+</pre>
+This is a standard way to calculate array length in C; it is described in
+K&R.
+<p>
+Note that this works only with "real" arrays; the result of this macro when
+given a pointer as an argument is meaningless (there is no general way
+to get a number of objects pointed to by a pointer -- pointers to objects and
+pointers to arrays of objects are the same thing in C.  That's a feature.)
+<a name="define"><hr></a>
+<h3>
+More on preprocessor macros
+</h3>
+C preprocessor macros can be used with great benefits; but you have to know
+how to write them, or you can run into unexpected problems.  For example,
+let's look at the following innocent-looking <tt>#define</tt>:
+<pre>
+/* WRONG! */
+#define SQUARE(x)   x * x
+</pre>
+Does it work?  Most of the time.  But when someone (not necessarily the
+author of the macro) attempts to calculate <tt>SQUARE(3 - 1)</tt>, he or
+she gets <tt>-1</tt>.  Surprising, isn't it?
+The problem is especially
+hard to trace if the macro call is hidden in a large expression.
+<p>
+These problems arise because C macros are expanded at the preprocessor
+level, and all syntax and semantic analysis is done <b>after</b> this
+stage.  Preproccesor simply
+replaces <tt>SQUARE(3 - 1)</tt> with
+<tt>3 - 1 * 3 - 1</tt>, which is, of course, parsed as <tt>3 - (1*3) - 1</tt>
+and evaluated to <tt>-1</tt>.  This bug can be fixed by puting parentheses
+around all references to arguments in a macro definition; but that still
+leaves some problems unsolved.  Let's look at a bit different macro:
+<pre>
+/* STILL WRONG! */
+#define DOUBLE(x)   (x) + (x)
+</pre>
+Again, this works sometimes and misteriously gives incorrect results in other
+expressions.  For example, <tt>DOUBLE(2)*10</tt> gives an unexpected result,
+because precedence of multiplication is higher than that of addition.  This
+can be fixed by enclosing the macro body in parentheses:
+<pre>
+/* Sort of right, but see below.. */
+#define DOUBLE(x)   ((x) + (x))
+</pre>
+This is the best we can do as far as preprocessor macros go.  But there are
+still pitfalls: <tt>x</tt> is evaluated twice, so if an argument to a macro
+has any side effects
+(for example, <tt>++</tt> or <tt>--</tt>, or a call to a function), then 
+again the Wrong Things will happen.  This can't be avoided, and therefore
+this behaviour is officially declared a Feature.  BTW, the convention
+to use upper case letters for macro names is a good thing because
+it alerts the programmer to potential problems.
+<p>
+Morale: write macros defensively, puting parentheses around arguments and
+macro body; do not pass expressions with side effects to macros; use
+alternatives (such as inline functions) whenever possible.
+<a name="sub"><hr></a>
+<h3>
+Why some people love C, and others hate it
+</h3>
+<pre>
+/* It compiles without a warning.  <i>Really.</i>  Try it. */
+int x[10]; 5[x] = 42;
+</pre>
+Disclaimer: do not use this expression in production code -
+I will not pay your unemployment benefits.  <b>Don't say I didn't warn you.</b>
+<p>
+This example demonstartes an interesting point.  The subscript operator,
+<tt>x[y]</tt>, is really symmetric, despite the asymmetric notation.  Really,
+<tt>x[y]</tt> is exactly the same as <tt>*(x+y)</tt> which is of course
+the same as <tt>*(y+x)</tt> which is equivalent to <tt>y[x]</tt>.
+So, <tt>x[y]</tt> is equivalent to <tt>y[x]</tt>. QED.
+<p>
+Depending on your point of view, this can be either cute or disgusting.
+<a name="notnot"><hr></a>
+<h3>
+<tt>2 B || ! 2 B</tt>
+</h3>
+<pre>
+/* equivalent to (x ? 1 : 0) */
+int y = !!x;
+</pre>
+Another one of the "don't try this at home" C syntax hacks.  Evaluates to
+<tt>1</tt> if <tt>x</tt> is non-zero; evaluates to <tt>0</tt> if
+<tt>x</tt> is <tt>0</tt>.  This example
+llustrates the difference between <tt>~</tt>
+(bitwise NOT) and <tt>!</tt> (logical NOT).  While <tt>~~x</tt> is <tt>x</tt>,
+the result of <tt>!</tt> is <tt>1</tt> or <tt>0</tt>; so double application
+of <tt>!</tt> "maps" all non-zero numbers to <tt>1</tt>.  For example,
+in the following expression
+<pre>
+int count = !!x + !!y + !!z;
+</pre>
+<tt>count</tt> is assigned the number of non-zero variables in {x, y, z}.
+<p>
+Surgeon general's warning: using this syntax can be bad for your health.
+BTW, <tt>x</tt> can sometimes be a pointer, too.
+
+<a name="ptr2fn"><hr></a>
+<h3>
+Pointers to functions
+</h3>
+In C, pointers to functions are not used as much as they could be used.
+I am convinced that the primary reason for this is that nobody remembers
+the syntax for the declaration.  The solution is simple: just look up
+an example in any decent book or self-respecting header file.
+After a couple of years -- you have memorized it!
+<p>
+For your convinience,
+I'll include an example here.  If you have a function that takes an integer
+and returns a pointer, such as 
+<pre>
+char * foo (int);
+</pre>
+then defining a corresponding function pointer type is easy -- just
+replace function name with <tt>(*varname)</tt>:
+<pre>
+char * (*fooptr) (int) = foo;
+</pre>
+Note that parentheses are <b>required</b>; otherwise, instead of a
+declaration of a pointer to a function that returns a pointer you will
+get a declaration of a function that returns a pointer to a pointer, which
+is obviously not what you intended.
+<p>
+It is often handy to a define a function pointer type.  This is done by
+puting <tt>typedef</tt> in front of the declaration the and substituting
+type name for variable name:
+<pre>
+typedef char * (*footype) (int);
+</pre>
+You can you use your type to declare variables, but not functions:
+<pre>
+footype baz = foo; /* Ok */
+foo this_doesnt_work { return (NULL); } /* Can't do that */
+</pre>
+You can use function pointers to do many interesting things, some more
+acceptable in production code than others.  Example of the latter: you
+can shorten the notation of
+<pre>
+if (z) then x(a, b); else y(a, b);
+</pre>
+not only to
+<pre>
+z ? x(a, b) : y(a, b);
+</pre>
+but further to
+<pre>
+(z ? x : y) (a, b);
+</pre>
+<a name="qsort"><hr></a>
+<h3>
+Sorting strings with <tt>qsort()</tt>
+</h3>
+On a more practical note, a C programmer usually encounters function
+pointers for the first time when dealing with the <tt>qsort()</tt>
+function.  Often, the problem is to sort strings;
+<pre>
+const char **base;
+int nel;
+qsort(base, nel, sizeof (char *), strcmp) /* Wrong! */
+</pre>
+seems like a perfect candidate for the job, and it usually compiles;
+but it doesn't work as expected!
+Figuring out why it doesn't work leads to better
+understanding of pointers and is a good investment of time;
+I will not include a complete explanation here
+and will just provide the correct solution:
+<pre>
+/* of course this function can be written in one line... */
+int strptrcmp (void *p1, void *p2)
+{
+    const char *s1 = *((const char **) p1);
+    const char *s2 = *((const char **) p1);
+
+    return (strcmp (s1, s2));
+}
+
+/* ... */
+const char **base;
+int nel;
+qsort(base, nel, sizeof (char *), strptrcmp);
+</pre>
+<a name="global"><hr></a>
+<h3>
+Avoiding duplicate declarations
+</h3>
+Now here is a neat preprocessor trick.  It is similar in style
+to the standard way of forcing header files to be included only once.
+Almost every header file looks like this:
+<pre>
+#ifndef _SOMEHEADER_H_
+#define _SOMEHEADER_H_
+
+/* Header file body... */
+
+#endif /* ! _SOMEHEADER_H_ */
+</pre>
+This <tt>#ifdef</tt>'s out the body of the header file on second and
+subsequent includes; this avoids duplicate declarations and potential
+infinite recursion in inclusion.  Smart compilers (such as <tt>gcc</tt>)
+don't even open the file the second time it's referenced.
+<p>
+Here's how to use preprocessor to avoid declaring global variables two
+times (one, as <tt>extern</tt>, in header file, and one in <tt>.c</tt> file).
+In your header file, use the following code:
+<pre>
+#ifdef I_AM_MAIN
+#define GLOBAL /*nothing*/
+#else
+#define GLOBAL extern
+#endif
+
+/* Global variables declared below... */
+GLOBAL int foo;
+GLOBAL char *bar;
+/* etc. */
+</pre>
+Just include the header file as usual; all the <tt>GLOBAL</tt> declarations
+will be converted to <tt>extern</tt>.  And in exactly one source file
+(usually the main file of the project), insert the line
+<pre>
+#define I_AM_MAIN
+</pre>
+<b>before</b> including the header file.  As a result, the variables will
+be declared without <tt>extern</tt>, and storage will be allocated for
+them.  This trick avoids duplicate declarations and helps keep variable
+declarations in sync (just think of the consequences of declaring
+a <tt>char x[];</tt> in one file as <tt>extern char *x</tt> in
+another...)  It is trivial to write a macro to handle initializations
+of global variables declared in this way.
+<p>
+Oh, and one more thing: <b>don't</b> call global variables <tt>foo</tt> or
+<tt>bar</tt>.
+
+<a name="books"><hr></a>
+<h3>
+Books
+</h3>
+I mean, <b>the</b> Book.<p>
+<b>The C Programming Language, Second Edition</b><br>
+<i>By Kernighan, Brian W. / Ritchie, Dennis</i>; Softcover; 272 Pages<br>
+Published by Prentice Hall; 06/88; ISBN: 0131103628<p>
+I have two copies; one of them -- hardcover (in Russian).  How many
+copies of <i>K&R</i> do <b>you</b> have?
+
+<a name="href"><hr></a>
+<h3>
+Links
+</h3>
+Some pages of interest:
+<ul>
+<li><a href="http://www.lysator.liu.se/c/">Programming in C</a> -- best
+collection of resources I found.  Includes some interesting historic
+documents.
+<li><a href="javascript:alert('link disabled in archive')">The International
+			Obfuscated C Code Contest</a> --
+you think code on this page is obfuscated?  Wait till you see the real thing...
+<li><a href="http://www.eskimo.com/~scs/C-faq/top.html">comp.lang.c
+		Frequently Asked Questions</a> -- the canonical C FAQ list.
+</ul>
+<a name="todo"><hr></a>
+<h3>
+Planned additions
+</h3>
+This page is a work in progress; it is currently in an alpha stage.
+I plan to extend both books and links sections, as well as add description
+of many more tricks.  Some things I plan to cover:
+<ul>
+<li>member functions
+<li>assignments in conditions
+<li>member access macros
+<li><tt>strcpy()</tt> implementations
+<li>printing a list
+<li>and probably more...
+</ul>
+<HR>
+<DIV ALIGN=center>
+[ <A HREF="../index.html">Return to XCF home page</A> | <A HREF="../help-sessions.html">Return to Help Sessions main page</A> |
+<A HREF="c-tricks.html">Return to VHS home page</A> ]
+</DIV>
+<DIV ALIGN=right>
+Author: <A HREF="javascript:alert('link disabled in archive')">Misha Dynin</A><BR>
+$Id: c-tricks.html 1.4 Tue, 23 Sep 1997 22:22:31 -0800 misha $<BR>
+</DIV>
+
+</BODY>
+</HTML>

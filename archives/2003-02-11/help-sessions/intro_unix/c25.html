@@ -1,0 +1,402 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>I have an account. What now?</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="Introduction to Unix"
+HREF="book1.html"><LINK
+REL="PREVIOUS"
+TITLE="Introduction to Unix"
+HREF="book1.html"><LINK
+REL="NEXT"
+TITLE="A few basic commands"
+HREF="javascript:alert('link disabled in archive')"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>Introduction to Unix</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="book1.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="javascript:alert('link disabled in archive')"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="AEN25"
+>Chapter 1. I have an account. What now?</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="c25.html#AEN29"
+>The Beginning: logging in</A
+></DT
+><DT
+><A
+HREF="javascript:alert('link disabled in archive')"
+>A few basic commands</A
+></DT
+></DL
+></DIV
+><P
+>Well, what can you do with a Unix account?  Just about anything you
+want.  You can read and send mail and news from it, program, do online
+research, and a whole bunch of other things.  You can use it for
+"serious" work or for fun.  Serious work might include writing code in
+C or C++, researching the history of art, or writing up a technical
+paper; fun might include writing code in C or C++, playing games,
+reading news, or trying to figure out <I
+CLASS="EMPHASIS"
+>how</I
+> to write
+up that technical paper. </P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN29"
+>The Beginning: logging in</A
+></H1
+><P
+>You can login by a number of means, the main means being
+<B
+CLASS="COMMAND"
+>telnet</B
+> and <B
+CLASS="COMMAND"
+>rlogin</B
+>.  There are other
+means that are variations on these, but these are the important ones.</P
+><P
+>To use <B
+CLASS="COMMAND"
+>telnet</B
+>, you can use a command like this:</P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>%</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>telnet cory.eecs</B
+></TT
+>
+Trying 128.32.138.81...
+Connected to cory.eecs.Berkeley.EDU.
+Escape character is '^]'.
+
+ULTRIX V4.4 (Rev. 69) (cory.EECS.Berkeley.EDU)
+
+login: <TT
+CLASS="USERINPUT"
+><B
+>&lt;Enter your login or account name here&gt;</B
+></TT
+>
+password: <TT
+CLASS="USERINPUT"
+><B
+>&lt;Enter your password here; remember, it won't be visible&gt;</B
+></TT
+></PRE
+></TD
+></TR
+></TABLE
+><P
+>This is an example of how to use telnet from a Unix system.  There
+are also telnet programs available for MacOS, <SPAN
+CLASS="ACRONYM"
+>OS/2</SPAN
+>,
+and Windows 95; it is included with the system software on all platforms.  The
+<B
+CLASS="COMMAND"
+>rlogin</B
+> command was once more or less a Unix specific command, though
+there are now versions available for non-Unix machines.  Here is how
+one might use the <B
+CLASS="COMMAND"
+>rlogin</B
+> command on a Unix system:</P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>%</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>rlogin cory.eecs</B
+></TT
+>
+<TT
+CLASS="PROMPT"
+>Password:</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>&lt;Enter your password&gt;</B
+></TT
+></PRE
+></TD
+></TR
+></TABLE
+><P
+>The <B
+CLASS="COMMAND"
+>rlogin</B
+> command will assume that your account name is the
+same as that on the account that you wish to login to.  This, and its
+relatives, <B
+CLASS="COMMAND"
+>rsh</B
+> (remote shell) and <B
+CLASS="COMMAND"
+>rcp</B
+> (remote copy), along
+with its more security conscious friends, <B
+CLASS="COMMAND"
+>ssh</B
+> (secure shell, which serves 
+also a replacement for <B
+CLASS="COMMAND"
+>rlogin</B
+>) and <B
+CLASS="COMMAND"
+>scp</B
+>
+(secure copy), can also be set up to log you in without a password.  With
+<B
+CLASS="COMMAND"
+>rsh</B
+>/<B
+CLASS="COMMAND"
+>rlogin</B
+>/<B
+CLASS="COMMAND"
+>rcp</B
+>,
+this can be done with a file called <B
+CLASS="COMMAND"
+>.rhosts</B
+> in your home
+directory.  It has the following format:
+<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>soda.CSUA.Berkeley.EDU jon
+ocf.Berkeley.EDU helper
+scam.XCF.Berkeley.EDU </PRE
+></TD
+></TR
+></TABLE
+></P
+><P
+>What this means is that for this account, the user jon is permitted to 
+login in from soda.CSUA.Berkeley.EDU without a password, and similarly for
+the next two lines.  If you omit the second part of each line, then 
+one may login to the this  account only if one has the same login,
+that is helper@scam.xcf.berkeley.edu, in the case of the last line.</P
+><DIV
+CLASS="WARNING"
+><P
+></P
+><TABLE
+CLASS="WARNING"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>Note that the <B
+CLASS="COMMAND"
+>r*</B
+> programs (<B
+CLASS="COMMAND"
+>rlogin</B
+>,
+<B
+CLASS="COMMAND"
+>rsh</B
+>, etc.) are really insecure; most every unix machine
+(indeed, all instructional EECS machines) have SSH installed, which should
+be used instead.  It beehooves you to learn and use SSH on a regular basis.</P
+></TD
+></TR
+></TABLE
+></DIV
+><P
+>After you login, the system will print out the contents of the file
+<TT
+CLASS="FILENAME"
+>/etc/motd</TT
+>, also known as the "message-of-the-day".
+You should take the time to read this file as it will often contain important
+information.  Then, the system will give you a prompt to tell you it
+is ready for your commands.
+<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>%</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>&lt;Now, it is your turn to say something&gt;</B
+></TT
+></PRE
+></TD
+></TR
+></TABLE
+></P
+><P
+>Well, now what?  You have logged in.  That means that somehow, you
+have shown to some degree of certainty that you are the person
+associated with a certain account name.  After the system is convinced
+of this, it will put you, figuratively, in a directory known as your
+home directory.  This is where most of your personal files are stored
+and it usually has a name like
+<TT
+CLASS="FILENAME"
+>/home/d/users/jonboy</TT
+> or
+something like that.  Your home directory is like your own personal
+filing cabinet.  You can place files in it, have folders (called
+directories in Unix parlance) with more files and even directories
+in those as well.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="javascript:alert('link disabled in archive')"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Introduction to Unix</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>A few basic commands</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

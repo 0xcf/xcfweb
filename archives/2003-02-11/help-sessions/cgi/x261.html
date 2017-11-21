@@ -1,0 +1,259 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>Segmented User Interaction</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="CGI Programming and You"
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="Programming Paradigm"
+HREF="c244.html"><LINK
+REL="PREVIOUS"
+TITLE="Programming Paradigm"
+HREF="c244.html"><LINK
+REL="NEXT"
+TITLE="Multiple Simultaneous Invocations"
+HREF="x292.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>CGI Programming and You</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="c244.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 4. Programming Paradigm</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x292.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="SEC4.2"
+>Segmented User Interaction</A
+></H1
+><P
+>Because of the above fact, one of the most frustrating aspects
+of CGI programming is the fact that interaction with the user [through
+HTML forms] is segmented up into web-page-sized chunks.  Since the
+program does not continue to run between multiple form submissions,
+data from previous stages of processing must somehow be saved for
+future pages to deal with. </P
+><P
+>Because of this, complex CGI programs often take the form of a
+collection of programs, each which processes one form and which each
+have the ability to do the necessary processing.  Libraries of common
+program behavior [accessing server-stored files, etc] are crucial to
+CGI programming.</P
+><P
+>This is where the topic of persistence comes into play most
+importantly.  Say, for instance, that the CGI program determines user
+information and authorization on the first page; on the third page,
+that data is required.  What happens to the data in the mean time?
+Since the CGI programs stop running, the data cannot be simply stored
+into a data structure in memory and accessed later when
+necessary... what to do, what to do?</P
+><P
+>There are a few solutions to this problem:
+<P
+></P
+><OL
+TYPE="1"
+><LI
+><P
+>Require the user to authorize on the second page.  If
+the user's authorization isn't really required to create the second
+page, then this may be an option... but in general the user's
+authorization is required as early as possible [so the appropriate
+data can be shown] and near the end of the processing [to authorize
+changes being made to data].</P
+></LI
+><LI
+><P
+>Store the user's authorization data on the web server.
+A combination of the IP address of the client, a timestamp and the
+identity should work, given a reasonable timeout|expiration value.
+But if the user goes to get a cup of coffee and comes back to finish
+processing the form, the timeout will have expired and the user will
+have to re-authorize... which isn't the best thing in the
+world.</P
+></LI
+><LI
+><P
+>Client-side persistence through
+<I
+CLASS="EMPHASIS"
+>hidden</I
+> fields.  The
+<TT
+CLASS="LITERAL"
+>&lt;INPUT&gt;</TT
+> HTML form field has a special type of
+"<TT
+CLASS="LITERAL"
+>HIDDEN</TT
+>", the basic meaning of which is that it
+will be submitted with the form, but it is not displayed by the web
+browser with the form.  However, since it is part of the HTML of the
+form, it could conceivably be edited by the client, and this can
+introduce a security hole of sorts.</P
+></LI
+><LI
+><P
+>Client-side persistence with cookies.  This is another
+viable option, but with the following caveats:
+<P
+></P
+><UL
+><LI
+><P
+>Some people hate cookies, and don't accept them.  If
+the cookie isn't accepted, then your script won't work.  If you use
+cookies, have a backup system [like hidden fields] if the cookies
+aren't accepted.</P
+></LI
+><LI
+><P
+>Cookies, stored on the client machine, are also open
+for editing.  However, editing is a little easier to do than with
+hidden fields.</P
+></LI
+></UL
+></P
+></LI
+><LI
+><BLOCKQUOTE
+><SPAN
+CLASS="ATTRIBUTION"
+>From: James Wang 
+<TT
+CLASS="EMAIL"
+>&#60;<A
+HREF="javascript:alert('link disabled in archive')"
+>jwang@csua.berkeley.edu</A
+>&#62;</TT
+></SPAN
+><P
+>Define an authorization realm in the
+<TT
+CLASS="FILENAME"
+>.htaccess</TT
+> on the server, and use it to protect
+the CGI URL. The client will need to authorize when reaching the CGI
+URL, and authorization will be implicit through the rest of
+processing.  This is a great solution to user authorization
+persistence, but any other stored, persistent data will need to be
+handled by one of the other methods.</P
+></BLOCKQUOTE
+></LI
+></OL
+></P
+><P
+>None of these solutions are really elegant (well... the last one
+is pretty nice).  This fact is what makes CGI programming a royal pain
+after a while.</P
+><P
+>This segmented user interaction must be designed into the
+program from the beginning.  One of the most important things you can
+do after you have the concept of what the CGI program is going to do
+[overall], is to decide through mock-ups of the forms how it is going
+to go about doing it.  The data required for each stage of processing
+must be determined before hand and carried throughout the different
+stages of processing.  Design is very important in CGI programming for
+all but the simplest programs.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="c244.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x292.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Programming Paradigm</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c244.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Multiple Simultaneous Invocations</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

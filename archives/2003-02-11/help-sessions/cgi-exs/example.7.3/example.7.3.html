@@ -1,0 +1,51 @@
+<HTML>
+
+<HEAD>
+
+<META NAME="Author"
+      CONTENT="Joshua M. Sled <jsled@uclink4.berkeley.edu>">
+
+<TITLE>Example 7.3 | Server-Side generated HTML content</TITLE>
+
+</HEAD>
+
+<BODY BGCOLOR="#ffffff">
+
+<H2>Example 7.3 | Server-Side generated HTML content</H2>
+
+<BR CLEAR=all>
+<HR>
+
+This is an example of a CGI script which consults a server-side file
+which contains extra information, indexed by product number, which is
+to be returned as an HTML page.  This allows data to be presented on
+the web without pre-creating HTML files for all the data.  As well, if
+the file is modified frequently, re-generation of those pages would be
+a chore, at best.  This allows current data to be generated
+on-the-fly, as requested.
+<P>
+
+<A HREF="javascript:alert('link disabled in archive')">
+<TT>example.7.3.cgi</TT> source</A><BR> 
+<A HREF="javascript:alert('link disabled in archive')">
+<TT>print-source.cgi</TT> source</A> 
+
+<BR CLEAR=all>
+<HR>
+
+<FORM METHOD=post ACTION="http://xcf.berkeley.edu/archives/2003-02-11/help-sessions/cgi-exs/example.7.3/example.7.3.cgi">
+
+Product 1 Data <INPUT TYPE=radio NAME="product" VALUE="0001"><BR>
+
+
+Product 2 Data <INPUT TYPE=radio NAME="product" VALUE="0002"><BR>
+
+
+Product 3 Data <INPUT TYPE=radio NAME="product" VALUE="0003"><BR>
+
+<INPUT TYPE=submit>
+
+</FORM>
+
+</BODY>
+</HTML>

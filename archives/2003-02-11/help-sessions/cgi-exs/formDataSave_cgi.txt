@@ -1,0 +1,46 @@
+#!/usr/bin/perl
+
+print "Content-Type: text/html\n\n";
+
+# Print HTML header
+print <<EOHH;
+<HTML>
+<HEAD>
+<TITLE>formDataSave.cgi</TITLE>
+</HEAD>
+<BODY BGCOLOR="#ffffff">
+EOHH
+
+# Get the request method
+$reqMeth = $ENV{"REQUEST_METHOD"};
+
+# Open the file to which to save the form data
+open(FD, ">form.data") || print "<H1>Error opening \"form.data\"</H1>\n";
+
+print "Form Data: ";
+
+if ($reqMeth eq "GET") {
+    # If the method is "GET", the data is in the REQUEST_METHOD
+    # environment variable
+    print $ENV{"QUERY_STRING"};
+    print FD $ENV{"QUERY_STRING"};
+} elsif ($reqMeth eq "POST") {
+    # If the method is "POST", the data is one line on standard input
+    $line = <STDIN>;
+    print $line;
+    print FD $line;
+} else {
+    # Otherwise, we don't know.
+    print "<H1>Cannot determine form data method</H1>\n";
+} # end if-elsif-else
+
+# Close the file
+close FD;
+
+# Print the HTML footer
+print <<EOHF;
+</BODY>
+</HTML>
+EOHF
+
+# Done

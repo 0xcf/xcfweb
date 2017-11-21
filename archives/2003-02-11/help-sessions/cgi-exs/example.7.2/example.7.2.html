@@ -1,0 +1,58 @@
+<HTML>
+
+<HEAD>
+
+<META NAME="Author"
+      CONTENT="Joshua M. Sled <jsled@uclink4.berkeley.edu>">
+
+<TITLE>Example 7.2 | Basic Form Decoding/Output Example</TITLE>
+
+</HEAD>
+
+<BODY BGCOLOR="#ffffff">
+
+<H2>Example 7.2 | Basic Form Decoding/Output Example</H2>
+
+<BR CLEAR=all>
+<HR>
+
+This example is of very rudimentary form decoding and data
+regurgitation.  The data from the form below will be processed by the
+CGI script and will be spit back to the user unchanged.  It merely
+serves to provide and example of exactly how this is done.
+
+<P>
+
+<A HREF="javascript:alert('link disabled in archive')">
+<TT>example.7.2.cgi</TT> source</A><BR> 
+<A HREF="javascript:alert('link disabled in archive')">
+<TT>print-source.cgi</TT> source</A> 
+
+<BR CLEAR=all>
+<HR>
+
+<FORM METHOD=post ACTION="http://xcf.berkeley.edu/archives/2003-02-11/help-sessions/cgi-exs/example.7.2/example.7.2.cgi">
+Name: <INPUT TYPE=text NAME="name"><BR>
+Age: <SELECT NAME="age">
+<OPTION>17
+<OPTION>18
+<OPTION>19
+<OPTION>20
+<OPTION>21
+<OPTION>22
+<OPTION>23
+<OPTION>24
+<OPTION>25
+<OPTION>+25
+</SELECT>
+<P>
+Favorite Quote:<BR>
+<TEXTAREA NAME="quote" ROWS=10 COLS=60>
+Please replace this text with your own favorite quote...
+</TEXTAREA>
+<P>
+<INPUT TYPE=submit>
+</FORM>
+
+</BODY>
+</HTML>

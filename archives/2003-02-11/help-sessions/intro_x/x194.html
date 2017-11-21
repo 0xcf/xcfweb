@@ -1,0 +1,441 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>Start up Files</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="X Windows, a Networked Windowing System"
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="How does it work?"
+HREF="c29.html"><LINK
+REL="PREVIOUS"
+TITLE="X Display Access"
+HREF="x153.html"><LINK
+REL="NEXT"
+TITLE="EECS Instructional tips"
+HREF="x270.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>X Windows, a Networked Windowing System</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x153.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 2. How does it work?</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x270.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN194"
+>Start up Files</A
+></H1
+><P
+>Now that you have all this stuff you want, you probably don't
+want to have to type all those commands everytime you login.  Isn't
+there some start up file that will do this all for me like
+<TT
+CLASS="FILENAME"
+>.login</TT
+> and <TT
+CLASS="FILENAME"
+>.cshrc</TT
+>?
+Yup.  The name of this file depends on how you start up X Windows.
+The two common ways are with <B
+CLASS="COMMAND"
+>xdm</B
+> and commands
+like <B
+CLASS="COMMAND"
+>xinit</B
+> or <B
+CLASS="COMMAND"
+>startx</B
+>.</P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN202"
+>X Display Manager &ndash; XDM</A
+></H2
+><P
+>You are using <B
+CLASS="COMMAND"
+>xdm</B
+> if you get a nice
+"pretty" login box on the screen. With <B
+CLASS="COMMAND"
+>xdm</B
+>,
+the configuration file of note is called
+<TT
+CLASS="FILENAME"
+>.xsession</TT
+>.  It is an executable shell script
+(well if you are hardcore, you could make it a compiled binary, but
+that is just too problematic for most people).  Here is a sample
+<TT
+CLASS="FILENAME"
+>.xsession</TT
+>:
+<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>jon@coke.CSUA %</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>ls -l .xsession</B
+></TT
+>
+-rwxr-xr-x   1 jon member         510 Mar  3  1997 .xinitrc*
+<TT
+CLASS="PROMPT"
+>jon@coke.CSUA %</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>cat .xsession</B
+></TT
+>
+#!/bin/csh 
+setenv CONSOLE no
+xhost - localhost
+xhost - `hostname`
+xset fp+ $HOME/lib/X11/fonts
+ctwm &#38; 
+xpmroot ~/lib/graphics/xpm/background8.xpm &#38;
+xterm -rv -sb -n Here -geometry 80x24+0+0 &#38;
+xterm -rv -sb -n There -geometry 80x24-0+0 &#38;
+xterm -rv -sb -n Somewhere -geometry 80x24+0+349 &#38;
+xterm -rv -sb -n Nowhere -geometry 80x24-0+349 &#38;
+setenv CONSOLE yes
+exec xterm -n Everywhere -C -geometry 80x6+0-0 </PRE
+></TD
+></TR
+></TABLE
+></P
+><P
+>This is written in the C Shell, though it could just as easily be
+written in the Bourne shell, <B
+CLASS="COMMAND"
+>/bin/sh</B
+> or any other
+shell.</P
+><TABLE
+CLASS="SIDEBAR"
+BORDER="1"
+CELLPADDING="5"
+><TR
+><TD
+><DIV
+CLASS="SIDEBAR"
+><P
+></P
+><P
+>Well, actually, on many Sun Solaris machines, the way X windows
+is installed and how the engineers wrote some of the scripts that are
+run when a person starts up a X windows session, you are forced to have a
+<TT
+CLASS="FILENAME"
+>.xsession</TT
+> written in <B
+CLASS="COMMAND"
+>/bin/sh</B
+> but
+you can get around that. You can take a look at an
+<A
+HREF="javascript:alert('link disabled in archive')"
+TARGET="_top"
+>example</A
+> of one way to do
+it.</P
+><P
+></P
+></DIV
+></TD
+></TR
+></TABLE
+><P
+>Note that some commands are run in the background and some are
+not.  The one that are not, like the <B
+CLASS="COMMAND"
+>xset</B
+> and the
+<B
+CLASS="COMMAND"
+>xhost</B
+>, are commands that will eventually exit and let the
+<TT
+CLASS="FILENAME"
+>.xsession</TT
+> move on to the next command.  However,
+the <B
+CLASS="COMMAND"
+>xterm</B
+>'s are commands that you don't
+want to exit immediately &ndash; you want them to hang around a bit.
+So you put them in the background with the "<TT
+CLASS="LITERAL"
+>&#38;</TT
+>" so
+that the <TT
+CLASS="FILENAME"
+>.xsession</TT
+> can move
+on to the next command.  The last command is called with
+"<TT
+CLASS="LITERAL"
+>exec</TT
+>" so that when that command exits (say you
+type "exit" in the shell running that <B
+CLASS="COMMAND"
+>xterm</B
+>) the
+whole X windows session will exit.  Some people like
+to have a <B
+CLASS="COMMAND"
+>xterm</B
+> for a "controlling" process, others
+like to <TT
+CLASS="LITERAL"
+>exec</TT
+> a window manager or even a home grown
+program that "does what I want".</P
+><P
+>Some common problems with .xsessions:
+<P
+><B
+>Problem: </B
+>The <TT
+CLASS="FILENAME"
+>.xsession</TT
+> file is not executeable:</P
+><P
+><B
+>Symptoms: </B
+>You login and then the screen resets and get a login box again.</P
+><P
+><B
+>Solution: </B
+><B
+CLASS="COMMAND"
+>chmod +x ~/.xsession</B
+> (In <B
+CLASS="COMMAND"
+>/bin/sh</B
+>: <B
+CLASS="COMMAND"
+>chmod +x $HOME/.xsession</B
+>)</P
+><P
+><B
+>Problem: </B
+>All of your commands are run in the background with "&#38;"</P
+><P
+><B
+>Symptoms: </B
+>You see a flurry of client display and then they all exit mysteriously.</P
+><P
+><B
+>Solution: </B
+>Make sure that last client is not executed in the background.</P
+></P
+></DIV
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="AEN249"
+>Xinit and .xinitrc</A
+></H2
+><P
+>If you login on a "plain-text" console which has no graphical login
+box, then whoever set up your machine expects you to use a command like
+this:
+<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>seltzer%</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>xinit</B
+></TT
+>
+or
+<TT
+CLASS="PROMPT"
+>seltzer%</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>openwin</B
+></TT
+>
+or
+<TT
+CLASS="PROMPT"
+>seltzer%</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>startx</B
+></TT
+></PRE
+></TD
+></TR
+></TABLE
+></P
+><P
+>This way of starting up X Windows works well if there are other
+windowing systems installed on the machine besides X or if you'd
+prefer not to run X all the time as one would have to with
+<B
+CLASS="COMMAND"
+>xdm</B
+>.  In some ways, starting X in thie manner
+is much easier and is more likely to do "what you want".</P
+><P
+>When starting up X in this manner, you have a configuration
+file simiar to the <TT
+CLASS="FILENAME"
+>.xsession</TT
+> called
+<TT
+CLASS="FILENAME"
+>.xinitrc</TT
+>.  Unlike a <TT
+CLASS="FILENAME"
+>.xsession</TT
+>,
+your <TT
+CLASS="FILENAME"
+>.xinitrc</TT
+> does not have to be executable,
+though sometimes users will make a link (with <B
+CLASS="COMMAND"
+>ln</B
+> or
+<B
+CLASS="COMMAND"
+>ln -s</B
+>) from one to other.  It does need to be written
+in some valid shell language.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x153.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x270.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>X Display Access</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c29.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>EECS Instructional tips</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

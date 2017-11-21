@@ -1,0 +1,192 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>Invocation</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="CGI Programming and You"
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="Usage"
+HREF="c41.html"><LINK
+REL="PREVIOUS"
+TITLE="Usage"
+HREF="c41.html"><LINK
+REL="NEXT"
+TITLE="Standard Input"
+HREF="x64.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>CGI Programming and You</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="c41.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 2. Usage</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x64.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="SEC2.2"
+>Invocation</A
+></H1
+><P
+>A CGI program is invoked in one of two ways:
+<P
+></P
+><OL
+TYPE="1"
+><LI
+><P
+>It is started in response to a form being submitted,
+via the <TT
+CLASS="LITERAL"
+>&lt;FORM ACTION="CGI_program_name.cgi" ...&gt;</TT
+>
+HTML tag.</P
+><P
+>In this case, the <TT
+CLASS="LITERAL"
+>METHOD="..."</TT
+> attribute of the
+<TT
+CLASS="LITERAL"
+>FORM</TT
+> tag determines
+how the data is delivered to the CGI program.  For
+"<TT
+CLASS="LITERAL"
+>METHOD=post</TT
+>",
+the data is available on standard input; for
+"<TT
+CLASS="LITERAL"
+>METHOD=get</TT
+>", the data
+is available in the URL and in the <TT
+CLASS="ENVAR"
+>QUERY_STRING</TT
+>
+environment variable [see 
+<A
+HREF="x110.html"
+>the section called <I
+>Environment Variables</I
+></A
+>].</P
+></LI
+><LI
+><P
+>It is started in a manner similar to the server-side
+include mechanism of some web servers, and invoked upon loading of the
+web page.</P
+></LI
+></OL
+></P
+><P
+>In either case, the CGI program has a standard method of
+communicating with the web server and web browser: standard input,
+standard output and the environment variables.  In the case of CGI
+programs invoked using the server-side-include mechanism, since no
+form was submitted, there is no form data to process and thus no form
+data will be given to the program.  However, environment variables are
+still available, and are most useful to the
+server-side-include-invoked CGI program.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="c41.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x64.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Usage</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c41.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Standard Input</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

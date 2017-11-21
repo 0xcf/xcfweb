@@ -1,0 +1,170 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>Conclusion</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="CGI Programming and You"
+HREF="book1.html"><LINK
+REL="PREVIOUS"
+TITLE="Multiple Simultaneous Invocations"
+HREF="x292.html"><LINK
+REL="NEXT"
+TITLE="Resources for CGI Programmers"
+HREF="c313.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>CGI Programming and You</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x292.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="c313.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="SEC5"
+>Chapter 5. Conclusion</A
+></H1
+><P
+>CGI programming presents various challenges for the programmer.
+It's segmented user interaction and limited text-input abilities
+present hoops which the programmer must jump through.  However,
+because of the ubiquitous ability for people to use resources written
+using the CGI, it's benefits often far outweight these
+drawbacks.</P
+><P
+>Observe the following key points when writing CGI programs:
+<P
+></P
+><UL
+><LI
+><P
+>Carefully design the user-interaction through forms,
+preserving data from earlier stages of processing to where it's needed
+in later stages.</P
+></LI
+><LI
+><P
+>Take security and file access into account at all
+stages of processing.  Make sure that the CGI programs can read the
+data files necessary to perform their function.</P
+></LI
+><LI
+><P
+>Perform error-checking on all form data input.  Make
+sure that whatever type of data you expect to be in a field is
+actually there, and that all fields are filled out as appropriate.  If
+this is not the case, inform the user and stop
+processing.</P
+></LI
+><LI
+><P
+>Use file locking to ensure that CGI programs don't
+squash each other while accessing data files.</P
+></LI
+><LI
+><P
+>Use pre-written libraries to make the tedious parts of
+CGI programming easier.</P
+></LI
+></UL
+></P
+><P
+>Keeping these points in mind will help you to write correct,
+error-free and useful CGI programs.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x292.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="c313.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Multiple Simultaneous Invocations</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Resources for CGI Programmers</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

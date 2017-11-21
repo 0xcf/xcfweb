@@ -1,0 +1,222 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>Update method hints</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="make"
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="Writing makefiles"
+HREF="c31.html"><LINK
+REL="PREVIOUS"
+TITLE="A useful example"
+HREF="x136.html"><LINK
+REL="NEXT"
+TITLE="Things of note that we haven't covered"
+HREF="x214.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>make</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x136.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 2. Writing makefiles</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x214.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN199"
+>Update method hints</A
+></H1
+><P
+>In general, there are a few hints which should be observed
+regarding update methods, particularly when they are written in shell.
+<B
+CLASS="COMMAND"
+>make</B
+> is very specific and a bit wierd in the way it
+processes update methods.</P
+><P
+>Each line of an update method is executed in a new shell unless
+the newline is escaped with a backslash.  This is important to note
+for performance reasons as well as parallelization.  To demonstrate:
+<DIV
+CLASS="EXAMPLE"
+><P
+><B
+><A
+NAME="IMPROPER-UPDATE"
+>Example 2-2. Improper update method.</A
+></B
+></P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>target: object.o
+	$(CC) $@ $^ $(LDFLAGS)
+	echo Finished $@.</PRE
+></TD
+></TR
+></TABLE
+></DIV
+>
+In <A
+HREF="x199.html#IMPROPER-UPDATE"
+>Example 2-2</A
+>, both lines of the update method
+would be executed in separate shells.  This is admitedly a trivial
+example, but the differences would become apparent immediately if any
+shell scripting were done in earnest as part of an update method. The
+following are acceptable update rules:
+<DIV
+CLASS="EXAMPLE"
+><P
+><B
+><A
+NAME="PROPER-UPDATE"
+>Example 2-3. Correct update methods.</A
+></B
+></P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>target: object.o
+	$(CC) $@ $^ $(LDFLAGS); echo Finished $@.</PRE
+></TD
+></TR
+></TABLE
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>target: object.o
+	$(CC) $@ $^ $(LDFLAGS); \
+	echo Finished $@.</PRE
+></TD
+></TR
+></TABLE
+></DIV
+></P
+><P
+>Improper update methods will lead to funny, non-deterministic
+errors if <B
+CLASS="COMMAND"
+>make</B
+> is ever used to run parellel build
+jobs.  It is pretty tough to write a parallelizable Makefile
+correctly, but painstaking attention to the little details of
+backslashifying newlines can save a lot of trouble.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x136.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x214.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>A useful example</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c31.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Things of note that we haven't covered</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,266 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>Advanced Use of SSH</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="Using SSH for Secure Interactive Communications"
+HREF="book1.html"><LINK
+REL="PREVIOUS"
+TITLE="Easier use of SSH (ssh-agent and
+ssh-add)"
+HREF="x179.html"><LINK
+REL="NEXT"
+TITLE="Configuration options"
+HREF="x258.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>Using SSH for Secure Interactive Communications</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x179.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x258.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="SEC2"
+>Chapter 3. Advanced Use of SSH</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="c230.html#SEC2.1"
+>Port forwarding</A
+></DT
+><DT
+><A
+HREF="x258.html"
+>Configuration options</A
+></DT
+></DL
+></DIV
+><P
+>This section describes some of the more advanced use of SSH.
+This section is not necessary for everyday use of SSH, but it will
+make everyday use much easier.</P
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="SEC2.1"
+>Port forwarding</A
+></H1
+><P
+>SSH supports the ability to forward ports on both the local
+and remote machines.  This allows you to access non-telnet services
+through an encrypted channel.  You can forward a local port to port
+110 on another machine, for instance, to securely check POP mail
+on that machine.</P
+><P
+>Forwarding local ports is the most useful option.  This allows
+you to specify a local port number which can then be used securely
+access a remote port.  To see exactly how this is useful, we look at
+forwarding port 12345 on the localhost to port 110 on machine
+foobar.berkeley.edu; port 110 is the port used for POP mail, and by
+doing this we can point our mail reader to check 'localhost:12345' for
+POP mail, it will really (securely) be connecting to 'foobar:110', and
+the mail reader will get the POP service it expects on the remote
+machine.</P
+><P
+>To do this, execute the following command:
+<P
+><B
+CLASS="COMMAND"
+>ssh</B
+>  [-l <TT
+CLASS="REPLACEABLE"
+><I
+>username</I
+></TT
+>] {-L <TT
+CLASS="REPLACEABLE"
+><I
+>localport</I
+></TT
+>:<TT
+CLASS="REPLACEABLE"
+><I
+>remoteHost</I
+></TT
+>:<TT
+CLASS="REPLACEABLE"
+><I
+>remotePort</I
+></TT
+>} {<TT
+CLASS="REPLACEABLE"
+><I
+>remoteHost</I
+></TT
+>} {<TT
+CLASS="REPLACEABLE"
+><I
+>command</I
+></TT
+>}</P
+>
+followed by the command which will use that port, as in:
+<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>%</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>ssh -L 12345:foobar.berkeley.edu:110 foobar.berkeley.edu sleep 5</B
+></TT
+>
+<TT
+CLASS="PROMPT"
+>%</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>fetchmail <TT
+CLASS="REPLACEABLE"
+><I
+>[other options]</I
+></TT
+> --port 12345 localhost</B
+></TT
+></PRE
+></TD
+></TR
+></TABLE
+>
+A secure connection to the remote machine (foobar.berkeley.edu, in this
+case) will be made, and connections to port 12345 on the local host will
+be forwarded to port 110 on foobar.  The command <B
+CLASS="COMMAND"
+>sleep 5</B
+>
+will be executed on foobar, which will cause the connection to be left
+open for a short while... hopefully just enough time to create the connection
+to check mail with <A
+HREF="javascript:alert('link disabled in archive')"
+TARGET="_top"
+>fetchmail</A
+>.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x179.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x258.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Easier use of SSH (<B
+CLASS="COMMAND"
+>ssh-agent</B
+> and
+<B
+CLASS="COMMAND"
+>ssh-add</B
+>)</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Configuration options</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>
