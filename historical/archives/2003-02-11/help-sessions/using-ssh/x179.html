@@ -1,0 +1,329 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>Easier use of SSH (ssh-agent and
+ssh-add)</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="Using SSH for Secure Interactive Communications"
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="Basic Use of SSH"
+HREF="c99.html"><LINK
+REL="PREVIOUS"
+TITLE="Regular use of SSH (ssh)"
+HREF="x139.html"><LINK
+REL="NEXT"
+TITLE="Advanced Use of SSH"
+HREF="c230.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>Using SSH for Secure Interactive Communications</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x139.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 2. Basic Use of SSH</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="c230.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="SEC1.3"
+>Easier use of SSH (<B
+CLASS="COMMAND"
+>ssh-agent</B
+> and
+<B
+CLASS="COMMAND"
+>ssh-add</B
+>)</A
+></H1
+><P
+>Every instance of <B
+CLASS="COMMAND"
+>ssh</B
+> requires the user
+to enter the passphrase for their private key.  If multiple
+connections are established by the user, this can become annoying.
+SSH provides a mechanism to get rid of this annoyance, however,
+which offers another advantage at the same time.</P
+><P
+>The <B
+CLASS="COMMAND"
+>ssh-agent</B
+> program make life simpler
+for the heavy SSH user.  <B
+CLASS="COMMAND"
+>ssh-agent</B
+> runs in the
+background, and manages user identities.  The <B
+CLASS="COMMAND"
+>ssh-add</B
+>
+program allows the user to add an identity to <B
+CLASS="COMMAND"
+>ssh-agent</B
+>.
+When <B
+CLASS="COMMAND"
+>ssh-add</B
+> is run, the passphrase for the private key
+is asked for.  After that point, whenever <B
+CLASS="COMMAND"
+>ssh</B
+> is run,
+<B
+CLASS="COMMAND"
+>ssh</B
+> will communicate with <B
+CLASS="COMMAND"
+>ssh-agent</B
+>
+to get the private key info; the passphrase is not asked for.
+In addition, <B
+CLASS="COMMAND"
+>ssh-agent</B
+> will forward that identity
+on to the remote machine; in effect, the identity of the user on the
+local machine can be used to connect to other machines from the remote
+machine.</P
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>However, that use of <B
+CLASS="COMMAND"
+>ssh-agent</B
+>
+entails a slight security risk.  Since the passphrase for the user's
+identity is not asked for on subsequent ssh connections, anyone can
+sit down at the terminal and use SSH to connect to a remote machine.
+You'll want to use <B
+CLASS="COMMAND"
+>ssh-agent</B
+> only from a secure
+local machine.</P
+></TD
+></TR
+></TABLE
+></DIV
+><P
+>In order to allow future instances of <B
+CLASS="COMMAND"
+>ssh</B
+> to contact
+<B
+CLASS="COMMAND"
+>ssh-agent</B
+>, it must be run as the parent of these processes.
+This means that it must start (or start a parent of) all processes
+which want to use it.  There are two reasonable ways to do this:
+<P
+></P
+><DL
+><DT
+><B
+CLASS="COMMAND"
+>exec ssh-agent &lt;shell&gt;</B
+>
+(such as: <B
+CLASS="COMMAND"
+>exec ssh-agent /bin/bash</B
+>)</DT
+><DD
+><P
+>This replaces the current shell with <B
+CLASS="COMMAND"
+>ssh-agent</B
+>,
+which will then start another shell for you to interact with.
+In effect, the new shell replaces your old one, but
+<B
+CLASS="COMMAND"
+>ssh-agent</B
+> is it's parent. Therefore,
+<B
+CLASS="COMMAND"
+>ssh-agent</B
+> is the parent of any
+<B
+CLASS="COMMAND"
+>ssh</B
+> session started in this new shell.</P
+></DD
+><DT
+><B
+CLASS="COMMAND"
+>ssh-agent startx</B
+></DT
+><DD
+><P
+>SSH becomes the parent process for
+<B
+CLASS="COMMAND"
+>startx</B
+>, and any instances of
+<B
+CLASS="COMMAND"
+>SSH</B
+> started in X become children of
+<B
+CLASS="COMMAND"
+>ssh-agent</B
+>.</P
+></DD
+></DL
+></P
+><P
+>Then, after the new shell or X comes up, issue the command
+<B
+CLASS="COMMAND"
+>ssh-add</B
+> which will add your current identity
+(as specified in <TT
+CLASS="FILENAME"
+>~/.ssh/identity</TT
+>) to
+<B
+CLASS="COMMAND"
+>ssh-agent</B
+>.  Future <B
+CLASS="COMMAND"
+>ssh</B
+>
+sessions will then have access to your identity.  With command-line
+options, you can also add multiple identities as specified in other
+files.</P
+><P
+>You may ask why adding other identities would be useful.
+<B
+CLASS="COMMAND"
+>ssh-agent</B
+>, however, offers another benefit.
+If requested through an option in <TT
+CLASS="FILENAME"
+>~/.ssh/config</TT
+>, all
+identities which the local <B
+CLASS="COMMAND"
+>ssh-agent</B
+> knows about will be
+forwarded to other machines.  If you add these identities at the local
+machine (and therefore enter their passphrases on the local machine),
+they will be automagically propagated to all machines you are
+connected to through SSH.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x139.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="c230.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Regular use of SSH (<B
+CLASS="COMMAND"
+>ssh</B
+>)</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c99.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Advanced Use of SSH</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

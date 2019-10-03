@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>XCF - eXperimental Computing Facility</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/scrolling-nav.css" rel="stylesheet">
+
+  </head>
+
+  <body id="page-top">
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+      <div class="container">
+        <a class="navbar-brand js-scroll-trigger" href="#page-top">eXperimental Computing Facility</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#about">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="historical/">History</a>
+            </li>
+	    <li class="nav-item">
+	      <a class="nav-link js-scroll-trigger" href="#projects">Projects</a>
+	    </li>
+            <li class="nav-item">
+              <a class="nav-link js-scroll-trigger" href="#contact">Contact</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <header class="bg-dark text-white">
+      <div class="container text-center">
+        <h1 class="display-4">eXperimental Computing Facility</h1>
+        <p class="text-muted">University of California at Berkeley</p>
+      </div>
+    </header>
+
+    <section id="about">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 mx-auto">
+            <h2>About</h2>
+            <p style="font-size: 20px;">XCF, the eXperimental Computing Facility at UC Berkeley, is a small undergraduate student
+	      organization with members who share a keen interest in a blend of computer science and engineering.</p>
+	    
+	    <p>Founded in 1986, XCF started as a way for a few hackers to develop useful software and offer computing
+	      assistance on campus. Several XCF projects and contributions, such as NNTP, combating the Morris Worm, ViolaWWW,
+	      GIMP/GTK, PRCS, and Gnutella became significant in their own right. For more information on the past exploits of the XCF,
+	      take a look through our <a href="historical/">history</a>.</p>
+
+	    <p>Today, after several years, the XCF is being reborn. The quantity and magnitude of advances in computer science and engineering
+	      that have occurred since the heyday of the XCF have rendered an unparalleled and unique opportunity for the
+	      kind of visionary software engineering that the XCF of old was renowned for.</p>
+	      
+	    <p>While we re-tool and rebuild our infrastructure, the XCF is co-sponsoring a <a href="https://decal.ocf.berkeley.edu">DeCal</a>
+	      on UNIX System Administration along with our sister organization, the <a href="https://ocf.berkeley.edu">Open Computing Facility</a>.</p>
+
+	    <p>For more information on the current status of the XCF and what we are working on, or to join the XCF, please <a href="#contact">contact us</a>
+	      or drop by the OCF Lab in 171 MLK, where most XCF members can usually be found.</p>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="bg-light">
+      <div class="container">
+	<div class="row">
+	  <div class="col-lg-8 mx-auto">
+	    <h2>Projects</h2>
+	    <p class="lead">What are you working on?</p>
+	    <p>At present, the XCF is seeking project proposals and working on internal infrastructure projects.</p>
+	    <p>We are co-sponsoring a
+	      <a href="https://decal.ocf.berkeley.edu">
+		DeCal on Linux Systems Administration,
+	      </a> and run <a href="https://www.peeringdb.com/net/17036">AS26073</a>, an Autonomous System
+	        located in the Hurricane Electric FMT2 datacenter announcing several IPv4 and IPv6 prefixes.
+	    </p>
+	    <p>If you have are interesting in having the XCF sponsor your project, please
+	      <a href="#contact">
+		contact us.
+	      </a>
+	    </p>
+	  </div>
+	</div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-8 mx-auto">
+            <h2>Contact us</h2>
+            <p class="lead">Ways to get in touch with us:</p>
+	    <ul class="text-muted">
+	      <li>Email: info at xcf dot berkeley dot edu</li>
+	      <li>IRC: irc.ocf.berkeley.edu, channel #xcf</li>
+	      <li>In person: 171 MLK Student Union, UC Berkeley</li>
+	    </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-5 bg-dark">
+      <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; eXperimental Computing Facility 2017-2018</p>
+      </div>
+      <!-- /.container -->
+    </footer>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom JavaScript for this theme -->
+    <script src="js/scrolling-nav.js"></script>
+
+  </body>
+
+</html>

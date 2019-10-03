@@ -1,0 +1,69 @@
+<HTML>
+
+<HEAD>
+
+<META NAME="Author"
+      CONTENT="Joshua M. Sled <jsled@uclink4.berkeley.edu>">
+
+<TITLE>Example 7.4 | CGI-based image selection</TITLE>
+
+</HEAD>
+
+<BODY BGCOLOR="#ffffff">
+
+<H2>Example 7.4 | CGI-based image selection</H2>
+
+<BR CLEAR=all>
+<HR>
+
+This is an example of an image which has been selected and returned by
+a CGI program.
+
+<P>
+
+When this HTML file is loaded, the web browser will then re-connect to
+the web server to get any files [graphics, etc] which are mentioned in
+the HTML data.  In this case, specifically, the browser will reconnect
+to the server to get the image file "example.7.4.cgi"... which the web
+server will recognize as a CGI file and execute.
+<P>
+Our example.7.4.cgi script will then return the correct
+<TT>Content-Type</TT>, in this case <TT>image/gif</TT>, and return the
+data, which will be displayed in it's correct location.
+<P>
+Since the CGI script which output this image will always output the
+same image, this is useful for demonstration purposes only.  But the
+principle is very useful, as data can be passed following a '?' in the
+&lt;IMG SRC="cgiprog.cgi?&lt;extra data&gt;" ....&gt; line, which
+allows one to specify whatever one wants to make the script more
+useful.
+<P>
+An example of this is randomized image selection; the CGI program can
+be passed the name of a directory from which to randomly choose an
+image, and will do so.  See 
+<A HREF="javascript:alert('link disabled in archive')">
+getinfo.cgi</A> 
+for an example of this.  As well, a product ID number could be passed,
+which would allow the CGI script to get the correct graphic from a
+database or other source associated with the product ID.
+
+<P>
+
+<A HREF="javascript:alert('link disabled in archive')">
+<TT>example.7.4.cgi</TT> source</A><BR> 
+<A HREF="javascript:alert('link disabled in archive')">
+<TT>print-source.cgi</TT> source</A> 
+
+<BR CLEAR=all>
+<HR>
+
+Ladies and Gentlemen... the lovely Janeane Garofalo!
+
+<P>
+
+<DIV ALIGN=center>
+<IMG SRC="example.7.4.cgi" ALT="[A CGI-generated image]">
+</DIV>
+
+</BODY>
+</HTML>

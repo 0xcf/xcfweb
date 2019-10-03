@@ -1,0 +1,347 @@
+<HTML>
+
+<HEAD>
+<TITLE>
+XCF Virtual Help Session | make
+</TITLE>
+
+<META NAME="Revision"
+      CONTENT="$Id: make.html 1.2 Thu, 18 Sep 1997 18:36:32 -0800 jsled $
+               $ProjectHeader: helpPages 0.13 Fri, 20 Mar 1998 21:52:06 -0800 jsled $">
+
+</HEAD>
+
+<BODY BGCOLOR="#FFFFFF" BACKGROUND="vhsbg.gif">
+
+<H1 ALIGN=center>make</H1>
+<H3 ALIGN=center>An XCF Virtual Help Session</H3>
+
+<HR WIDTH=50%>
+
+<TT>make</TT> is a language used to express dependencies (via rules) and
+update methods (via shell).  If one writes make rules which do not
+take advantage of additions made to specific implementations of the make
+interpreter, the dependency rules expressed in the <I>Makefile</I> will be
+portable across all platforms and all interpreters.  This makes <TT>make</TT>
+quite powerful.
+<P>
+Note that the update methods, which are expressed in shell, are not entirely
+portable when we consider deviant platforms such as Windows NT.  To that
+end, we'll go over some practices which can make porting Makefiles a bit
+easier later on.
+<P>
+<HR noshade>
+<P>
+<H1>make and dependency graphs</H1>
+<P>
+The really big picture is that <TT>make</TT> is a language in which we
+can express dependencies via a set of <I>dependency rules</I>.  These
+dependency rules are then used to build a dependency graph.  (If you
+distill the vocabulary a bit, you can see that the rules are really
+adjacency lists and that the dependency graph is no more than a
+run-of-the-mill directed graph.)  Given the graph, <TT>make</TT> traverses
+the subgraph whose root is specified on the command line depth first.
+For example,
+<P>
+<PRE>% make subgraph1</PRE>
+<P>
+If a dependency root is not specified then <TT>make</TT> traverses the
+subgraph whose root is the first rule in the Makefile.
+<P>
+That's all fine, but without a rule to use to evaluate dependencies, the
+dependencies have no meaning.  <TT>make</TT>'s rule is to evaluate
+dependencies based on time.  <B>If any descendents of a node are younger than
+the node itself then the node is out of date and must be updated.</B>
+<P>
+If you are using <TT>make</TT> to help maintain a program, this means that
+a program module is out of date if any of its constituent modules are newer
+than the module itself.  We will see an example of this shortly.
+<P>
+<H1>Basic rule construction</H1>
+<P>
+Syntactically correct make rules will look like this:
+<P>
+<UL><I>targets</I> ...: <I>dependencies ...</I><BR>
+<UL><I>update method</I></UL><BR>
+<B>Figure 1: Make rule syntax</B></UL>
+<P>
+Please note that <TT>make</TT> pays close attention to those tokens which
+we usually take for granted in our no-longer-punched-card world such as
+newlines and tabs.  If you get too creative with the formatting
+of your Makefile, <TT>make</TT> will mysteriously cease to do the expected!
+Knowing that, let's analyze the <TT>make</TT> rule constituents:
+<P>
+The first line of a make rule consists of a list of targets, a colon, a list
+of dependencies, and is terminated with a newline.
+<P>
+<UL>
+<TABLE border=1><TR valign=top><TD>targets ...</TD>
+<TD>The targets are dependent upon the dependencies.  Quite often, we will
+see only one target followed by a long list of dependencies.</TD>
+<TD>REQUIRED</TD></TR>
+<TR valign=top><TD>dependencies ...</TD>
+<TD>The dependencies should be viewed as components of the targets.</TD>
+<TD>optional</TD></TR>
+<TR valign=top><TD>update method</TD>
+<TD>The update method is a shell script, <B>OFFSET BY A TAB</B>, which
+contains the commands necessary to update the target if the target is found
+to be out of date.</TD>
+<TD>optional</TD></TR></TABLE><BR>
+<B>Figure 2: Make rule syntax elements</B></UL>
+<P>
+If you don't know what's going on yet, don't stress!  I'm about to explain
+what's going on.  But first, let's see a simple real-world example.
+<P>
+<UL>
+<TABLE border=1><TR><TH>Rule #</TH><TH>Rule</TH><TH>English</TH></TR>
+<TR valign=top><TD>1</TD>
+<TD><PRE>program: main.o
+	$(CC) $@ $(LDFLAGS) $^</PRE></TD>
+<TD><I>program</I> depends on <I>main.o</I>.  When <I>main.o</I> is up to date,
+use the statement <PRE>$(CC) $@ $(LDFLAGS) $^</PRE> to bring <I>program</I>
+up to date.</TD></TR>
+<TR valign=top><TD valign=top>2</TD>
+<TD><PRE>main.o: main.c main.h
+	$(CC) -c $@ $^</PRE></TD>
+<TD><I>main.o</I> depends on <I>main.c</I> and <I>main.h</I></TD></TR></TABLE><BR>
+<B>Figure 3: Simple Makefile</B></UL>
+<P>
+The simple Makefile in Figure 3 is a small example of how all Makefiles look
+and work.  Let's explain the rules which were used in Figure 3.
+<P>
+Rule 1 is special for a number of reasons.  First, it is the first rule.
+That is important because the first rule is the default rule.  More on that
+later.  Second, Rule 1 is the link rule, where we take a bunch of .o files
+and smash them into one executable binary.  That means that we need to write
+a special update method for the rule which contains the commands necessary to
+build <I>program</I> from its constituent object files, namely <I>main.o</I>.
+We accomplish this using an amalgam of obscure syntax and variables.  We
+do that because we want to make it impossible for other people to decipher
+how to compile our programs.
+<P>
+Rule 2 is a typical <TT>make</TT> rule.  It says that &quot;If either
+<I>main.c</I> or <I>main.h</I> is newer than <I>main.o</I> then <I>main.o</I>
+is out of date.  Update <I>main.o</I> by executing <I>$(CC) -c $@ $^</I>&quot;.
+<P>
+<H1>Variables</H1>
+<P>
+<TT>make</TT> variables are often a sore point, but they need not be.  True,
+their syntax is abhorrent and it is impossible to remember what the
+single-character variables mean, but they really are pretty useful.
+<P>
+There are a couple of things to keep in mind.  First, all exported shell
+environment variables are accessible in <TT>make</TT>.  Second, most
+<TT>make</TT> variables must be referenced using <I>$(variable)</I> instead
+of the typical $variable which we use in shell.  Sometimes you will see
+${variable} used, but I think it's sort of ugly.
+<P>
+Single-character variables are special.  In Figure 3, we saw <I>$@</I> and
+<I>$^</I>.  $@ refers to the rule target and $^ refers to the rule's first
+dependency.  $&lt; which we will talk about later, refers to all depedencies.
+There are others, of course, but we won't talk about them here.
+<P>
+If an update method needs to refer to a shell variable, such as in the
+following contrived example (Figure 4), then the $ must be escaped with a
+$, making the variable reference look like this: <I>$$variable</I>.
+<P>
+<UL><PRE>target: dependency
+	# When we update this target we need to mail a bunch of people
+	# about it.
+	for i in jim chuck joe; do \
+	   echo "$@ updated" | mail $$i -s "$@ updated"; \
+	done</PRE><BR>
+<B>Figure 4: Using shell variables in update methods.</B>  Note the use of
+$$ to refer to the shell variable i.</UL>
+<P>
+<H1>A useful example</H1>
+<P>
+The following is an example of a Makefile which you might see in the small
+projects typical of undergraduate computer science courses.
+<P>
+<UL><PRE>LIBDIR = .
+LDFLAGS = -L$(LIBDIR) -lcommonlib
+CC = /usr/local/bin/gcc
+CFLAGS = -c -g -Wall
+
+project: module1 module2
+
+module1: server server_test
+
+server: server.o commonlib
+	$(CC) $@ $^ $(LDFLAGS)
+
+server_test: server_test.o server
+	$(CC) $@ $^ $(LDFLAGS)
+
+module2: client
+
+client: parser.o lexer.o interface.o commonlib
+	$(CC) $@ $(<:commonlib=) $(LDFLAGS)
+
+commonlib: libcommonlib.a
+
+libcommonlib.a(textio.o): textio.h
+
+clean:
+	rm -f *.a *.o</PRE><BR>
+<B>Figure 5: A useful example</B></UL>
+<P>
+<H2>Rules worth mentioning in Figure 5</H2>
+<P>
+There are only a couple of rules worth talking about in Figure 5.
+<P>
+<H3>The first</H3>
+<P>
+The first is the <I>client</I> rule.  It builds a binary named
+<I>client</I> out of three object files and a library dependency.
+The funny syntax, <I>$(&lt;:commonlib=)</I> is a substitution.
+It takes care of some conflicting needs.
+<P>
+Normally, we would have used the <I>$^</I> automatic variable to build
+a binary using its associated object file.  Unfortunately that only works
+with absurdly small projects consisting of but one object file.  Here, we
+need to find some syntax which allows us to tell <TT>make</TT> that
+<I>client</I> depends not only on its object files but also on a library
+module, which we have represented as a (non-terminal) dependency.  So
+we do that on the first line.  Our dependencies are all set up.
+<P>
+Now comes the tricky part.  We need to somehow write an update method which
+will link <I>client</I> with the first three listed dependencies, namely
+<I>client</I>'s object files, but exclude the last dependency: the library.
+(We want to exclude the library because presumably we have stuck the
+-lcommmonlib in the LDFLAGS variable.  This, among other reasons.)  So
+we'll use some <TT>make</TT> syntax to get us out of the jam.
+<P>
+Let's pick apart <I>$(&lt;:commonlib=)</I>.  First, the <I>$()</I> notation
+should be familiar.  We're referencing a variable.  Second, the <I>&lt;</I>
+is the variable we are referencing, namely the &quot;all dependencies&quot;
+variable.  Finally, we're left with <I>:commonlib=</I>.  That is a string
+substitution.  It means, &quot;While expanding this variable, replace all
+occurences of the sequence of characters <I>commonlib</I> with the empty
+sequence of characters.&quot;  So we've successfully done away with the
+library issue.
+<P>
+As usual, there were other ways to skin this cat.  We could have used a
+shell escape and filtered <I>commonlib</I> away with sed, awk, perl, or
+your favorite shell tool.  We could have used a <TT>make</TT>
+subsequence operator...if our version of <TT>make</TT> supports such things.
+There are certainly other ways too.
+<P>
+<H3>The second</H3>
+<P>
+The second rule I'd like to point out is the funny looking one:
+<I>libcommonlib.a(textio.o): textio.h</I>.  This is
+<B>THE MOST USEFUL THING YOU CAN LEARN AS A BUILD ENGINEER</B>.  I've
+seen it screwed up in many places, causing lots of frustration to the
+Makefile users.
+<P>
+The parenthetical notation means that inside the archive
+<I>libcommonlib.a</I> is a file <I>textio.o</I>.  That archive member
+depends on <I>textio.h</I>.  Therefore, when <I>textio.h</I>, the
+archive member must be updated.
+<P>
+You might think this is pretty uncessary, because we could have done away
+with the whole problem using rules similar to the following:
+<P>
+<UL><PRE>textio.o: textio.h
+	$(CC) -c $@ $^
+
+libcommonlib.a: textio.o</PRE><BR>
+<B>Figure 6: Rules to update a library.</B></UL>
+<P>
+Actually, that is probably correct.  Not quite as tidy as what we saw in
+Figure 5, but this is probably okay to do.  I don't know, I never do it
+that way.  Usually when I get lazy, I do it the wrong way, which we'll
+see in Figure 7.
+<P>
+<UL><PRE>textio.o: textio.h
+	$(CC) -c $@ $^; \
+	$(AR) rcv libcommonlib.a $@</PRE><BR>
+<B>Figure 7: The wrong rule to update a library.</B></UL>
+<P>
+This is wrong because the transaction of building the object file and
+updating its container library is not preserved.  If a user were to hit
+^C between the compile and archive lines in the update method specified in
+Figure 7, then the object file would be up to date while the archive would
+be out of date.  The archive, however, would never be updated, because there
+is no rule which targets the library.
+<P>
+<H1>Update method hints</H1>
+<P>
+In general, there are a few hints which should be observed regarding
+update methods, particularly when they are written in shell.  <TT>make</TT>
+is very specific and a bit wierd in the way it processes update methods.
+<P>
+Each line of an update method is executed in a new shell unless the newline
+is escaped with a backslash.  This is important to note for performance
+reasons as well as parallelization.  To demonstrate:
+<P>
+<UL><PRE>target: object.o
+	$(CC) $@ $^ $(LDFLAGS)
+	echo Finished $@.</PRE><BR>
+<B>Figure 8: Improper update method.</B></UL>
+<P>
+In Figure 8, both lines of the update method would be executed in
+separate shells.  This is admitedly a trivial example, but the differences
+would become apparent immediately if any shell scripting were done in
+earnest as part of an update method.
+<P>
+<UL><PRE>target: object.o
+	$(CC) $@ $^ $(LDFLAGS); echo Finished $@.</PRE>
+<P>
+The following is also acceptable:
+<P>
+<PRE>target: object.o
+	$(CC) $@ $^ $(LDFLAGS); \
+	echo Finished $@.</PRE><BR>
+<B>Figure 9: Correct update methods.</B></UL>
+<P>
+Improper update methods will lead to funny, non-deterministic errors if
+<TT>make</TT> is ever used to run parellel build jobs.  It is pretty tough
+to write a parallelizable Makefile correctly, but painstaking attention to
+the little details of backslashifying newlines can save a lot of trouble.
+<P>
+<H1>Things of note that we haven't covered</H1>
+<P>
+There are many useful <TT>make</TT> operators which we have not talked about.
+Among them are string manipulation functions, subsequence operators, etc.
+There is some useful subshell syntax which is worth looking at, in the
+form of $(shell ...).
+<P>
+Many of the <TT>make</TT> variables, automatic and otherwise, have been
+left out in our cursory discussion.  <I>MAKEFLAGS</I> is a particularly useful
+one.
+<P>
+Most important, however, we have skipped the entire discussion of implicit
+rules, their formulation, specification, and utilization.  Implicit rules
+can be your friends when used properly, or your most confounding enemies
+when used improperly.
+
+<HR>
+<H3>
+Links
+</H3>
+<UL>
+<LI>
+<A HREF="javascript:alert('link disabled in archive')">
+Gmake 3.75 Documentation
+</A>
+<LI>
+<A HREF="javascript:alert('link disabled in archive')">
+UCB-local gmake 3.73 docs from www-inst.eecs/~cs164/docs/</A><BR>
+... may or may not be kept here in the future.
+</UL>
+
+<HR>
+<DIV ALIGN=center>
+[ <A HREF="../index.html">Return to XCF home page</A> |
+<A HREF="../help-sessions.html">Return to Help Sessions main page</A> |
+<A HREF="make.html">Return to VHS home page</A> ]
+</DIV>
+<DIV ALIGN=right>
+Author: <A HREF="javascript:alert('link disabled in archive')">Gene Kan</A><BR>
+$Id: make.html 1.2 Thu, 18 Sep 1997 18:36:32 -0800 jsled $
+</DIV>
+
+</BODY>
+</HTML>

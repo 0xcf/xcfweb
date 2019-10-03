@@ -1,0 +1,286 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>Standard Output</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="CGI Programming and You"
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="Usage"
+HREF="c41.html"><LINK
+REL="PREVIOUS"
+TITLE="Standard Input"
+HREF="x64.html"><LINK
+REL="NEXT"
+TITLE="Environment Variables"
+HREF="x110.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>CGI Programming and You</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x64.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 2. Usage</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x110.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="SEC2.4"
+>Standard Output</A
+></H1
+><P
+>Standard output is the place for data which is given to the web
+server to be sent back to the user's web browser.  The data sent to
+standard output by the CGI program must be in a certain rough format,
+which is very straightforward as well.  The output data comes in two
+parts:
+<P
+CLASS="LITERALLAYOUT"
+>[optional]&nbsp;HTTP&nbsp;headers<br>
+Content-Type:&nbsp;&lt;MIME&nbsp;type&gt;<br>
+&nbsp;&nbsp;&nbsp;&lt;&lt;blank&nbsp;line&gt;&gt;<br>
+&lt;output&nbsp;content&gt;</P
+></P
+><P
+>HTTP headers can be any standard HTTP header information.  HTTP
+headers allow the program [and the web server] to send control and
+other information to the web browser which isn't displayed, but used
+to provide meta-information about the content which is about to be
+sent.  Allowing HTTP headers to be output by the CGI program allows
+for arbritary extension of the web server, allowing for an old server
+to output newer HTTP headers [which the web server doesn't know about
+and thus cannot output on it's own] to the web browser [which may be
+current enough know how to interpret them].  However, outputting any
+HTTP headers [other than "Content-Type"] is optional and normally is
+not useful.</P
+><P
+>The "Content-Type" header denotes what type of data is contained
+in the content as a MIME type.  For instance, when outputting HTML
+from the CGI program, the program would output the line:
+<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>Content-Type: text/html</PRE
+></TD
+></TR
+></TABLE
+>
+which denotes that the content below the blank line is HTML text, and
+should be interpreted as such.  If the CGI program was outputting the
+binary data contained in a GIF image, the Content-Type header would
+be:
+<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>Content-Type: image/gif</PRE
+></TD
+></TR
+></TABLE
+></P
+><P
+>A blank line must be output after the last HTTP header to
+signify that the headers have stopped and the content is about to
+begin.</P
+><P
+>The content is then output, and is passed as output to the web
+browser.  If a Content-Type of <TT
+CLASS="LITERAL"
+>text/html</TT
+> is used,
+then HTML must be output in this section.  If a Content-Type of
+<TT
+CLASS="LITERAL"
+>image/gif</TT
+> is used, then binary GIF data must be
+output.  In general, the Content-Type must match the data being sent,
+or the web browser will not be able to decode it.</P
+><P
+>An example of the output of a simple CGI program generating a
+short HTML file is shown in <A
+HREF="x77.html#BASIC-CGI-EX"
+>Example 2-1</A
+>.</P
+><DIV
+CLASS="EXAMPLE"
+><P
+><B
+><A
+NAME="BASIC-CGI-EX"
+>Example 2-1. Example CGI program output</A
+></B
+></P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>Content-Type: text/html
+
+&lt;HTML&gt;
+&lt;HEAD&gt;
+&lt;TITLE&gt;Foo bar&lt;/TITLE&gt;
+&lt;/HEAD&gt;
+&lt;BODY&gt;
+&lt;IMG SRC="filename.gif" ALT="[A GIF image]" WIDTH=200 HEIGHT=200 ALIGN=right&gt;
+This is the output of a CGI Program.
+&lt;HR&gt;
+&lt;BR CLEAR=all&gt;
+Isn't it pretty?
+&lt;/BODY&gt;
+&lt;/HTML&gt;</PRE
+></TD
+></TR
+></TABLE
+></DIV
+><P
+>Notice that the correct header [<TT
+CLASS="LITERAL"
+>Content-Type:
+text/html</TT
+>] is the first line of the output, followed by a
+blank line, followed by the HTML content as described by the header.
+Discussion of other HTTP headers aside, this is the general form of
+output for nearly all CGI programs.</P
+><P
+>Useful HTTP headers which a CGI script may like to output are
+[but are not limited to &mdash; check the HTTP 1.1 documentation for
+more info]:
+<P
+></P
+><DL
+><DT
+>Expires</DT
+><DD
+><P
+>&#62;Tells how long the document is valid for [for caching
+purposes].</P
+></DD
+><DT
+>Last-Modified</DT
+><DD
+><P
+>Tells when the document was last modified [for
+caching purposes].</P
+></DD
+><DT
+>Location</DT
+><DD
+><P
+>For redirecting the web browser to look for the
+necessary data at a different URL.</P
+></DD
+></DL
+></P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x64.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x110.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Standard Input</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c41.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Environment Variables</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

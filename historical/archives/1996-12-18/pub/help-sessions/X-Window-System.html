@@ -1,0 +1,193 @@
+Introduction to the X Windowing System
+--------------------------------------------------------------------
+Computer Science Undergraduate Assoc.   staff@csua      343 Soda
+Open Computing Facility                 staff@ocf       WEB
+Experimental Computing Facility (XCF)   staff@xcf       117 Cory
+mail helper@csua, helper@ocf, or helper@xcf if you have any questions.
+by Michael Scheel		brought to you by the CSUA, OCF, and XCF
+--------------------------------------------------------------------
+   & Andrew Swan		(for 11/16/93 Help Session)
+[no warranties or guarantees :) ]
+
+1) Intro
+ what is X?
+	bitmaps
+		X Window System consists of a server and one or more client
+		programs.  The server controls a bitmap display, and client
+		programs send their requests to the display.  These include
+		getting input and writing output.
+	windows
+		Most clients open up a "window", which is their little area
+		of workspace in the "root", or main, window.  All other
+		windows are descendants of the root window.
+	cursor
+		The cursor is the pointer device.  It is controlled by the
+		mouse.  In order for a window to receive input, the mouse
+		must usually be in that window.  This is called "focus".
+	xdm (X display manager)
+		This program is run (usually when the computer reboots) to
+		run X.  It starts up X, accepts logins, and then runs the
+		.xsession
+	.xsession
+		This is a file in your home directory, usually in a shell
+		script format.  It is executed by the xdm when it starts up
+		your login.  This has all of your defaults and startup
+		configuration commands in it, such as the commands to open
+		the initial windows, and start up a window manager
+	man
+		man?  The online manual?  What does that have to do with
+		X?  A lot!!!  How can you possibly learn anything about the
+		three quadrillion X applications out there without the manual?
+		Use man.  man is your friend. "man X" for some neat info.
+
+ the window manager
+	general
+		The window manager is a special client program, given 
+		special responsibilities and powers by X.  It does neat stuff
+		like adding titles, resize & iconify buttons, and borders to
+		all your windows.  Anything that you input is first caught
+		by the window manager, and then acted upon.  (If the cursor is
+		in a window, your keystrokes are generally just passed onto
+		whatever client is running in that window)
+	customizing
+		to set your customizations and initial options, the window
+		manager looks in your home directory for its dotfile.  For 
+		twm (tab window manager), the manager that comes with the
+		standard distribution of X, this file is called ".twmrc".  
+		There are other window managers available, with different
+		dotfiles.  The manpage for twm lists lots of things that
+		you can set in your .twmrc.
+
+ mouse
+	The different buttons on the mouse do different things, depending
+	on when and where the cursor is.  Some general defaults are:
+	when in root window
+		opens different menus, as specified in your .twmrc 
+		1 - window tools
+		2 - window manager stuff
+		3 - programs
+	when in other windows (like xterms)
+		1 - highlight (capture) text
+		2 - paste text
+		3 - extend highlight
+		control-1 - xterm specific menus
+		control-2 - set options for window, such as scrollback
+		control-3 - change font
+
+2) Basics	
+ setenv DISPLAY
+	Each root window has a display and screen number associated with it.
+	Most machines only run one root window (the console window, usually),
+	number 0.0.  To access this display over the network (say, from
+	uclink to sandstorm), you would need to tell the program on uclink
+	to display it on sandstorm.  This is usually accomplished by setting
+	an environment variable, DISPLAY.  So, "setenv DISPLAY sandstorm:0.0"
+	will tell your uclink application what you want.
+
+ xhost & xauth
+	There are various levels of security in X.  How does the server know
+	which programs to let in?  There needs to be a way to tell it that
+	you don't want it to run programs coming in from some random site like
+	stanford or new zealand.  xhost is a good first step here.  xhost
+	checks what computer a request is coming from before allowing it 
+	access to your display.  It maintains a list of allowed computers.
+	Adding a computer to the list is easy: "xhost +<computername>".  Use
+	a "-" instead of a "+" to take a computer off the access list.
+	"xhost +" and "xhost -" turn off and on, respectively, access control.
+	"xhost +" will let any computer access your display. (not generally
+	a good thing).  xauth is a more secure version.  It uses a password
+	transmitted by the remote client, and checks it against the local
+	password, to see if the client is allowed to run.  Check the manual
+	for more specific info on xauth.
+
+3) Programs
+ standard stuff
+	There's a bunch of standard options that almost all x apps will take,
+	here are some useful ones:
+	-display: you may specify the display (in machine:0.0 type format),
+		if you want to override (or don't have) the DISPLAY setting.
+	-geometry: specify (hint, actually) the location and size of the
+		window.
+	-fn: if the program displays text, specify the font to use.  This
+		is a really arcane looking name.  Find out what fonts you
+		can use by running "xlsfonts | more".
+	-T: specify the title of the window in the titlebar and icon. (there
+		are several options that do this, each slightly different.
+		I use this one)
+	-help or -h: A lot of X applications give you a short summary of 
+		allowable options
+
+ various useful programs
+	xterm
+		A program that opens a window and gives you a shell.  Basic
+		stuff here: (many options can be preceded by a plus instead
+		of a minus to reverse the effect)
+			-e - specify a program to run.  This is the last
+			argument to xterm on the command line.  It will
+			open a window and run the program, closing the window
+			when the program finishes execution.  Useful for things
+			like rlogin and running side programs.
+			-mb - margin bell - ring a bell whenever you type 
+			near the right margin
+			-sb - enable scrollbar (use -sl to specify number of
+			lines to save)
+			-vb - visual bell - flash the screen instead of beeping
+			-rv - display reverse video
+			-iconic - start as an icon instead of a window
+	xset
+		Set user preferences - usage: "xset <options>"  This program
+		has lots of fun options, here's the more useful ones:
+			b - bell [volume [pitch [duration]]]
+			c - key click (on/off)
+			m - mouse [acceleration [threshold]]
+			q - query current settings
+	xsetroot
+		Set root window parameters - usage: "xsetroot <options>"
+		Neat stuff to do with the root window:
+			-help - help
+			-def - restore defaults (if you've messed something up)
+			-cursor - change the cursor
+			-rv - reverse the fore and back ground colors
+		To change the appearance of the background (we call it
+		the "wallpaper"):
+			-bitmap <filename> - tile given bitmap in background
+			-mod <x> <y> - plaid-like pattern (1 to 16)
+			-gray (or grey) - make it grey
+			-solid <color> - make it whatever color is specified
+	xv
+		Image Viewer - displays images, like GIFs, PBMs, PGMs, PPMs
+		and X11 bitmaps.  A very versatile program (with a slightly
+		humorous man page).  Brings up a control box, with which
+		you manipulate the image.  You can use it with -root option
+		to get a GIF in the root window.
+	bitmap
+		Remember all those bitmaps?  Well, this is one of the programs
+		you can use to create them.  Make bitmaps for cursors,
+		wallpaper, icons, whatever.  Format:
+			bitmap [-options] filename WIDTHxHEIGHT
+		specify a file name, and then give the WIDTH and HEIGHT that
+		you want for the bitmap (default is usually 16x16)
+			-nodashed - don't print dashed lines in the 
+				bitmap window (i.e. - no grid)
+	xrdb
+		This is the program that modifies the X server's resource
+		database.  You use this to load X defaults files.
+
+ favorite other programs
+	xclock
+		A nice little clock for X.  You can specify -analog or
+		-digital, and -chime for whether to beep every half hour
+	xload
+		Displays a periodically updated histogram of the system
+		load average.
+	xeyes
+		Puts a pair of eyes on your screen that follow the pointer.
+		Use the -geometry option with this one for better results.
+	xbiff
+		Tells you when you get new mail.
+
+	There are many other x apps out there.  Look in whatever directory
+	programs like xclock and xterm are in (type "which xclock") to
+	see what other programs you can use, and read the man page on them.
+
+

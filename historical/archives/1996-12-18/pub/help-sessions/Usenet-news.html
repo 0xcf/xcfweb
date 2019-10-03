@@ -1,0 +1,212 @@
+Introduction to USENET
+----------------------
+Computer Science Undergraduate Assoc.	staff@csua	343 Soda
+Open Computing Facility			staff@ocf	WEB
+Experimental Computing Facility (XCF)	staff@xcf	117 Cory
+If you have any questions, mail helper@csua, helper@ocf, or helper@xcf.
+Michael Scheel				2/15/94
+
+-What is it?-
+USENET overview
+	USENET is a big collection of electronic bulletin boards (not
+BBS's!)  People post articles to "newsgroups" and you "subscribe" to those
+newsgroups and read their articles and post "followups".  There are
+currently some 3000-4000 newsgroups.
+
+Programs to use (rn, trn, nn, tin, Pnews, newsetup, newsgroups)
+	There are several programs that you can use to "read" newsgroups.
+They are called "newsreaders": rn, trn, nn, and tin are some of the more
+popular ones.  rn is a basic newsreader, trn is much like rn but it allows
+you to read "threads" (which are basically articles with the same subject),
+and nn and tin are slightly more graphical.  We recommend that you use trn,
+but you can use any newsreader you can find.  Posting to newsgroups is done
+with the Pnews command.  The program newsetup is run when you start reading
+news the first time.  If you want to see a list of newsgroups you can 
+subscribe to, you can run newsgroups.  (there are many more newsreaders
+out there... if you like GNU, you can use GNUS)
+
+Customizing it (.newsrc, .cshrc, .signature)
+	All the news reader programs (well, most of them) use a file
+called .newsrc in your home directory.  The format is:
+	newsgroup: articles_read
+	It lists a name, a colon if you're subscribed (and a ! if you're not)
+and the range of articles in that group that you have read.  If you want
+to edit your .newsrc, go ahead!  You can change ":" to "!" and vice-versa
+to decide which groups you want and don't want.  The first time you run
+a newsreader, it should create a .newsrc for you (via the newsetup command).
+If there aren't many newsgroups in it, then you can subscribe to ones you
+want.  See "Using trn".
+	There are a few things that you can add to your .cshrc or .login to
+customize your news reading.  If you like a certain editor, like
+/usr/local/bin/pico, you can put the following lines in your .cshrc:
+	setenv EDITOR /usr/local/bin/pico
+	setenv VISUAL /usr/local/bin/pico
+	(or whatever editor you want to use)
+	Also, the following line will set which computer to get news from:
+	setenv NNTPSERVER agate.berkeley.edu
+	(It's probably the default, since agate is the only newserver on
+campus)
+	As you read news, you will see that people have a "signature" on
+the articles they post.  You can create your own, but it shouldn't be longer
+than four lines.  Call it .signature and put it in your home directory.  If
+you use pine, it will add your .signature to your mail, too.
+
+Getting more help (gopher, man)
+	As always, we recommend you read the man page for any questions you
+have.  However, we all know that man pages are, at best, unwieldy.  Therefore,
+we also suggest that you look in UCLink's gopher "gopher uclink" and look
+in help/USENET.  Feel free to send questions to staff@ocf.
+
+-Newsgroups-
+How to find newsgroups
+	First, new users of USENET should subscribe to news.announce.newusers.
+The information there can show you many things you should know, like 
+how to find new groups, how to create new groups, and some pointers on what
+we call "netiquette".  You can use the newsgroups command (it's pretty slow)
+to find other newsgroups.  Some of the more popular hierarchies are:
+	comp	computer stuff
+	news	news about news
+	rec	recreational stuff
+	sci	scientific
+	soc	social
+	talk	well, talk.
+	misc	misc
+	clari	real news (moderated news groups)
+	alt	Anything else (you might not be able to get all alt.* groups)
+	ba	Bay Area
+	ca	California
+	ucb	That's us.
+
+-Using trn-
+Starting up
+	Typing trn will start up the newsreader.   It has a couple of useful
+options: "-q" will do a quick start that won't check for new newsgroups, and
+you can check the manual for some others.  You can type "q" just about
+anywhere to back out of trn.  Also, you can type the spacebar to do the
+default action, which is usually appropriate.  Press h at any time for help.
+
+Selecting newsgroups and articles
+	trn will present you with a line similar to:
+=======  10 unread articles in rec.humor.oracle -- read now? [+ynq]
+	Pressing space will do the default, choosing this newsgroup.  "y"
+will show you all articles, rn style, "+" will show you the articles threaded,
+and "n" moves to the next newsgroup with unread articles.
+	To take advantage of trn's capabilities, use the +.
+	You can move between newsgroups with n for next, p for previous, and
+g <name> to go to a specific newsgroup.  You may be asked if you want to
+subscribe to that group if you weren't already.  You can also subscribe to
+many similar newsgroups with "a <name>" where it will ask you if you want
+to add all the newsgroups that have <name> in their titles. "u" will 
+unsubscribe to the current newsgroup, and "c" will catch-up all articles.
+	If you pressed "y", it will start showing you articles.  If you
+pressed "+" (the spacebar usually defaults to +) it will present a thread 
+selector.  Each thread is marked with a letter, press that letter to "mark"
+the thread.  Press ">" to go to the next page of threads.  Press Z or tab
+to start reading the articles marked.  When you are done, it will return to 
+the thread selector screen.  You can also press X to have it show the
+articles you wanted and mark the others as if you had read them (i.e., you
+don't want to read them)  You can press c to catch up all articles. 
+(mark them as read)  Return will start reading the current thread if none
+are selected,  and D will read current articles and mark the current page
+as read.  Entering a range of letters, like "b-f" will select all threads
+in that range.
+
+Reading articles
+	trn will simply display all articles you selected, in thread order.
+You can press n to go to the next article, p for previous, or q for quit.
+The spacebar defaults to n, unless the article is long, where space will
+show you more of the article.  You can also press "<" and ">" to move
+between threads (not articles)  "s" and "w" will save the current article 
+to the file you specify, where "s" includes headers and "w" does not.  You can
+press "b" to go back one page in a longer article.  From time to time, you
+will see articles that seem to be gibberish, these have been encoded so that
+it's your choice if you want to read them.  (They are usually offensive or
+degrading in some way)  If you're sure that you want to read them, pressing
+x will decode the article.  If you press x, it implies that you understand
+that it may be offensive.
+
+Responding
+	Pressing r after an article will send a mail message to the author.
+Pressing f will post a followup to the article to the newsgroup.  You can
+also include the original article with R and F respectively.
+
+-Summary of trn-
+Selecting a newsgroup-
+	h	help (always works)
+	q	quit trn
+	<space>	default (always)
+	+	thread selector
+	y	read all articles
+	n	next newsgroup
+	p	previous group
+	u	unsubscribe
+	c	catch-up
+	a	add news groups
+	g	goto specific group
+
+Selecting a thread-
+	q	go to next newsgroup
+	<	previous page
+	>	next page
+	^	first page
+	$	last page
+	L	switch form of list (experiment with which one you like)
+	(id)	select, where id is letter a..z of a thread
+	id-id	select range
+	y	select current (same as .)
+	k	don't select current (same as ,)
+	n	next thread (same as ])
+	p	previous thread same as [)
+	<return>read articles marked
+	Z	read all articles (same as <tab>)
+	X	mark all articles as read and read chosen articles
+
+Selecting an article-
+	q	quit newsgroup
+	n	next article
+	p	previous article
+	s	save article
+	w	save article without headers
+	+	go back to the thread selector
+	k	kill this subject
+	c	catch-up
+	ctrl-l	redisplay page
+	x	decode article
+	>	next thread
+	<	previous thread
+	(number)go to article number
+	r,R	send mail to author of article
+	f, F	post followup (invokes Pnews)
+		- note - capitalized form includes old article
+
+Paging through an article-
+	q	end of article
+	<space> next page
+	b	back page
+	<return>one more line
+	d	show half a page more
+	j	mark article as read (junk)
+	<tab>	skip text from previous articles
+
+-Using Pnews-
+Pnews
+	Pnews is the program that you use to post articles to the newsgroups.
+It can be invoked from the UNIX prompt, and it is also invoked when you
+"followup" an article from within a newsreader.  The first thing it asks
+you is for "distribution".  Usually, for ucb.* newsgroups, the distribution
+is ucb.  If you want it to escape the university, you can choose whatever
+is appropriate for your article.  Remember, this is the Internet, and "world"
+means EVERYBODY gets your article.  It will ask you for a file to include,
+if you have typed you article already, give the filename here.  (It will also
+ask if you're really, really, really sure about posting.  If you are, go 
+ahead.)  It may ask for the editor you want to use.  If it doesn't, and
+you haven't specified one (in your .cshrc) you will get vi.  You probably
+don't want this.  Type ":q!" and fix it.  After specifying newsgroups to
+post to, and writing your article, type "send" to send it.  If you want to
+test anything out, send it to the "ucb.test" newsgroup.  You will get an e-mail
+message back with your headers (not your article itself).
+
+-Creating new groups-
+	If you've got a really good idea (remember, everyone thinks they
+have a really good idea) you can get a new newsgroup created.  Check 
+news.announce.newusers for information.

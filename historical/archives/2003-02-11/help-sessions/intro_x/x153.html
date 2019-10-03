@@ -1,0 +1,329 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>X Display Access</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="X Windows, a Networked Windowing System"
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="How does it work?"
+HREF="c29.html"><LINK
+REL="PREVIOUS"
+TITLE="Displays"
+HREF="x133.html"><LINK
+REL="NEXT"
+TITLE="Start up Files"
+HREF="x194.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>X Windows, a Networked Windowing System</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x133.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 2. How does it work?</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x194.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN153"
+>X Display Access</A
+></H1
+><P
+>As noted, there are two ways to give an X client access to your
+display.  The first, <B
+CLASS="COMMAND"
+>xhost</B
+>, is generally considered
+to be a "bad thing".  The <B
+CLASS="COMMAND"
+>xhost</B
+> command can be
+used to grant access to a display on a per host basis.  So if you use
+the following command:
+<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>jon@coke.CSUA %</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>xhost +soda.CSUA.Berkeley.EDU</B
+></TT
+>
+soda.CSUA.Berkeley.EDU being added to access control list</PRE
+></TD
+></TR
+></TABLE
+></P
+><P
+>You would give access to every X client from soda.CSUA that tried to
+connect to your display on coke.CSUA, without regard for who it is on
+soda.CSUA might be running that X client.  If you trust everyone on
+soda.CSUA not to do "mean things" then this might be alright for you.
+Most people don't however.  But <B
+CLASS="COMMAND"
+>xhost</B
+> does have good
+uses, for instance to restrict access to your display:
+<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>jon@coke.CSUA %</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>xhost - coke.CSUA.Berkeley.EDU - localhost</B
+></TT
+>
+coke.CSUA.Berkeley.EDU being removed from access control list
+localhost being removed from access control list</PRE
+></TD
+></TR
+></TABLE
+></P
+><P
+>Some people often do this so that people don't log into coke.CSUA
+from a remote machine and run X clients on coke's display or try to do it
+by setting their <TT
+CLASS="ENVAR"
+>DISPLAY</TT
+> to
+<TT
+CLASS="LITERAL"
+>localhost:0</TT
+>.</P
+><P
+>A better solution is <B
+CLASS="COMMAND"
+>xauth</B
+>.  <B
+CLASS="COMMAND"
+>xauth</B
+>
+is used to pass around "magic cookies" around that a client must present to
+use a display.  An example:
+<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>jon@coke.CSUA %</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>&lt;that "xhost -" stuff&gt;</B
+></TT
+>
+<TT
+CLASS="PROMPT"
+>jon@coke.CSUA %</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>xauth</B
+></TT
+>
+Using authority file /accounts/jon/.Xauthority
+<TT
+CLASS="PROMPT"
+>xauth&#62;</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>list</B
+></TT
+>
+coke.CSUA.Berkeley.EDU:0  MIT-MAGIC-COOKIE-1  2ea6ab402d4a0dfa2029b72d0c6083c9
+coke/unix:0  MIT-MAGIC-COOKIE-1  2ea6ab402d4a0dfa2029b72d0c6083c9
+... (more keys)
+<TT
+CLASS="PROMPT"
+>jon@coke.CSUA %</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>rsh parker.eecs -l csua-lib</B
+></TT
+>
+<TT
+CLASS="PROMPT"
+>passwd:</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>&lt;passwd&#62;</B
+></TT
+>
+<TT
+CLASS="PROMPT"
+>parker %</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>setenv DISPLAY coke.CSUA.Berkeley.EDU:0</B
+></TT
+>
+<TT
+CLASS="PROMPT"
+>parker %</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>xauth add coke.CSUA.Berkeley.EDU:0  MIT-MAGIC-COOKIE-1  2ea6ab402d4a0dfa2029b72d0c6083c</B
+></TT
+>
+<TT
+CLASS="PROMPT"
+>parker %</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>maker</B
+></TT
+>
+[then Framemaker appears on coke's Display!]</PRE
+></TD
+></TR
+></TABLE
+></P
+><P
+>So long as you are the only one who has access to that magic
+cookie, no one but you can access your display, barring bugs in the
+code for the Xserver.  But there are mean nasty people out there who
+are also very hard working mean nasty people who manage to do things
+like run "packet sniffers" which can catch your passwds, "magic cookies",
+secret love mail, the like as they passed over the network.</P
+><P
+>There is a solution, well several solutions.  The one that is
+easiest to use &mdash; both for users <I
+CLASS="EMPHASIS"
+>and</I
+>
+administrators &mdash; is
+<A
+HREF="../using-ssh/book1.html"
+TARGET="_top"
+>ssh</A
+>,
+Secure SHell.  SSH automagically forwards X connections from the
+remote machine to the local machine, encrypting the connection as
+it does so.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x133.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x194.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Displays</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c29.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Start up Files</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

@@ -1,0 +1,333 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>CGI Programming and You</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="NEXT"
+TITLE="Introduction"
+HREF="c27.html"></HEAD
+><BODY
+><DIV
+CLASS="BOOK"
+><DIV
+CLASS="TITLEPAGE"
+><H1
+CLASS="TITLE"
+><A
+NAME="AEN2"
+>CGI Programming and You</A
+></H1
+><H2
+CLASS="SUBTITLE"
+>CGI &ndash; The Common Gateway Interface</H2
+><H3
+CLASS="AUTHOR"
+>Joshua Sled</H3
+><DIV
+CLASS="AFFILIATION"
+><H4
+CLASS="ORGNAME"
+>eXperimental Computing Facility</H4
+><P
+CLASS="LITERALLAYOUT"
+><TT
+CLASS="EMAIL"
+>&#60;<A
+HREF="javascript:alert('link disabled in archive')"
+>jsled@xcf.berkeley.edu</A
+>&#62;</TT
+></P
+></DIV
+><P
+CLASS="COPYRIGHT"
+>Copyright � 1999 by <SPAN
+CLASS="HOLDER"
+>Josh Sled &lt;jsled@xcf.berkeley.edu&gt;</SPAN
+></P
+><HR></DIV
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+>1. <A
+HREF="c27.html"
+>Introduction</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="c27.html#SEC1.1"
+>What is CGI?</A
+></DT
+><DT
+><A
+HREF="x36.html"
+>What's it useful for?</A
+></DT
+></DL
+></DD
+><DT
+>2. <A
+HREF="c41.html"
+>Usage</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="c41.html#SEC2.1"
+>How it works [an overview]</A
+></DT
+><DT
+><A
+HREF="x47.html"
+>Invocation</A
+></DT
+><DT
+><A
+HREF="x64.html"
+>Standard Input</A
+></DT
+><DT
+><A
+HREF="x77.html"
+>Standard Output</A
+></DT
+><DT
+><A
+HREF="x110.html"
+>Environment Variables</A
+></DT
+><DT
+><A
+HREF="x159.html"
+>URL-Encoding</A
+></DT
+><DT
+><A
+HREF="x188.html"
+>Form-Data Format</A
+></DT
+></DL
+></DD
+><DT
+>3. <A
+HREF="c211.html"
+>Programming Concerns</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="c211.html#SEC3.1"
+>Server-Side File Access</A
+></DT
+><DT
+><A
+HREF="x220.html"
+>File Access and Permissions</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="x220.html#SEC3.2.1"
+>Platform-Specific Issues</A
+></DT
+></DL
+></DD
+><DT
+><A
+HREF="x231.html"
+>Security Concerns</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="x231.html#SEC3.3.1"
+>Watch what is done with form data.</A
+></DT
+><DT
+><A
+HREF="x231.html#SEC.3.3.2"
+>Don't allow access to binaries.</A
+></DT
+></DL
+></DD
+></DL
+></DD
+><DT
+>4. <A
+HREF="c244.html"
+>Programming Paradigm</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="c244.html#SEC4.1"
+>Non-Interactive Processing</A
+></DT
+><DT
+><A
+HREF="x261.html"
+>Segmented User Interaction</A
+></DT
+><DT
+><A
+HREF="x292.html"
+>Multiple Simultaneous Invocations</A
+></DT
+></DL
+></DD
+><DT
+>5. <A
+HREF="c297.html"
+>Conclusion</A
+></DT
+><DT
+>6. <A
+HREF="c313.html"
+>Resources for CGI Programmers</A
+></DT
+><DT
+>7. <A
+HREF="c352.html"
+>Examples</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="c352.html#SEC7.1"
+><A
+HREF="../cgi-exs/example.7.1/example.7.1.html"
+TARGET="_top"
+>Simple form
+example.</A
+></A
+></DT
+><DT
+><A
+HREF="x358.html"
+><A
+HREF="../cgi-exs/example.7.2/example.7.2.html"
+TARGET="_top"
+>Basic form
+decoding/output example.</A
+></A
+></DT
+><DT
+><A
+HREF="x362.html"
+><A
+HREF="../cgi-exs/example.7.3/example.7.3.html"
+TARGET="_top"
+>Generating dynamic
+content from a form identifier.</A
+></A
+></DT
+><DT
+><A
+HREF="x366.html"
+><A
+HREF="../cgi-exs/example.7.4/example.7.4.html"
+TARGET="_top"
+>CGI-based image
+selection.</A
+></A
+></DT
+></DL
+></DD
+><DT
+>A. <A
+HREF="a371.html"
+>CGI Environment Variables</A
+></DT
+><DD
+><DL
+><DT
+><A
+HREF="a371.html#AEN373"
+>Always set.</A
+></DT
+><DT
+><A
+HREF="x408.html"
+>Request Specific</A
+></DT
+><DT
+><A
+HREF="x518.html"
+>Miscellaneous</A
+></DT
+></DL
+></DD
+><DT
+>B. <A
+HREF="a554.html"
+>Invoking CGI Programs Without the Web Server</A
+></DT
+></DL
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="c27.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Introduction</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

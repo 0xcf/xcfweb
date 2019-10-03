@@ -1,0 +1,318 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>Basic Use of SSH</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="Using SSH for Secure Interactive Communications"
+HREF="book1.html"><LINK
+REL="PREVIOUS"
+TITLE="How can I get it?"
+HREF="x91.html"><LINK
+REL="NEXT"
+TITLE="Regular use of SSH (ssh)"
+HREF="x139.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>Using SSH for Secure Interactive Communications</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x91.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x139.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="SEC1"
+>Chapter 2. Basic Use of SSH</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="c99.html#SEC1.1"
+>Setup before first use (<B
+CLASS="COMMAND"
+>ssh-keygen</B
+>)</A
+></DT
+><DT
+><A
+HREF="x139.html"
+>Regular use of SSH (<B
+CLASS="COMMAND"
+>ssh</B
+>)</A
+></DT
+><DT
+><A
+HREF="x179.html"
+>Easier use of SSH (<B
+CLASS="COMMAND"
+>ssh-agent</B
+> and
+<B
+CLASS="COMMAND"
+>ssh-add</B
+>)</A
+></DT
+></DL
+></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="SEC1.1"
+>Setup before first use (<B
+CLASS="COMMAND"
+>ssh-keygen</B
+>)</A
+></H1
+><P
+>SSH relies on the knowledge of a slight amount of data stored
+by the user.  SSH is based on RSA-encryption, and like all public-key
+systems, the user needs both a public and private key to use the
+system; as well, SSH needs a random number generator seed, which is
+user-specific.  The <B
+CLASS="COMMAND"
+>ssh-keygen</B
+> program generates
+this data for the user; <B
+CLASS="COMMAND"
+>ssh-keygen</B
+> generates the
+following files:
+<P
+></P
+><DL
+><DT
+>~/.ssh/identity.pub</DT
+><DD
+><P
+>This is the user's public key.  It's not necessary to
+keep it secret.</P
+></DD
+><DT
+>~/.ssh/identity</DT
+><DD
+><P
+>This is the user's private key.  As such, it should
+not be given out to others, and should have the appropriate permissions.
+It is protected by the passphrase given to
+<B
+CLASS="COMMAND"
+>ssh-keygen</B
+>.</P
+></DD
+><DT
+>~/.ssh/random_seed</DT
+><DD
+><P
+>This is the random number generator seed.  It should
+be kept secret.</P
+></DD
+></DL
+></P
+><P
+>A sample session with <B
+CLASS="COMMAND"
+>ssh-keygen</B
+> looks like the
+following
+<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>[~] %</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>ssh-keygen</B
+></TT
+>
+Initializing random number generator...
+Generating p:  ................................++ (distance 528)
+Generating q:  ...++ (distance 50)
+Computing the keys...
+Key generation complete.
+Enter file in which to save the key (/home/jsled/.ssh/identity): <TT
+CLASS="USERINPUT"
+><B
+>&lt;RETURN&gt;</B
+></TT
+>
+Enter passphrase: <TT
+CLASS="USERINPUT"
+><B
+>&lt;user-entered passphrase&gt;</B
+></TT
+>
+Enter the same passphrase again: <TT
+CLASS="USERINPUT"
+><B
+>&lt;same user-entered passphrase&gt;</B
+></TT
+>
+Your identification has been saved in /home/jsled/.ssh/identity.
+Your public key is:
+1024 37 570995861311744913699852643840495620503105177916202595981143078740421447
+07234725107032716031313676352354759768729079333048192564496060745735388393675040
+48251376663323088994798943255485136598021692118911541230193385758280090695891602
+5590978882896036684032728595904115093929448135894970165679059780624183271411 jsled@josh.asynchronous.org
+Your public key has been saved in /home/jsled/.ssh/identity.pub</PRE
+></TD
+></TR
+></TABLE
+></P
+><P
+>The data for the local machine has been created.  The same should be
+done for all accounts from which the user would like to use SSH.  In
+effect, a separate identity (public/private key pair) is created for
+each account.</P
+><P
+>The public key is then copied by the user to the remote machine,
+where is it placed in the file <TT
+CLASS="FILENAME"
+>~/.ssh/authorized_keys</TT
+>;
+this file can be made public since it only consists of public keys.  The
+file controls access to account on the remote machine.  It works in a
+manner similar to the <TT
+CLASS="FILENAME"
+>~/.rhosts</TT
+> file, since it defines
+a list of identities which have access to the system.  However, it is
+fundamentally secure, whereas <TT
+CLASS="FILENAME"
+>.rhosts</TT
+> (and the whole
+<B
+CLASS="COMMAND"
+>rlogin/rcp/rsh</B
+> mechanism) is not.  The easiest way to copy
+this data between machines is to use copy-and-paste and <B
+CLASS="COMMAND"
+>cat</B
+>,
+IMHO.  <B
+CLASS="COMMAND"
+>ftp</B
+>, <B
+CLASS="COMMAND"
+>rcp</B
+> or <B
+CLASS="COMMAND"
+>ssh</B
+>
+can also be used to do this.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x91.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x139.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>How can I get it?</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Regular use of SSH (<B
+CLASS="COMMAND"
+>ssh</B
+>)</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

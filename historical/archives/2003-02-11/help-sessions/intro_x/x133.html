@@ -1,0 +1,222 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>Displays</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="X Windows, a Networked Windowing System"
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="How does it work?"
+HREF="c29.html"><LINK
+REL="PREVIOUS"
+TITLE="Window Managers"
+HREF="x85.html"><LINK
+REL="NEXT"
+TITLE="X Display Access"
+HREF="x153.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>X Windows, a Networked Windowing System</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x85.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 2. How does it work?</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x153.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN133"
+>Displays</A
+></H1
+><P
+>One concept in X Windows that deserves some explanation is the
+"display".  A display is a "collection of monitors that share a common
+keyboard and pointer (mouse, tablet, etc.)."  A machine typically only
+has one display but can, in the case of large systems, have more.
+This is, however, rarely seen in most computing environments.  It is
+very common is to see one display with multiple monitors, or
+screens.</P
+><P
+>Displays are referred to by names like the following:
+<TT
+CLASS="LITERAL"
+>                          |----- screen number optional if its zero
+meeko.EECS.Berkeley.EDU:0.0
+|_____________________| |
+      ^hostname         |_______ display number</TT
+></P
+><P
+>The hostname part is also optional especially when referring to
+the local display, but having the full hostname there makes things easier
+in the long run.  One thing you can do with the display is cause X
+client to use another machine's display.  Lets say you are logged in
+on one of the workstations in the downstair labs and you want to run
+some X program that is only available on the big server machines, like
+parker.EECS.  First you need to tell the X client that you want it to
+use the proper display.  To do that you can either set the
+<TT
+CLASS="ENVAR"
+>DISPLAY</TT
+> environment variable or use the
+<TT
+CLASS="LITERAL"
+>-display</TT
+> flag
+<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>rohan.cs %</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>remsh parker.EECS.Berkeley.EDU</B
+></TT
+>
+passwd: <TT
+CLASS="USERINPUT"
+><B
+>&lt;passwd&gt;</B
+></TT
+>
+<TT
+CLASS="PROMPT"
+>parker.EECS %</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>setenv DISPLAY rohan.CS.Berkeley.EDU; maker</B
+></TT
+>
+(you could also type maker -display rohan.CS.Berkeley.EDU)
+Xlib: connection to "rohan.CS.Berkeley.EDU:0.0" refused by server
+Xlib: Client is not authorized to connect to Server
+xterm Xt error: Can't open display: rohan.CS.Berkeley.EDU:0</PRE
+></TD
+></TR
+></TABLE
+></P
+><P
+>What happened?  Well you set the <TT
+CLASS="ENVAR"
+>DISPLAY</TT
+> environment
+variable correctly.  But yoy need to give the remote client access to your
+<TT
+CLASS="ENVAR"
+>DISPLAY</TT
+>.  There are two ways to do that; one is with the
+<B
+CLASS="COMMAND"
+>xhost</B
+> command, and the other is with the
+<B
+CLASS="COMMAND"
+>xauth</B
+> command.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x85.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x153.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Window Managers</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c29.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>X Display Access</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

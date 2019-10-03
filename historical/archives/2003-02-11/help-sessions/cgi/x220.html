@@ -1,0 +1,217 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>File Access and Permissions</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="CGI Programming and You"
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="Programming Concerns"
+HREF="c211.html"><LINK
+REL="PREVIOUS"
+TITLE="Programming Concerns"
+HREF="c211.html"><LINK
+REL="NEXT"
+TITLE="Security Concerns"
+HREF="x231.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>CGI Programming and You</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="c211.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 3. Programming Concerns</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x231.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="SEC3.2"
+>File Access and Permissions</A
+></H1
+><DIV
+CLASS="NOTE"
+><P
+></P
+><TABLE
+CLASS="NOTE"
+WIDTH="100%"
+BORDER="0"
+><TR
+><TD
+WIDTH="25"
+ALIGN="CENTER"
+VALIGN="TOP"
+></TD
+><TD
+ALIGN="LEFT"
+VALIGN="TOP"
+><P
+>The data in this section assumes that the CGI program is
+running in a multiuser environment with strict permission-based access
+privledges between users; specifically, this section assumes knowledge
+of Unix and Unix file permissions.  This information probably will not
+pertain to single-user web servers such as Windows95 or
+WindowsNT.</P
+></TD
+></TR
+></TABLE
+></DIV
+><P
+>The web server runs under a specific identity, which limits and
+controls which files the web server has access to.  This is a good
+thing for many security reasons, but it can also be a nuisance at
+times.  Many are accustomed to making their HTML files world-readable,
+which allows the web server process [which runs under a different
+user-id from the user who create the HTML files] to access the files
+and serve them up to the user accessing their page.  The same must be
+done for CGI scripts.  Since the scripts must be executed by the web
+server, they must analogously be world-executable.  There may be other
+restrictions on CGI programs [for example: that they must end with
+"<TT
+CLASS="LITERAL"
+>.cgi</TT
+>"]; see your web server's documentation for
+details.</P
+><P
+>Another important note regarding user identities as they relate
+to CGI programs is the fact that programs run as the user which
+started the process.  So, a CGI program which is started by the web
+server will run with the identity of the web server, not with the
+identity of the user who created it.  This is especially important for
+write-access to files.  If a CGI program, written by the user "luser",
+relies on a file "cgidata" which luser has in her HTML-file directory,
+when it is run by the web server [with user-identity "www"], it will
+not have access to the "cgidata" file, unless luser made the file
+world-readable.  If the CGI program is to write to the file, things
+get even worse.  luser would not want to make the file
+world-writeable, since any other user on the machine could write to
+the file, which is a Bad Thing.  But since the CGI program runs as www
+and not as luser, that is the only way to write to the file.  Since
+most CGI application will want to write to files, there is a
+problem.</P
+><P
+>Fortunately, there exists a better solution.  Unix has a special
+permission for programs called "setuid".  This means that when the
+program is run, it runs with the identity of the user who owns the
+file, not the identity of the user executing the program.  Thus, when
+the web server [user "www"] executes luser's program, it runs with
+luser's permissions.  luser can then make the file user-write-able,
+and the program would have the ability to write to it, but other users
+would not.  Use of the setuid bit is somewhat dangerous since it
+allows access to otherwise private files, but with care can be used to
+great advantage.</P
+><DIV
+CLASS="SECT2"
+><H2
+CLASS="SECT2"
+><A
+NAME="SEC3.2.1"
+>Platform-Specific Issues</A
+></H2
+><P
+>As noted, this information is Unix-specific.  However, the
+concept applies to any multiuser operating system with user-based file
+permissions.  In a single-user operating environment, the web server
+and the user who created the CGI script are equivalent, and thus the
+above discussion is irrelevant.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="c211.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x231.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Programming Concerns</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c211.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Security Concerns</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

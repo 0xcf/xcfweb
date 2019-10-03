@@ -1,0 +1,63 @@
+<HTML>
+
+<HEAD>
+
+<META NAME="Author"
+      CONTENT="Joshua M. Sled <jsled@xvcf.berkeley.edu>">
+
+<TITLE>Example 7.1 | Simple form example</TITLE>
+
+</HEAD>
+
+<BODY BGCOLOR="#ffffff">
+
+<H2>Example 7.1 | Simple form example</H2>
+
+<BR CLEAR=all>
+<HR>
+
+These are some common, useful form fields.  The CGI script is
+non-existant; submitting the form will result in an error.  This page
+is simply an example of the syntax and visual output of various form
+fields.
+
+<BR CLEAR=all>
+<HR>
+
+<FORM METHOD=post ACTION="http://xcf.berkeley.edu/archives/2003-02-11/help-sessions/cgi-exs/example.7.1/non-existant.cgi">
+
+Field 0: <INPUT TYPE=text NAME="field0" SIZE=10><BR>
+Field 1: <INPUT TYPE=text NAME="field1" SIZE=20><BR>
+Password Field: <INPUT TYPE=password NAME="pass" SIZE=10><BR>
+<P>
+Selection: <SELECT NAME="test_selection">
+<OPTION selected>Option 1
+<OPTION>Option 2
+<OPTION>Option 3
+<OPTION>Option 4
+</SELECT>
+<P>
+Mulitple Selection: <SELECT MULTIPLE NAME="multiple_selection">
+<OPTION>Option 1
+<OPTION>Option 2
+<OPTION>Option 3
+<OPTION>Option 4
+</SELECT>
+<P>
+Radio Buttons:<BR>
+Option 1 <INPUT TYPE=radio NAME="radios"><BR>
+Option 2 <INPUT TYPE=radio NAME="radios"><BR>
+Option 3 <INPUT TYPE=radio NAME="radios"><BR>
+<P>
+Check Boxes:<BR>
+Option 1 <INPUT TYPE=checkbox NAME="checks"><BR>
+Option 2 <INPUT TYPE=checkbox NAME="checks"><BR>
+Option 3 <INPUT TYPE=checkbox NAME="checks"><BR>
+
+<INPUT TYPE=submit NAME="Submission" VALUE="Submit Me!"><BR>
+<INPUT TYPE=submit NAME="Submission" VALUE="NO!  Submit me!!!"><BR>
+
+</FORM>
+
+</BODY>
+</HTML>

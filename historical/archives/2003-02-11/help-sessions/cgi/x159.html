@@ -1,0 +1,244 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>URL-Encoding</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="CGI Programming and You"
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="Usage"
+HREF="c41.html"><LINK
+REL="PREVIOUS"
+TITLE="Environment Variables"
+HREF="x110.html"><LINK
+REL="NEXT"
+TITLE="Form-Data Format"
+HREF="x188.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>CGI Programming and You</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="x110.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 2. Usage</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x188.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="SEC2.6"
+>URL-Encoding</A
+></H1
+><P
+>URL-encoding is a simple method of encoding which converts
+spaces and other characters which may confuse the program reading the
+form data.  Since '<TT
+CLASS="LITERAL"
+>=</TT
+>' and
+'<TT
+CLASS="LITERAL"
+>&amp;</TT
+>' are used for special purposes in the form
+data [see <A
+HREF="x188.html"
+>the section called <I
+>Form-Data Format</I
+></A
+>], the program wouldn't know
+the difference between the user's '<TT
+CLASS="LITERAL"
+>&amp;</TT
+>' [or
+'<TT
+CLASS="LITERAL"
+>=</TT
+>'] and the special '<TT
+CLASS="LITERAL"
+>&amp;</TT
+>' [or
+'<TT
+CLASS="LITERAL"
+>=</TT
+>'].  Therefore, all '<TT
+CLASS="LITERAL"
+>&#38;</TT
+>'s,
+'<TT
+CLASS="LITERAL"
+>=</TT
+>'s, spaces and some other characters are
+converted by URL-Encoding, however the majority of characters are left
+alone.</P
+><P
+>Spaces are converted to "<TT
+CLASS="LITERAL"
+>+</TT
+>"; most
+alphabetical and numerical characters are left alone.  Other
+characters are converted to their ASCII value preceded by a
+'<TT
+CLASS="LITERAL"
+>%</TT
+>' character [ie: "<TT
+CLASS="LITERAL"
+>%nn</TT
+>" where
+'nn' is the ASCII value of the character in hexadecimal].  For
+instance, since &lt;space&gt; is converted to '<TT
+CLASS="LITERAL"
+>+</TT
+>',
+a '<TT
+CLASS="LITERAL"
+>+</TT
+>' in the user's input would be converted to
+'<TT
+CLASS="LITERAL"
+>%2B</TT
+>', since 2B is the hexadecimal equivalent
+decimal 43, the ASCII value of the character
+'<TT
+CLASS="LITERAL"
+>+</TT
+>'.</P
+><P
+>For instance, the string "<TT
+CLASS="LITERAL"
+>2 + 2 = 4</TT
+>" would be
+URL-Encoded to read:
+<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+>2+%2B+2+%3D+4</PRE
+></TD
+></TR
+></TABLE
+>
+since '<TT
+CLASS="LITERAL"
+>+</TT
+>' is &lt;space&gt;, <TT
+CLASS="LITERAL"
+>%2B</TT
+>
+is '<TT
+CLASS="LITERAL"
+>+</TT
+>' and <TT
+CLASS="LITERAL"
+>%3D</TT
+> is
+'<TT
+CLASS="LITERAL"
+>=</TT
+>'.</P
+><P
+>The URL decoding process is relatively straightforward, but it
+is usually more useful to use a pre-written library [such as
+'cgi-lib.pl'] to do the conversion and decoding.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="x110.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x188.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Environment Variables</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c41.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Form-Data Format</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

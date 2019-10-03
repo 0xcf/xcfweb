@@ -1,0 +1,820 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>A few basic commands</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="Introduction to Unix"
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="I have an account. What now?"
+HREF="c25.html"><LINK
+REL="PREVIOUS"
+TITLE="I have an account. What now?"
+HREF="c25.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>Introduction to Unix</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="c25.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 1. I have an account. What now?</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+>&nbsp;</TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN75"
+>A few basic commands</A
+></H1
+><P
+>Commands in Unix tend to have a number of options or "flags" that tell
+the command how to act when run.  Some of these flags can be used
+together, others cannot be used if others are present.  Let's use the
+<B
+CLASS="COMMAND"
+>ls</B
+> command as an example.</P
+><P
+>The <B
+CLASS="COMMAND"
+>ls</B
+> command lists files.  One important flag to
+<B
+CLASS="COMMAND"
+>ls</B
+>, the <SPAN
+CLASS="OPTION"
+>-l</SPAN
+> flag,
+tells <B
+CLASS="COMMAND"
+>ls</B
+> to return a long listing of files, which will
+contain a lot of
+information about the files listed.  The <SPAN
+CLASS="OPTION"
+>-a</SPAN
+> flag will list
+files beginning with a period (<TT
+CLASS="LITERAL"
+>.</TT
+>), files that
+<B
+CLASS="COMMAND"
+>ls</B
+> would otherwise not show. Here is an example:</P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>%</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>ls /</B
+></TT
+>
+altroot    dev        kern       proc       stand      usr
+bin        etc        lost+found root       sys        var
+bsd        home       mnt        sbin       tmp</PRE
+></TD
+></TR
+></TABLE
+><P
+>A simple listing of files. Not a lot of info, but if you were familiar
+with the general layout, you would probably know what was what.</P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>%</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>ls -l /</B
+></TT
+>
+total 2659
+drwxr-xr-x   2 root  wheel       512 May 25 17:05 altroot
+drwxr-xr-x   2 root  wheel      1024 Jul 20 06:47 bin
+-rw-r--r--   1 root  wheel   1325378 Aug 23 09:25 bsd
+drwxr-xr-x   3 root  wheel      2560 Sep  2 21:42 dev
+drwxrwxr-x  10 1000  wheel      2048 Aug 31 12:56 etc
+drwxr-xr-x   3 root  wheel       512 Aug  4 20:55 home
+...
+---------------------------------------------------------
+Filetype/Mode Links Owner Group    Size Modif. date  Filename...</PRE
+></TD
+></TR
+></TABLE
+><P
+>As you can see, <B
+CLASS="COMMAND"
+>ls -l</B
+> gives a long listing, with
+much more info. The first part of each line
+tells us what kind of file each file is; the one that have a <TT
+CLASS="LITERAL"
+>d</TT
+> at
+the beginning are directories, and the ones with a <TT
+CLASS="LITERAL"
+>-</TT
+> there are
+"regular" files.  The next nine characters refer to the file mode or
+<I
+CLASS="EMPHASIS"
+>permissions</I
+>.  These permissions detail what people may do with the
+file in question.  The next column is the number of "links" made to
+that file.  That information isn't all that useful right now.  The
+next column is the owner.  Some files may be owned by root (the
+system administrator), others
+by users like yourself. The next column is the group owner.  Groups are
+groups of users listed under a common group name in the file
+<TT
+CLASS="FILENAME"
+>/etc/group</TT
+>.  The numbers that follow give the size of
+the file in kilobytes.  Then comes the last date that the file was modified.
+Finally is the name of the file itself.</P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>%</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>ls -a /</B
+></TT
+>
+.          .profile   bsd        home       mnt        sbin       tmp
+..         altroot    dev        kern       proc       stand      usr
+.cshrc     bin        etc        lost+found root       sys        var</PRE
+></TD
+></TR
+></TABLE
+><P
+>Here, we see some files that begin with "<TT
+CLASS="LITERAL"
+>.</TT
+>"; the first
+two, <TT
+CLASS="FILENAME"
+>.</TT
+> and <TT
+CLASS="FILENAME"
+>..</TT
+> are present in every
+directory.  The first one, "<TT
+CLASS="FILENAME"
+>.</TT
+>", refers to the
+current directory, similar to <SPAN
+CLASS="ACRONYM"
+>DOS</SPAN
+>, and just as in
+<SPAN
+CLASS="ACRONYM"
+>DOS</SPAN
+>, "<TT
+CLASS="FILENAME"
+>..</TT
+>", refers to the "parent"
+directory, the one just above this one in the directory tree.</P
+><P
+>There are, depending on the particular flavor of Unix and
+the version of <B
+CLASS="COMMAND"
+>ls</B
+>, between twenty and thirty flags to the
+<B
+CLASS="COMMAND"
+>ls</B
+> command.  What do
+they all do?  Never fear, <B
+CLASS="COMMAND"
+>man</B
+> is here.  The
+<B
+CLASS="COMMAND"
+>man</B
+> command, short for manual, gives you access
+to the large amount of online
+documentation that is, or should be, available on any Unix system.
+There are man pages available for:
+<P
+></P
+><OL
+COMPACT="COMPACT"
+TYPE="1"
+><LI
+><P
+>user commands</P
+></LI
+><LI
+><P
+>system calls</P
+></LI
+><LI
+><P
+>library routines</P
+></LI
+><LI
+><P
+>devices</P
+></LI
+><LI
+><P
+>file formats</P
+></LI
+><LI
+><P
+>games</P
+></LI
+><LI
+><P
+>miscellaneous things</P
+></LI
+><LI
+><P
+>system administration</P
+></LI
+></OL
+>
+These are the actual categories and are numbered from 1 through 8.</P
+><P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>%</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>man man</B
+></TT
+></PRE
+></TD
+></TR
+></TABLE
+>
+will give you a one to two page summary of what the <B
+CLASS="COMMAND"
+>man</B
+>
+command can do and some cross-references to other related man pages.  You
+may from time to time see references like this: <TT
+CLASS="LITERAL"
+>see sync(2)</TT
+>.
+This means to see the man page on <TT
+CLASS="LITERAL"
+>sync</TT
+> in section 2.
+Here is how that works:
+<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>%</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>man 2 sync</B
+></TT
+>(note, man on Solaris requires "man -s2 sync". Why? It's Solaris.)</PRE
+></TD
+></TR
+></TABLE
+></P
+><P
+>Often, there will be a user command and related, though sometimes
+completely unrelated, system or library call.  The above would be one
+way to get the specific man page for the item you want.  Looking at
+<TT
+CLASS="LITERAL"
+>intro(N)</TT
+> will give you a short introduction to what
+section N of the manual pages is about.  <I
+CLASS="EMPHASIS"
+>The man command is very useful;
+it is your first line of defense against the unknown!</I
+></P
+><TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>%</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>man -k &lt;something&gt;</B
+></TT
+>This will give you all the entries on "something".</PRE
+></TD
+></TR
+></TABLE
+><P
+>Fortunately, Unix is more than the <B
+CLASS="COMMAND"
+>ls</B
+> command and online
+documentation; you can also move files too.  Actually, there is a lot
+you can do with files, but let's take it slow first.</P
+><P
+>The <B
+CLASS="COMMAND"
+>mv</B
+>
+command moves files around, and can be used to rename files or to
+replace one file with another.  It has, thankfully, only two flags,
+<SPAN
+CLASS="OPTION"
+>-f</SPAN
+> and <SPAN
+CLASS="OPTION"
+>-i</SPAN
+>.  The <SPAN
+CLASS="OPTION"
+>-f</SPAN
+>
+flag tells <B
+CLASS="COMMAND"
+>mv</B
+> to "just do it and forget it". The
+<SPAN
+CLASS="OPTION"
+>-i</SPAN
+> tells <B
+CLASS="COMMAND"
+>mv</B
+> to ask before
+possibly "clobbering" another file
+out of existence.  You can move files into directories, one file
+onto another, directories into directories, but you can not move
+directories across file systems.</P
+><P
+>What does that mean?  A little later on, there will be a little
+diversion for a talk about file systems and how they affect you as a
+user.  For now, don't worry about it.  If you keep most of your files
+in your home directory, you will not have to worry about it too much.
+<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>%</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>mv jon.01Jan98 elaine.03Feb98 letters</B
+></TT
+>(Moves files <TT
+CLASS="FILENAME"
+>jon.01Jan98</TT
+> and <TT
+CLASS="FILENAME"
+>elaine.03Feb98</TT
+> into the directory <TT
+CLASS="FILENAME"
+>letters</TT
+>, provided it exists.)
+<TT
+CLASS="PROMPT"
+>%</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>mv foo.c project1.c</B
+></TT
+>(Renames the file <TT
+CLASS="FILENAME"
+>foo.c</TT
+> as <TT
+CLASS="FILENAME"
+>project1.c</TT
+>, DELETING any pre-existing file named <TT
+CLASS="FILENAME"
+>project1.c</TT
+>.)
+<TT
+CLASS="PROMPT"
+>%</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>mv partA partB partC summary.txt report</B
+></TT
+>(Moves directories <TT
+CLASS="FILENAME"
+>partA</TT
+>, <TT
+CLASS="FILENAME"
+>partB</TT
+>, and <TT
+CLASS="FILENAME"
+>partC</TT
+>, and the file <TT
+CLASS="FILENAME"
+>summary.txt</TT
+>, into the directory <TT
+CLASS="FILENAME"
+>report</TT
+>.)</PRE
+></TD
+></TR
+></TABLE
+></P
+><P
+>The <B
+CLASS="COMMAND"
+>cp</B
+> command, used to copy files, has about five
+or six flags, which are documented in its man page.  You can use
+<B
+CLASS="COMMAND"
+>cp</B
+> two
+different ways; you can copy a file or several files into a directory or
+copy one file to another file.  The <B
+CLASS="COMMAND"
+>cp</B
+> command does a
+simple thing and
+so, it is, usually, a simple command to use; the syntax is quite
+similar to that of <B
+CLASS="COMMAND"
+>mv</B
+>, detailed above.</P
+><P
+>The <B
+CLASS="COMMAND"
+>mkdir</B
+> command makes a directory like so:
+<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>%</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>mkdir personal</B
+></TT
+></PRE
+></TD
+></TR
+></TABLE
+>
+You can make "personal" your current directory with the
+<B
+CLASS="COMMAND"
+>cd</B
+> command ("change directory") like so:
+<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>%</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>cd personal</B
+></TT
+></PRE
+></TD
+></TR
+></TABLE
+></P
+><P
+>How do you know what your current directory is?
+The <B
+CLASS="COMMAND"
+>pwd</B
+>
+(print working directory) command will tell you.  Try it out. 
+To get back to where you were
+before, try <B
+CLASS="COMMAND"
+>cd ..</B
+>. Dot-dot, or "..", is the Unix symbol
+for the "parent directory", or the directory which contains the current
+directory. You can refer to the current directory by dot, or ".".</P
+><P
+>Now is a good a time as any for a diversion into
+how the Unix file system is laid out.  (Note, the term "Unix file
+system" is used in two different contexts.  One refers, as here, to how
+files are laid out in a hierarchical structure.  The other refers to
+the way bits and bytes are laid out on a very low level on the
+physical surface of the disk and made to represent files that you and
+I use on a everyday basis.)</P
+><P
+>The Unix file system is similar to the <SPAN
+CLASS="ACRONYM"
+>DOS</SPAN
+> and
+MacOS file systems in
+that it is hierarchical.  That is about it.  At a very low level, the
+Unix FS is very different from either of those two.  The three only
+bear a very general, high-level similarity to each other.</P
+><P
+>The Unix file system has a beginning, called the "root".  It is
+represented by <TT
+CLASS="FILENAME"
+>/</TT
+>.  If you cd to <TT
+CLASS="FILENAME"
+>/</TT
+>,
+you will be in the top most
+directory in a machine's file system.  From a physical standpoint,
+this will often be on a small (32 - 64 MB) piece of disk, called a
+partition.  Other disks or partitions, will be "mounted" onto
+directories, called mount points in this context. The resulting structure
+is like a tree, where the root file system is like a trunk, and the other
+file systems are like branches. Some of the other filesystems include
+<TT
+CLASS="FILENAME"
+>/usr</TT
+>, <TT
+CLASS="FILENAME"
+>/home</TT
+>, and
+<TT
+CLASS="FILENAME"
+>/mnt</TT
+>. To see what file systems are mounted,
+use the <B
+CLASS="COMMAND"
+>df</B
+> or <B
+CLASS="COMMAND"
+>mount</B
+> command:
+<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>%</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>df</B
+></TT
+>
+Filesystem      1K-blocks     Used    Avail Capacity Mounted on
+/dev/sd0a           31501    11603    16747    41%   /
+/dev/sd0g          141940   125854     1892    99%   /usr
+kernfs              16384     2796        0   100%   /kern
+procfs            4319944     8528        0   100%   /proc
+bloodrose:/home   1037855   835999   118828    88%   /home
+bloodrose:/usr     695311   397914   241773    62%   /mnt/usr
+<TT
+CLASS="PROMPT"
+>%</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>mount</B
+></TT
+>
+/dev/sd0a on / type ffs (local)
+/dev/sd0g on /usr type ffs (local)
+kernfs on /kern type kernfs (local)
+procfs on /proc type procfs (local)
+bloodrose:/home on /home type nfs
+bloodrose:/usr on /mnt/usr type nfs</PRE
+></TD
+></TR
+></TABLE
+></P
+><P
+>In this case, <TT
+CLASS="FILENAME"
+>/home</TT
+> and <TT
+CLASS="FILENAME"
+>/mnt/usr</TT
+>
+are actually located on the machine bloodrose, and are made available to the
+local machine over the network by the wonders
+(and horrors) of the Network File System, <SPAN
+CLASS="ACRONYM"
+>NFS</SPAN
+>.
+The filesystems <TT
+CLASS="LITERAL"
+>kernfs</TT
+> and <TT
+CLASS="LITERAL"
+>procfs</TT
+> are "special"
+and I will leave it at that for now.  In any
+case, each filesystem can be thought of a more or less separate
+physical entity (even though partitions can be on the same disk, they
+are separated from each other).  This is why directories can not be
+moved across filesystems, say from <TT
+CLASS="FILENAME"
+>/</TT
+> to <TT
+CLASS="FILENAME"
+>/usr</TT
+>
+in this case.  The system call that is used to move files does not work across file
+systems, and so other means are used.  On a user level, you can use the
+<B
+CLASS="COMMAND"
+>tar</B
+> command.  Some OS's provide a <B
+CLASS="COMMAND"
+>mvdir</B
+>
+command that acts like <B
+CLASS="COMMAND"
+>mv</B
+> and moves directories across
+filesystems, but this is quite uncommon.</P
+><P
+>The Unix file system, starting from <TT
+CLASS="FILENAME"
+>/</TT
+>, will then branch
+out more and more, rather like a tree.  In fact, sometimes files are referred to as
+leaves on the branch (directory).</P
+><P
+CLASS="LITERALLAYOUT"
+>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/&nbsp;(root)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;/dev/sd0a&nbsp;]<br>
+					|<br>
+					|<br>
+	---------------------------------------------------------------------<br>
+	|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/usr&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/bin&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/sbin&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/home&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/etc&nbsp;&nbsp;&nbsp;/dev&nbsp;<br>
+&nbsp;[&nbsp;/dev/sd0e&nbsp;]&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;[&nbsp;/dev/sd1a&nbsp;]<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/tmp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+&nbsp;&nbsp;&nbsp;----------------------&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;---------------------------------<br>
+&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+&nbsp;/local&nbsp;&nbsp;/bin&nbsp;&nbsp;&nbsp;/man&nbsp;&nbsp;/share&nbsp;&nbsp;&nbsp;&nbsp;/jon&nbsp;&nbsp;&nbsp;&nbsp;/hde&nbsp;&nbsp;&nbsp;&nbsp;/lila&nbsp;&nbsp;&nbsp;/tom&nbsp;&nbsp;&nbsp;&nbsp;/jwm<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-----------------<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/Mail&nbsp;&nbsp;/personal&nbsp;/pub&nbsp;...</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="c25.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>I have an account. What now?</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c25.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>&nbsp;</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

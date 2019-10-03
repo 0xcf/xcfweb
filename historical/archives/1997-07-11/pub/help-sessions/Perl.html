@@ -1,0 +1,292 @@
+Example scripts from the Introduction to Perl Help Session, 10/18/94
+--------------------------------------------------------------------
+Computer Science Undergraduate Assoc.   staff@csua      343 Soda
+Open Computing Facility                 staff@ocf       WEB
+Experimental Computing Facility (XCF)   staff@xcf       117 Cory
+mail helper@csua, helper@ocf, or helper@xcf if you have any questions.
+Handout by Hunter Kelly (retnuh@xcf)
+--------------------------------------------------------------------
+
+get-host is a program that tries to extract the machine names from the
+/usr/local/bin/clients shell script on the instructional machines. 
+
+Clients is a program that will allow you to see what instructional
+machines are available, but it gives them in an un-useful format;
+this script (eventually) lists them in a format that can be easily
+used for setting up a twm remote hosts menu; or a .rhosts file, or
+whatever else you may want.  These scripts are for teaching purposes;
+actual usefulness may vary.  Report bugs to helper@xcf.
+
+Usage: get-host clients
+
+---------------------------------------------------
+get-host.v1
+---------------------------------------------------
+
+#!/usr/sww/bin/perl
+# This is version 1 of get host, simply looks for the word eecs (upper
+# or lower case) in the input.
+
+# <> is a special file handle which is simply an alias for <STDIN>;
+# $_ is a variable containing each line of input.
+while (<>) {
+    print $_ if (/eecs/i);
+}
+
+---------------------------------------------------
+get-host.v2
+---------------------------------------------------
+
+#!/usr/sww/bin/perl 
+# An improved version of get host (barely).
+# finds appearances of ".eecs" instea of just "eecs".
+
+while (<>) {
+    print $_ if (/\.eecs/i);
+}
+
+---------------------------------------------------
+get-host.v3
+---------------------------------------------------
+
+#!/usr/sww/bin/perl
+# Get host now looks for .eecs or .cs
+
+while (<>) {
+    print $_ if (/\.(ee)?cs/i);
+}
+
+---------------------------------------------------
+get-host.v4
+---------------------------------------------------
+
+#!/usr/sww/bin/perl
+#Get host now looks for a something of the form name.eecs (or name.cs)
+
+while (<>) {
+    chop; #gets rid of the newline on the end of stdin
+    
+    while (/\s(\w*)\.((ee)?cs)/ig) {
+	push(@machines, "$1.$2"); # pushes machine name into a storage array
+	  # scalar variables are referred to as $var; vectors as @array
+    };
+}
+
+# $#array is the index of the last element in the array (starting with 0)
+while ($#machines >= 0) {	
+    print pop(machines), "\n";	# gets a machine name from @machines, and prints it
+}
+# note that this print statement could be modified to make it useful
+# output for something; for example, "print pop(machines), "retnuh\n"; would
+# produce output appropriate for a .rhosts file.
+
+---------------------------------------------------
+get-host.v5
+---------------------------------------------------
+
+#!/usr/sww/bin/perl 
+# This is really just a hack to grab name that don't have .eecs or .cs on the end. 
+# in the output of clients, there are three special case; we use the fact that
+# they are special cases; this is not a good general script.
+
+while (<>) {
+    chop;
+
+    # This is a regular expression looking for a single word without .eecs
+    # surrounded by words with .eecs on the end and stores it as an array --
+    # i.e., it gets coltrane from
+    # shorter.EECS    cecil.EECS      coltrane        dolphy.EECS
+
+    if (/\.((ee)?cs)\s+(\w+)\s+\w+\.(ee)?cs/i) {
+	push(@machines, "$3.$1");
+    }
+    while (/\s(\w*)\.((ee)?cs)/ig) {
+	push(@machines, "$1.$2");
+    };
+}
+
+# arrays can be treated a lot like stacks; note that popping things off
+# of an array takes them off last element first; to get first element
+# firrst, use "shift @array".
+while ($#machines >= 0) {
+    print pop(@machines), "\n";
+}
+
+
+
+---------------------------------------------------
+get-host-args.v1
+---------------------------------------------------
+
+#!/usr/sww/bin/perl
+# This is get host with arguments.  lets you specify a regex on the
+# command line for the machine name.
+# For example "get-host -n '\w*ro\w*' would return all the hostnames
+# containing the string "ro".
+
+# This loads a perl library
+require "getopts.pl";
+# Functions are called as &function(args)
+&Getopts('n:');
+# Uses the function from the perl library just loaded
+# the 'n:' means that it takes -n<something> as an argument;
+# just 'n' would mean that the argument was a simple switch.
+
+if ($opt_n) {
+    $name = $opt_n;
+} else {		# use a default of matching any word
+    $name = '\w+';
+}
+
+# do command line logic
+
+
+while (<>) {
+    chop;
+    if (/\.((ee)?cs)\s+($name)\s+\w+\.(ee)?cs/i) {
+	push(@machines, "$3.$1");
+    }
+    while (/($name)\.((ee)?cs)/ig) {
+	push(@machines, "$1.$2");
+    };
+}
+
+while ($#machines >= 0) {
+    print pop(machines), "\n";
+}
+
+---------------------------------------------------
+get-host-args.v2
+---------------------------------------------------
+
+#!/usr/sww/bin/perl 
+# Also lets you specify a regex for the domain name as well.
+# Usage: get-host [-n <regexp>] [-e <domain>]
+require "getopts.pl";
+&Getopts('n:e:');
+
+if ($opt_n) {
+    $name = $opt_n;
+} else {
+    $name = '\w+';
+}
+
+
+if ($opt_e) {
+    $end = $opt_e;
+} else {
+    $end = 'eecs|cs';
+}
+
+while (<>) {
+    chop;
+    if (/\.($end)\s+($name)\s+\w+\.($end)/i) {
+	push(@machines, "$2.$1");
+    }
+    while (/($name)\.($end)/ig) {
+	push(@machines, "$1.$2");
+    };
+}
+
+while ($#machines >= 0) {
+    print pop(machines), "\n";
+}
+
+---------------------------------------------------
+gh-associative-array.v1
+---------------------------------------------------
+
+#!/usr/sww/bin/perl 
+# now we're just showing off.
+
+require "getopts.pl";
+&Getopts('ce');
+
+#sets the default function to call (perl can pass functions around 
+# really easily)
+$print_function = "PrintAll";
+
+if ($opt_c) {
+    $print_function = "PrintSome";
+    $which_ending = 'cs';
+}
+
+if ($opt_e) {
+    $print_function = "PrintSome";
+    $which_ending = 'eecs';
+}
+
+while (<>) {
+    chop;
+    if (/\.((ee)?cs)\s+(\w+)\s+\w+\.(ee)?cs/i) {
+	$machines{$3} = $1;
+    }
+    while (/\s(\w*)\.((ee)?cs)/ig) {
+	$machines{$1} = $2; 
+    };
+}
+
+do $print_function();
+# call the function we want.
+
+
+#the subroutines
+
+sub PrintAll {
+    foreach $key ( sort keys(%machines) ) {
+	print "$key.$machines{$key}\n";
+    }
+}
+
+sub PrintSome {
+    foreach $key ( sort keys(%machines) ) {
+	$machines{$key} =~ tr/A-Z/a-z/;
+	# translates characters, a lot like unix tr command
+	# here, it translates upper case to lower case.
+	# the =~ operator runs the left side through the right side and
+	# sets the left side equal to the return value.
+	
+	print "$key.$machines{$key}\n" if ( $which_ending eq $machines{$key} );
+	# note the use of "eq"--strings are compared with eq, gt, lt, neq, etc.
+	# and numbers with ==, >, <, !=.  There *is* a difference, even though
+	# perl will typecast everything so it will work.
+    }
+}
+				      
+
+---------------------------------------------------
+gh-associative-array.v2
+---------------------------------------------------
+
+#!/usr/sww/bin/perl
+# Essentially the same thing, but with a tricky eval.
+# Not for the faint of heart.
+
+require "getopts.pl";
+&Getopts('ce');
+
+$which_ending = "";
+
+if ($opt_c) {
+    $which_ending = 'if ( \'cs\' eq $machines{$key} )';
+}
+
+if ($opt_e) {
+    $which_ending = 'if ( \'eecs\' eq $machines{$key} )';
+}
+
+while (<>) {
+    chop;
+    if (/\.((ee)?cs)\s+(\w+)\s+\w+\.(ee)?cs/i) {
+	$machines{$3} = $1;
+    }
+    while (/\s(\w*)\.((ee)?cs)/ig) {
+	$machines{$1} = $2; 
+    };
+}
+
+# here, we are dynamically writing the program.  This is very advanced stuff.
+eval "foreach \$key ( sort keys(\%machines)) {
+           \$machines{\$key} =~ tr/A-Z/a-z/;
+           print \"\$key.\$machines{\$key}\n\" $which_ending;
+      } ";

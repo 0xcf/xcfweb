@@ -1,0 +1,203 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>What is it used for?</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="Using SSH for Secure Interactive Communications"
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="Introduction"
+HREF="c57.html"><LINK
+REL="PREVIOUS"
+TITLE="Introduction"
+HREF="c57.html"><LINK
+REL="NEXT"
+TITLE="How can I get it?"
+HREF="x91.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>Using SSH for Secure Interactive Communications</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="c57.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 1. Introduction</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x91.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="SEC0.2"
+>What is it used for?</A
+></H1
+><P
+>SSH can be used to:
+<P
+></P
+><DL
+><DT
+>Securely connect to a remote site, preventing your password
+from being transmitted in the clear across the network.</DT
+><DD
+><P
+>The most frequent (and perhaps most important) use; password security
+is of upmost importance, especially with the popularity and relative
+ease with which brainless morons (i.e., crackers) can sniff data off a
+network.  The distributed and cooperative nature of the Internet is
+good for service and accessibility, but horrible for security... if
+you want security, you must take steps to make it work, and SSH is a
+very useful tool to that extent.</P
+></DD
+><DT
+>To prevent the capture of information typed (or received)
+across the network from the remote host.</DT
+><DD
+><P
+>Not as useful... frankly, most people are just boring.
+But if you want to use PGP, SSH (again from the remote machine),
+<B
+CLASS="COMMAND"
+>passwd</B
+> or some other interactive program which
+requires you to send or receive sensitive information, SSH will keep
+that data secure as it's being sent from|to the remote machine to|from
+the local machine over the network.</P
+></DD
+><DT
+>To securely access otherwise insecure services (such as FTP,
+HTTP, POP, etc.) on the remote machine.</DT
+><DD
+><P
+>To be fully secure, however, one must look at all the places where
+their password is sent out over the network (and is thus available for
+capture by a malicious party).  Besides <B
+CLASS="COMMAND"
+>telnet</B
+>|
+<B
+CLASS="COMMAND"
+>rlogin</B
+> connections, two
+other common services which require passwords are FTP and POP.  In
+both these cases, the password is sent over the network in clear
+text.  However, SSH includes the ability to use these services in an
+encrypted manner, thus disallowing the sending of sensitive
+information over the network.</P
+></DD
+></DL
+></P
+><P
+>SSH is currently being deployed across campus.  SSH is available
+on UCB's undergraduate CS machines and socrates.berkeley.edu.  As well,
+uclink[234]?.berkeley.edu will be supporting SSH in the near future.
+Your local system administrator can be contacted to determine the
+availability of (or to encourage the installation of) SSH on other
+machines.  An issue of
+<A
+HREF="javascript:alert('link disabled in archive')"
+TARGET="_top"
+>Berkeley Computing &#38;
+Communications</A
+> contains an <A
+HREF="javascript:alert('link disabled in archive')"
+TARGET="_top"
+>article</A
+> on SSH in relation to the UCB campus environment.</P
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="c57.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x91.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Introduction</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c57.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>How can I get it?</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

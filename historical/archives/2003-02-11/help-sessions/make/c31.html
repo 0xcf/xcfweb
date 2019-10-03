@@ -1,0 +1,246 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>Writing makefiles</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="make"
+HREF="book1.html"><LINK
+REL="PREVIOUS"
+TITLE="Introduction"
+HREF="c24.html"><LINK
+REL="NEXT"
+TITLE="Basic rule construction"
+HREF="x49.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>make</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="c24.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+></TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+><A
+HREF="x49.html"
+>Next</A
+></TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="CHAPTER"
+><H1
+><A
+NAME="AEN31"
+>Chapter 2. Writing makefiles</A
+></H1
+><DIV
+CLASS="TOC"
+><DL
+><DT
+><B
+>Table of Contents</B
+></DT
+><DT
+><A
+HREF="c31.html#AEN33"
+>Make and dependency graphs</A
+></DT
+><DT
+><A
+HREF="x49.html"
+>Basic rule construction</A
+></DT
+><DT
+><A
+HREF="x109.html"
+>Variables</A
+></DT
+><DT
+><A
+HREF="x136.html"
+>A useful example</A
+></DT
+><DT
+><A
+HREF="x199.html"
+>Update method hints</A
+></DT
+><DT
+><A
+HREF="x214.html"
+>Things of note that we haven't covered</A
+></DT
+><DT
+><A
+HREF="x223.html"
+>Other References</A
+></DT
+></DL
+></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="AEN33"
+>Make and dependency graphs</A
+></H1
+><P
+>The really big picture is that <B
+CLASS="COMMAND"
+>make</B
+> is a
+language in which we can express dependencies via a set of
+<I
+CLASS="EMPHASIS"
+>dependency rules</I
+>.  These dependency rules are
+then used to build a dependency graph.  (If you distill the vocabulary
+a bit, you can see that the rules are really adjacency lists and that
+the dependency graph is no more than a run-of-the-mill directed
+graph.)  Given the graph, <B
+CLASS="COMMAND"
+>make</B
+> traverses the
+subgraph whose root is specified on the command line depth first.  For
+example, 
+<TABLE
+BORDER="0"
+BGCOLOR="#E0E0E0"
+WIDTH="100%"
+><TR
+><TD
+><PRE
+CLASS="SCREEN"
+><TT
+CLASS="PROMPT"
+>%</TT
+> <TT
+CLASS="USERINPUT"
+><B
+>make subgraph1</B
+></TT
+></PRE
+></TD
+></TR
+></TABLE
+>
+If a dependency root is not specified then <B
+CLASS="COMMAND"
+>make</B
+>
+traverses the subgraph whose root is the first rule in the
+<TT
+CLASS="FILENAME"
+>Makefile</TT
+>.</P
+><P
+>That's all fine, but without a rule to use to evaluate
+dependencies, the dependencies have no meaning.
+<B
+CLASS="COMMAND"
+>make</B
+>'s rule is to evaluate dependencies based on
+time.  <I
+CLASS="EMPHASIS"
+>If any descendents of a node are younger than the
+node itself then the node is out of date and must be
+updated.</I
+></P
+><P
+>If you are using <B
+CLASS="COMMAND"
+>make</B
+> to help maintain a
+program, this means that a program module is out of date if any of its
+constituent modules are newer than the module itself.  We will see an
+example of this shortly.</P
+></DIV
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="c24.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+><A
+HREF="x49.html"
+>Next</A
+></TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Introduction</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+>&nbsp;</TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>Basic rule construction</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>

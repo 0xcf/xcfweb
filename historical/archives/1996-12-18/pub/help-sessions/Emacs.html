@@ -1,0 +1,192 @@
+Advanced EMACS
+--------------
+Computer Science Undergraduate Assoc.   staff@csua      343 Soda
+Open Computing Facility                 staff@ocf       WEB
+Experimental Computing Facility (XCF)   staff@xcf       117 Cory
+mail helper@csua, helper@ocf, or helper@xcf if you have any questions.
+Handout written fall 1994 by Hunter Kelly (retnuh@xcf)
+----
+
+EMACS Help options:
+
+a  command-apropos.  Give a substring, and see a list of commands
+	(functions interactively callable) that contain
+	that substring.  See also the  apropos  command.
+b  describe-bindings.  Display table of all key bindings.
+c  describe-key-briefly.  Type a command key sequence;
+	it prints the function name that sequence runs.
+f  describe-function.  Type a function name and get documentation of it.
+C-f Info-goto-emacs-command-node.  Type a function name;
+	it takes you to the Info node for that command.
+i  info. The  info  documentation reader.
+k  describe-key.  Type a command key sequence;
+	it displays the full documentation.
+C-k Info-goto-emacs-key-command-node.  Type a command key sequence;
+	it takes you to the Info node for the command bound to that key.
+l  view-lossage.  Shows last 100 characters you typed.
+m  describe-mode.  Print documentation of current major mode,
+	which describes the commands peculiar to it.
+n  view-emacs-news.  Shows emacs news file.
+p  finder-by-keyword. Find packages matching a given topic keyword.
+s  describe-syntax.  Display contents of syntax table, plus explanations
+t  help-with-tutorial.  Select the Emacs learn-by-doing tutorial.
+v  describe-variable.  Type name of a variable;
+	it displays the variable's documentation and value.
+w  where-is.  Type command name; it prints which keystrokes
+	invoke that command.
+C-c print Emacs copying permission (General Public License).
+C-d print Emacs ordering information.
+C-n print news of recent Emacs changes.
+C-p print information about the GNU project.
+C-w print information on absence of warranty for GNU Emacs.
+
+-----------
+
+Info mode provides commands for browsing through the Info documentation tree.
+Documentation in Info is divided into "nodes", each of which discusses
+one topic and contains references to other nodes which discuss related
+topics.  Info has commands to follow the references and show you other nodes.
+
+h	Invoke the Info tutorial.
+
+Selecting other nodes:
+mouse-2
+	Follow a node reference you click on.
+	  This works with menu items, cross references, and
+	  the "next", "previous" and "up", depending on where you click.
+n	Move to the "next" node of this node.
+p	Move to the "previous" node of this node.
+u	Move "up" from this node.
+m	Pick menu item specified by name (or abbreviation).
+	Picking a menu item causes another node to be selected.
+d	Go to the Info directory node.
+f	Follow a cross reference.  Reads name of reference.
+l	Move to the last node you were at.
+i	Look up a topic in this file's Index and move to that node.
+,	(comma) Move to the next match from a previous `i' command.
+
+Moving within a node:
+SPC	Normally, scroll forward a full screen.  If the end of the buffer is
+already visible, try to go to the next menu entry, or up if there is none.
+DEL  Normally, scroll backward.  If the beginning of the buffer is
+already visible, try to go to the previous menu entry, or up if there is none.
+.	Go to beginning of node.  
+
+Advanced commands:
+q	Quit Info: reselect previously selected buffer.
+e	Edit contents of selected node.
+1	Pick first item in node's menu.
+2, 3, 4, 5   Pick second ... fifth item in node's menu.
+g	Move to node specified by name.
+	You may include a filename as well, as (FILENAME)NODENAME.
+C-u C-_ i	Move to new Info file with completion.
+s	Search through this Info file for specified regexp,
+	and select the node in which the next occurrence is found.
+M-x Info-next-preorder	Next-preorder; that is, try to go to the next menu item,
+	and if that fails try to move up, and if that fails, tell user
+ 	he/she is done reading.
+TAB	Move cursor to next cross-reference or menu item.
+M-TAB	Move cursor to previous cross-reference or menu item.;;;;;;;
+
+=====================================================================
+Sample .emacs
+
+;;;;;;;;
+;;
+;; Global key bindings
+;;
+;;;;;;;;
+
+;;;  These set C-h to delete
+(global-set-key "\C-h" 'backward-delete-char)
+(setq search-delete-char (string-to-char "\C-h"))
+
+;;; This makes M-h consistant with M-<Del>
+(global-set-key "\M-h" 'backward-kill-word)
+
+;;; This sets C-_ to help
+(global-set-key "\C-_" 'help-command)
+(setq help-char (string-to-char "\C-_"))
+
+;;; This gets rid of the damned annoying thing it gives you if you hit
+;;; Escape (or Meta, or whatever) twice.
+(global-unset-key "\e\e")
+
+;;; This is easier to type -- C-x u is still available
+(global-set-key "\C-x\C-u" 'undo)
+
+;;;  Get rid of the annoying message when emacs starts
+(setq inhibit-startup-message t)
+
+;;;;;;;
+;;
+;; mode stuff
+;;
+;;;;;;;
+
+;;;  Sets new buffers to be in Text mode by default
+(setq default-major-mode 'text-mode)
+
+;;;  Adds a hook to text mode, turning on auto-fill  (word-wrap)
+;;;  A hook is a function (or functions) that are called at certain
+;;;  times.  Usually used to help customize things.
+(add-hook 'text-mode-hook 'turn-on-auto-fill)
+
+;;;;;;;;
+;;
+;; auto-mode things
+;;
+;;;;;;;;
+
+;;;  Way to set the mode a buffer is in, based on the filename
+(setq auto-mode-alist
+      (append '(("\\.c$"  . c-mode)
+		("\\.h$"  . c-mode)
+		("\\.pl$" . perl-mode))
+	      auto-mode-alist))
+
+
+;;;;;;;;
+;;
+;; .emacs specific funcs
+;;
+;;;;;;;
+
+
+;;;  These functions come in Handy when you edit your .emacs a lot
+(defun reinit-from-dot-emacs ()
+  "Checks to see if there is a buffer called .emacs, saves it, then
+   loads from the .emacs file"
+  (interactive)
+  (if (bufferp (get-file-buffer '".emacs"))
+      (save-buffer (get-buffer '".emacs")))
+  (load-file "~/.emacs")
+  (message "Re-initialized!"))
+
+(defun edit-dot-emacs ()
+  "Loads the file .emacs"
+  (interactive)
+  (find-file "~/.emacs"))
+
+;;;  Binds keys for these functions
+(global-set-key "\C-c." 'reinit-from-dot-emacs)
+(global-set-key "\C-ce" 'edit-dot-emacs)
+
+
+;;;;;;;
+;;
+;; c/cc mode stuff
+;;
+;;;;;;;;;
+
+;;;  Set a key to call compile command
+(global-set-key "\C-xc" 'compile)
+
+;;;  Things I want to happen whenever I am in c-mode
+(add-hook 'c-mode-hook
+	  (function
+	   (lambda () 
+	     (line-number-mode t)
+	     (define-key c-mode-map "\C-m" 'newline-and-indent))))
+
+

@@ -1,0 +1,287 @@
+<!DOCTYPE HTML PUBLIC "-//Norman Walsh//DTD DocBook HTML 1.0//EN">
+<HTML
+><HEAD
+><TITLE
+>Configuration options</TITLE
+><META
+NAME="GENERATOR"
+CONTENT="Modular DocBook HTML Stylesheet"><LINK
+REL="HOME"
+TITLE="Using SSH for Secure Interactive Communications"
+HREF="book1.html"><LINK
+REL="UP"
+TITLE="Advanced Use of SSH"
+HREF="c230.html"><LINK
+REL="PREVIOUS"
+TITLE="Advanced Use of SSH"
+HREF="c230.html"></HEAD
+><BODY
+><DIV
+CLASS="NAVHEADER"
+><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TH
+COLSPAN="3"
+ALIGN="center"
+>Using SSH for Secure Interactive Communications</TH
+></TR
+><TR
+><TD
+WIDTH="10%"
+ALIGN="left"
+VALIGN="bottom"
+><A
+HREF="c230.html"
+>Prev</A
+></TD
+><TD
+WIDTH="80%"
+ALIGN="center"
+VALIGN="bottom"
+>Chapter 3. Advanced Use of SSH</TD
+><TD
+WIDTH="10%"
+ALIGN="right"
+VALIGN="bottom"
+>&nbsp;</TD
+></TR
+></TABLE
+><HR
+ALIGN="LEFT"
+WIDTH="100%"></DIV
+><DIV
+CLASS="SECT1"
+><H1
+CLASS="SECT1"
+><A
+NAME="SEC2.2"
+>Configuration options</A
+></H1
+><P
+>SSH has many configuration options, which are settable both on the
+command line and also in two configuartion files.  One, in
+<TT
+CLASS="FILENAME"
+>/etc/ssh_config</TT
+> on UNIX machines, exists
+system-wide, and sets up the default configuration options.  The second, in
+<TT
+CLASS="FILENAME"
+>~/.ssh/config</TT
+> on UNIX machines, is the user's configuration
+file, and controls the user's settings for using SSH.  Placing entries
+in the configuration file frees you from having to specify them on the
+command line, however it may be more useful to use the command line
+for infrequently-used command like port forwarding.</P
+><P
+>There are many configuration options; to see them all with their
+descriptions, look at the <I
+CLASS="EMPHASIS"
+>CONFIGURATION FILES</I
+>
+section of the man page <B
+CLASS="COMMAND"
+>ssh(1)</B
+>.  The more useful
+options are summarized below.</P
+><P
+></P
+><DL
+><DT
+>Host</DT
+><DD
+><P
+>The name of the host (or hosts, since wildcards
+'<TT
+CLASS="LITERAL"
+>*</TT
+>' and '<TT
+CLASS="LITERAL"
+>?</TT
+>'
+can be used) which the configuration options following this line apply to.
+The <SPAN
+CLASS="OPTION"
+>host</SPAN
+> given on the <B
+CLASS="COMMAND"
+>ssh</B
+> command
+line will match against the appropriate <TT
+CLASS="LITERAL"
+>Host</TT
+> line
+of the configuration file.</P
+></DD
+><DT
+>Compression</DT
+><DD
+><P
+>One of the other nice things about SSH, in addition
+to it's security, is that since it replaces <B
+CLASS="COMMAND"
+>telnet</B
+>
+and <B
+CLASS="COMMAND"
+>rlogin</B
+>, it can do whatever it wants with the data...
+in this case, compress it.  The <TT
+CLASS="LITERAL"
+>Compression</TT
+> option
+allows the user to specify the level of compression to be used on
+connections with the given host.  The possible values are an integer
+in the range [1,9], which correspond to the same GNU
+<SPAN
+CLASS="APPLICATION"
+>gzip</SPAN
+> values.</P
+></DD
+><DT
+>EscapeChar</DT
+><DD
+><P
+>Specifies the escape character for <B
+CLASS="COMMAND"
+>ssh</B
+>
+to use for the connection.  By default this is "<TT
+CLASS="LITERAL"
+>~</TT
+>".
+You can also set this to "<TT
+CLASS="LITERAL"
+>^]</TT
+>" to get the normal
+<B
+CLASS="COMMAND"
+>telnet</B
+>|<B
+CLASS="COMMAND"
+>rlogin</B
+> escape sequence, or
+set it to ``<TT
+CLASS="LITERAL"
+>none</TT
+>'' to get a session which is "transparent
+for binary data" [quote from <TT
+CLASS="LITERAL"
+>ssh(1)</TT
+>], meaning you can use
+it for transfering with <B
+CLASS="COMMAND"
+>kermit</B
+>, <B
+CLASS="COMMAND"
+>rz</B
+>,
+<B
+CLASS="COMMAND"
+>sz</B
+>, etc.</P
+></DD
+><DT
+>HostName</DT
+><DD
+><P
+>Specifies the actualy hostname of the machine to
+connect to.  This llows you to specify an alias or shortcut for a
+host with the <TT
+CLASS="LITERAL"
+>Host</TT
+> config option, specify that
+alias|shortcut on the command line, and still have it connect to
+the correct machine.  In addition, an IP address can be used for
+you to give a name to machines-that-have-no-name.</P
+></DD
+><DT
+>KeepAlive</DT
+><DD
+><P
+>Allows control of keepalive messages between the
+machines.  Without keepalives, if the network or remote machine
+goes down, you won't notice until you try and type a command in,
+because the session will simply stay there.  If keepalives are
+enabled, SSH will notice if either machine or the network goes down.
+However, if the network route is temporarily down the connection
+will close, as well.</P
+></DD
+><DT
+>User</DT
+><DD
+><P
+>Specifies the username to use for logging into
+this host.  This frees you from having to enter the
+"<SPAN
+CLASS="OPTION"
+>-l username</SPAN
+>" option on the
+<B
+CLASS="COMMAND"
+>ssh</B
+> command line.</P
+></DD
+></DL
+></DIV
+><DIV
+CLASS="NAVFOOTER"
+><HR
+ALIGN="LEFT"
+WIDTH="100%"><TABLE
+WIDTH="100%"
+BORDER="0"
+CELLPADDING="0"
+CELLSPACING="0"
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+><A
+HREF="c230.html"
+>Prev</A
+></TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="book1.html"
+>Home</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>&nbsp;</TD
+></TR
+><TR
+><TD
+WIDTH="33%"
+ALIGN="left"
+VALIGN="top"
+>Advanced Use of SSH</TD
+><TD
+WIDTH="34%"
+ALIGN="center"
+VALIGN="top"
+><A
+HREF="c230.html"
+>Up</A
+></TD
+><TD
+WIDTH="33%"
+ALIGN="right"
+VALIGN="top"
+>&nbsp;</TD
+></TR
+></TABLE
+></DIV
+></BODY
+></HTML
+>
